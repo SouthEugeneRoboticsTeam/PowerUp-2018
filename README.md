@@ -1,7 +1,6 @@
 # PowerUp
 
 [![Travis][travis-img]][travis-url]
-[![Coveralls][coveralls-img]][coveralls-url]
 
 SERT's robot code for the 2018 PowerUp game.
 
@@ -22,5 +21,3 @@ the robot with the `--offline` flag.
 
 [travis-img]: https://img.shields.io/travis/SouthEugeneRoboticsTeam/PowerUp-2018.svg?style=flat-square
 [travis-url]: https://travis-ci.org/SouthEugeneRoboticsTeam/PowerUp-2018
-[coveralls-img]: https://img.shields.io/coveralls/SouthEugeneRoboticsTeam/PowerUp-2018.svg?style=flat-square
-[coveralls-url]: https://coveralls.io/github/SouthEugeneRoboticsTeam/PowerUp-2018
