@@ -15,24 +15,24 @@ import org.sertain.hardware.plus
 import org.sertain.hardware.resetEncoder
 
 object Drivetrain : Subsystem(), RobotLifecycle {
-    private val frontLeft =
+    private val leftDrive =
             Talon(LEFT_FRONT_MOTOR).inverted() + Talon(LEFT_REAR_MOTOR).inverted()
-    private val frontRight =  Talon(RIGHT_FRONT_MOTOR) + Talon(RIGHT_REAR_MOTOR)
+    private val rightDrive =  Talon(RIGHT_FRONT_MOTOR) + Talon(RIGHT_REAR_MOTOR)
 
-    private val drive = DifferentialDrive(frontLeft, frontRight)
+    private val drive = DifferentialDrive(leftDrive, rightDrive)
 
     override val defaultCommand = ArcadeDrive()
 
     init {
-        frontLeft.autoBreak()
-        frontRight.autoBreak()
+        leftDrive.autoBreak()
+        rightDrive.autoBreak()
     }
 
     override fun onStart() {
         stop()
 
-        frontLeft.resetEncoder()
-        frontRight.resetEncoder()
+        leftDrive.resetEncoder()
+        rightDrive.resetEncoder()
     }
 
     fun arcade() {
