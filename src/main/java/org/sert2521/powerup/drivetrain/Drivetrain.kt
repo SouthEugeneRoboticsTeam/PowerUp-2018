@@ -52,11 +52,8 @@ object Drivetrain : Subsystem(), RobotLifecycle {
     }
 
     fun controllerDrive() {
-        val y = -controller.getY(GenericHID.Hand.kLeft)
-        val x = controller.getX(GenericHID.Hand.kRight)
-
-        val speed = Math.pow(y, 2.0) * Math.signum(y)
-        val rotation = x
+        val speed = -controller.getY(GenericHID.Hand.kLeft)
+        val rotation = controller.getX(GenericHID.Hand.kRight)
 
         drive.arcadeDrive(speed, rotation)
     }
