@@ -5,13 +5,13 @@ import org.sertain.command.Command
 /**
  * This command allows for arcade drive of the robot.
  */
-class ArcadeDrive : Command() {
+class ControllerDrive : Command() {
     init {
         requires(Drivetrain)
     }
 
     override fun execute(): Boolean {
-        Drivetrain.arcadeDrive()
+        Drivetrain.controllerDrive()
         return false
     }
 

@@ -1,11 +1,8 @@
 package org.sert2521.powerup.drivetrain
 
+import edu.wpi.first.wpilibj.GenericHID
 import edu.wpi.first.wpilibj.drive.DifferentialDrive
-import org.sert2521.powerup.util.LEFT_FRONT_MOTOR
-import org.sert2521.powerup.util.LEFT_REAR_MOTOR
-import org.sert2521.powerup.util.RIGHT_FRONT_MOTOR
-import org.sert2521.powerup.util.RIGHT_REAR_MOTOR
-import org.sert2521.powerup.util.leftJoystick
+import org.sert2521.powerup.util.*
 import org.sertain.RobotLifecycle
 import org.sertain.command.Subsystem
 import org.sertain.hardware.Talon
@@ -21,7 +18,7 @@ object Drivetrain : Subsystem(), RobotLifecycle {
 
     private val drive = DifferentialDrive(leftDrive, rightDrive)
 
-    override val defaultCommand = ArcadeDrive()
+    override val defaultCommand = ControllerDrive()
 
     init {
         leftDrive.autoBreak()
@@ -35,8 +32,12 @@ object Drivetrain : Subsystem(), RobotLifecycle {
         rightDrive.resetEncoder()
     }
 
-    fun arcade() {
+    fun arcadeDrive() {
         drive.arcadeDrive(-leftJoystick.x, leftJoystick.y)
+    }
+
+    fun controllerDrive() {
+        drive.arcadeDrive(-controller.getX(GenericHID.Hand.kRight), controller.getY(GenericHID.Hand.kLeft))
     }
 
     fun stop() {

@@ -4,6 +4,8 @@ package org.sert2521.powerup.util
 const val LEFT_STICK_PORT = 0
 const val RIGHT_STICK_PORT = 1
 
+const val CONTROLLER_PORT = 2
+
 // Talon IDs
 const val RIGHT_FRONT_MOTOR = 10
 const val RIGHT_REAR_MOTOR = 14

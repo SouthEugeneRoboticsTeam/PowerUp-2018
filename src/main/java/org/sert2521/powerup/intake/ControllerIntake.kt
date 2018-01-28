@@ -1,21 +1,21 @@
-package org.sert2521.powerup.drivetrain
+package org.sert2521.powerup.intake
 
 import org.sertain.command.Command
 
 /**
  * This command allows for arcade drive of the robot.
  */
-class ArcadeDrive : Command() {
+class ControllerIntake : Command() {
     init {
-        requires(Drivetrain)
+        requires(Intake)
     }
 
     override fun execute(): Boolean {
-        Drivetrain.arcadeDrive()
+        Intake.runController()
         return false
     }
 
     override fun onDestroy() {
-        Drivetrain.stop()
+        Intake.stop()
     }
 }
