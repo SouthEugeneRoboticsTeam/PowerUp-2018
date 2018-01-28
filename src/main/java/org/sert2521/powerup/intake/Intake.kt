@@ -1,7 +1,10 @@
 package org.sert2521.powerup.intake
 
 import edu.wpi.first.wpilibj.GenericHID
-import org.sert2521.powerup.util.*
+import org.sert2521.powerup.util.LEFT_INTAKE_MOTOR
+import org.sert2521.powerup.util.RIGHT_INTAKE_MOTOR
+import org.sert2521.powerup.util.controller
+import org.sert2521.powerup.util.leftJoystick
 import org.sertain.RobotLifecycle
 import org.sertain.command.Subsystem
 import org.sertain.hardware.Talon

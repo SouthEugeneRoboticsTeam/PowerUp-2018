@@ -19,4 +19,3 @@ class EmergencyAbort : Command() {
         return false
     }
 }
-
