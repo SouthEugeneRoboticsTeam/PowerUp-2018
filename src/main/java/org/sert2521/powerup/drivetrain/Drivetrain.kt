@@ -26,6 +26,9 @@ object Drivetrain : Subsystem(), RobotLifecycle {
 
     override val defaultCommand = TeleopDrive()
 
+    val leftSpeed get() = leftDrive.get()
+    val rightSpeed get() = leftDrive.get()
+
     init {
         leftDrive.autoBreak()
         rightDrive.autoBreak()
