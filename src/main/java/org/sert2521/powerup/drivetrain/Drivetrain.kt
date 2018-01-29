@@ -1,15 +1,12 @@
 package org.sert2521.powerup.drivetrain
 
 import com.kauailabs.navx.frc.AHRS
-import edu.wpi.first.wpilibj.GenericHID
 import edu.wpi.first.wpilibj.I2C
 import edu.wpi.first.wpilibj.drive.DifferentialDrive
 import org.sert2521.powerup.util.LEFT_FRONT_MOTOR
 import org.sert2521.powerup.util.LEFT_REAR_MOTOR
 import org.sert2521.powerup.util.RIGHT_FRONT_MOTOR
 import org.sert2521.powerup.util.RIGHT_REAR_MOTOR
-import org.sert2521.powerup.util.controller
-import org.sert2521.powerup.util.leftJoystick
 import org.sertain.RobotLifecycle
 import org.sertain.command.Subsystem
 import org.sertain.hardware.Talon
@@ -27,7 +24,7 @@ object Drivetrain : Subsystem(), RobotLifecycle {
 
     private val drive = DifferentialDrive(leftDrive, rightDrive)
 
-    override val defaultCommand = ControllerDrive()
+    override val defaultCommand = TeleopDrive()
 
     init {
         leftDrive.autoBreak()
@@ -43,22 +40,9 @@ object Drivetrain : Subsystem(), RobotLifecycle {
         rightDrive.resetEncoder()
     }
 
-    fun arcadeDrive() {
-        drive.arcadeDrive(-Math.pow(leftJoystick.x, 2.0), Math.pow(leftJoystick.y, 2.0))
-    }
+    fun arcade(speed: Double, rotation: Double) = drive.arcadeDrive(speed, rotation)
 
-    fun tank(left: Double, right: Double) {
-        drive.tankDrive(left, right)
-    }
+    fun tank(left: Double, right: Double) = drive.tankDrive(left, right)
 
-    fun controllerDrive() {
-        val speed = -controller.getY(GenericHID.Hand.kLeft)
-        val rotation = controller.getX(GenericHID.Hand.kRight)
-
-        drive.arcadeDrive(speed, rotation)
-    }
-
-    fun stop() {
-        drive.stopMotor()
-    }
+    fun stop() = drive.stopMotor()
 }
