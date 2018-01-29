@@ -1,5 +1,6 @@
-package org.sert2521.powerup.drivetrain
+package org.sert2521.powerup.drivetrain.commands
 
+import org.sert2521.powerup.drivetrain.Drivetrain
 import org.sert2521.powerup.drivetrain.Drivetrain.leftSpeed
 import org.sert2521.powerup.drivetrain.Drivetrain.rightSpeed
 import org.sertain.command.Command

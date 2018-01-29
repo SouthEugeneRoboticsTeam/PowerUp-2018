@@ -1,5 +1,6 @@
-package org.sert2521.powerup.drivetrain
+package org.sert2521.powerup.drivetrain.commands
 
+import org.sert2521.powerup.drivetrain.Drivetrain
 import org.sertain.command.Command
 
 class FixedDrive : Command {

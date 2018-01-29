@@ -1,6 +1,7 @@
-package org.sert2521.powerup.intake
+package org.sert2521.powerup.intake.commands
 
 import edu.wpi.first.wpilibj.GenericHID
+import org.sert2521.powerup.intake.Intake
 import org.sert2521.powerup.util.Control
 import org.sert2521.powerup.util.controlMode
 import org.sert2521.powerup.util.controller

@@ -1,5 +1,6 @@
 package org.sert2521.powerup.intake
 
+import org.sert2521.powerup.intake.commands.TeleopIntake
 import org.sert2521.powerup.util.LEFT_INTAKE_MOTOR
 import org.sert2521.powerup.util.RIGHT_INTAKE_MOTOR
 import org.sertain.RobotLifecycle
