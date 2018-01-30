@@ -19,9 +19,9 @@ import org.sertain.hardware.resetEncoder
 object Drivetrain : Subsystem(), RobotLifecycle {
     val ahrs = AHRS(I2C.Port.kMXP)
 
-    private val leftDrive =
+    val leftDrive =
             Talon(LEFT_FRONT_MOTOR).autoBreak() + Talon(LEFT_REAR_MOTOR).autoBreak()
-    private val rightDrive =
+    val rightDrive =
             Talon(RIGHT_FRONT_MOTOR).autoBreak() + Talon(RIGHT_REAR_MOTOR).autoBreak()
 
     private val drive = DifferentialDrive(leftDrive, rightDrive)

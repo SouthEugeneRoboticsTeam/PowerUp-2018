@@ -1,7 +1,7 @@
 buildscript {
     ext.kotlinVersion = '1.2.21'
     ext.gradleRioVersion = '2018.01.22'
-    ext.sertainVersion = '0.0.2'
+    ext.sertainVersion = '0.0.3'
     ext.ktlintVersion = '0.15.0'
 
     repositories {
