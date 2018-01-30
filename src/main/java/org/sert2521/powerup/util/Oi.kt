@@ -23,8 +23,23 @@ val controlMode
         }
     }
 
+val autoMode
+    get() = Preferences.getInstance().getInt("auto_mode", 4).let {
+        when (it) {
+            1 -> Auto.LeftToLeft
+            2 -> Auto.RightToRight
+            3 -> Auto.MiddleToLeft
+            4 -> Auto.MiddleToRight
+            else -> Auto.CrossBaseline
+        }
+    }
+
 val intakeSpeedScalar get() = Preferences.getInstance().getDouble("intake_speed_scalar", 0.5)
 
 enum class Control {
     Tank, Arcade, Controller
+}
+
+enum class Auto {
+    CrossBaseline, LeftToLeft, RightToRight, MiddleToLeft, MiddleToRight
 }

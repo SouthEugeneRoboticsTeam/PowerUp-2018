@@ -30,7 +30,5 @@ class TeleopDrive : Command() {
         return false
     }
 
-    override fun onDestroy() {
-        Drivetrain.stop()
-    }
+    override fun onDestroy() = Drivetrain.stop()
 }
