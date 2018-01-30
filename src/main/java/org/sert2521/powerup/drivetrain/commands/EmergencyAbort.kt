@@ -7,6 +7,10 @@ import org.sertain.command.Command
 import kotlin.math.absoluteValue
 import kotlin.math.sign
 
+/**
+ * Interrupts the current drivetrain command if the navX angle is above a specified amount in order
+ * to prevent the robot from tipping over and dying a tragic death.
+ */
 class EmergencyAbort : Command() {
     private var history = listOf(0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F)
 

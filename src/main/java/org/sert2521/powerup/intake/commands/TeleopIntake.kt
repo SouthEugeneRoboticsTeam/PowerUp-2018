@@ -10,7 +10,7 @@ import org.sert2521.powerup.util.rightJoystick
 import org.sertain.command.Command
 
 /**
- * This command allows for arcade drive of the robot.
+ * This command allows for teleoperated control of the robot's intake.
  */
 class TeleopIntake : Command() {
     init {
@@ -29,7 +29,7 @@ class TeleopIntake : Command() {
                 val leftSpeed = controller.getTriggerAxis(GenericHID.Hand.kLeft)
                 val rightSpeed = controller.getTriggerAxis(GenericHID.Hand.kRight)
 
-                // Support variable intake speeds though self-cancellation
+                // Support variable intake speeds through self-cancellation
                 Intake.set(leftSpeed - rightSpeed)
             }
         }

@@ -15,6 +15,9 @@ import org.sertain.hardware.autoBreak
 import org.sertain.hardware.plus
 import org.sertain.hardware.resetEncoder
 
+/**
+ * The robot's primary drive base.
+ */
 object Drivetrain : Subsystem() {
     val ahrs = AHRS(I2C.Port.kMXP)
 

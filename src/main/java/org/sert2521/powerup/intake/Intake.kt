@@ -8,6 +8,9 @@ import org.sertain.hardware.Talon
 import org.sertain.hardware.autoBreak
 import org.sertain.hardware.plus
 
+/**
+ * The robot's Power Cube intake system, consisting of two sets of fly wheels.
+ */
 object Intake : Subsystem() {
     private val intake =
             Talon(LEFT_INTAKE_MOTOR).autoBreak() + Talon(RIGHT_INTAKE_MOTOR).autoBreak()
