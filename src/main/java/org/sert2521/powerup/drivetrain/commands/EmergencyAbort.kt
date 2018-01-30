@@ -17,10 +17,8 @@ class EmergencyAbort : Command() {
         val avg = history.average()
         if (avg.absoluteValue >= 16) {
             println("EMERGENCY ABORT! ${avg.absoluteValue}")
-            FixedDrive(
-                    leftSpeed - 0.01 * -avg.sign,
-                    rightSpeed - 0.01 * -avg.sign
-            ).start()
+            // Reduce speed until we aren't dying
+            FixedDrive(leftSpeed - 0.01 * -avg.sign, rightSpeed - 0.01 * -avg.sign).start()
         }
 
         return false

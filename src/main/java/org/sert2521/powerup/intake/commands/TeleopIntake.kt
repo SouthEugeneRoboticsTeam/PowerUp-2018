@@ -17,21 +17,19 @@ class TeleopIntake : Command() {
     }
 
     override fun execute(): Boolean {
-        if (controlMode == Control.Arcade || controlMode == Control.Tank) {
-            val speed = (rightJoystick.throttle - 1) / 2
-            var multiplier = 0
+        when (controlMode) {
+            Control.Arcade, Control.Tank -> Intake.set(when {
+                rightJoystick.trigger -> 0.5
+                rightJoystick.top -> -0.5
+                else -> 0.0
+            })
+            Control.Controller -> {
+                val leftSpeed = controller.getTriggerAxis(GenericHID.Hand.kLeft)
+                val rightSpeed = controller.getTriggerAxis(GenericHID.Hand.kRight)
 
-            if (rightJoystick.getRawButton(1)) multiplier = 1
-            else if (rightJoystick.getRawButton(2)) multiplier = -1
-
-            Intake.set(speed * multiplier)
-        } else if (controlMode == Control.Controller) {
-            val leftSpeed = controller.getTriggerAxis(GenericHID.Hand.kLeft)
-            val rightSpeed = controller.getTriggerAxis(GenericHID.Hand.kRight)
-
-            val speed = leftSpeed - rightSpeed
-
-            Intake.set(speed)
+                // Support variable intake speeds though self-cancellation
+                Intake.set(leftSpeed - rightSpeed)
+            }
         }
 
         return false
