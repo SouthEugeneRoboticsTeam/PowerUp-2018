@@ -12,6 +12,9 @@ import kotlin.math.sign
  * to prevent the robot from tipping over and dying a tragic death.
  */
 class EmergencyAbort : Command() {
+    private val tipThreshold = 16
+    private val reductionSpeed = 0.01
+
     private var history = listOf(0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F)
 
     override fun execute(): Boolean {
@@ -19,10 +22,10 @@ class EmergencyAbort : Command() {
         history = history.takeLast(8)
 
         val avg = history.average()
-        if (avg.absoluteValue >= 16) {
+        if (avg.absoluteValue >= tipThreshold) {
             println("EMERGENCY ABORT! ${avg.absoluteValue}")
             // Reduce speed until we aren't dying
-            FixedDrive(leftSpeed - 0.01 * -avg.sign, rightSpeed - 0.01 * -avg.sign).start()
+            FixedDrive(leftSpeed - reductionSpeed * -avg.sign, rightSpeed - reductionSpeed * -avg.sign).start()
         }
 
         return false
