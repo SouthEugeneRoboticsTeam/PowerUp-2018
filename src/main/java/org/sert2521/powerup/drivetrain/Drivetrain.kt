@@ -26,7 +26,7 @@ object Drivetrain : Subsystem() {
 
     private val leftDrive =
             Talon(LEFT_FRONT_MOTOR).autoBreak() + Talon(LEFT_REAR_MOTOR).autoBreak()
-    private val rightDrive =
+    private val rightDrive  =
             Talon(RIGHT_FRONT_MOTOR).autoBreak() + Talon(RIGHT_REAR_MOTOR).autoBreak()
     private val drive = DifferentialDrive(leftDrive, rightDrive)
 
