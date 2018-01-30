@@ -9,15 +9,18 @@ import org.sertain.command.Command
 class FixedDrive : Command {
     private val leftSpeed: Double
     private val rightSpeed: Double
+    private val continuous: Boolean
 
     /**
      * Sets both sides of the drivetrain to the same [speed].
      *
      * @param speed the speed at which to set both sides of the drivetrain
+     * @param continuous whether the command should be run continuously until interrupted
      */
-    constructor(speed: Double) : super() {
+    constructor(speed: Double, continuous: Boolean = false) : super() {
         leftSpeed = speed
         rightSpeed = speed
+        this.continuous = continuous
     }
 
     /**
@@ -25,10 +28,12 @@ class FixedDrive : Command {
      *
      * @param leftSpeed the speed at which to set the left side of the drivetrain
      * @param rightSpeed the speed at which to set the right side of the drivetrain
+     * @param continuous whether the command should be run continuously until interrupted
      */
-    constructor(leftSpeed: Double, rightSpeed: Double) : super() {
+    constructor(leftSpeed: Double, rightSpeed: Double, continuous: Boolean = false) : super() {
         this.leftSpeed = leftSpeed
         this.rightSpeed = rightSpeed
+        this.continuous = continuous
     }
 
     init {
@@ -37,6 +42,6 @@ class FixedDrive : Command {
 
     override fun execute(): Boolean {
         Drivetrain.tank(leftSpeed, rightSpeed)
-        return true
+        return !continuous
     }
 }
