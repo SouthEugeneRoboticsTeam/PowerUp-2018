@@ -10,7 +10,7 @@ val secondaryJoystick = Joystick(SECONDARY_STICK_PORT)
 
 val controller = XboxController(CONTROLLER_PORT)
 
-var controlMode
+val controlMode
     get() = Preferences.getInstance().getString("control_mode", null).let {
         when (it) {
             "arcade" -> Control.Arcade
@@ -18,7 +18,8 @@ var controlMode
             else -> Control.Tank
         }
     }
-    set(value) = Unit // Needed so Kotlin doesn't create a field
+
+val intakeSpeedScalar get() = Preferences.getInstance().getDouble("intake_speed_scalar", 0.5)
 
 enum class Control {
     Tank, Arcade, Controller

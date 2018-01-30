@@ -5,6 +5,7 @@ import org.sert2521.powerup.intake.Intake
 import org.sert2521.powerup.util.Control
 import org.sert2521.powerup.util.controlMode
 import org.sert2521.powerup.util.controller
+import org.sert2521.powerup.util.intakeSpeedScalar
 import org.sert2521.powerup.util.rightJoystick
 import org.sertain.command.Command
 
@@ -19,8 +20,9 @@ class TeleopIntake : Command() {
     override fun execute(): Boolean {
         when (controlMode) {
             Control.Arcade, Control.Tank -> Intake.set(when {
-                rightJoystick.trigger -> 0.5
-                rightJoystick.top -> -0.5
+                // TODO tune defaults
+                rightJoystick.trigger -> intakeSpeedScalar * 1.0
+                rightJoystick.top -> -intakeSpeedScalar * 1.0
                 else -> 0.0
             })
             Control.Controller -> {
