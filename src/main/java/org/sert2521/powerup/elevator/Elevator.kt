@@ -15,8 +15,6 @@ object Elevator : Subsystem() {
 
     override val defaultCommand = TeleopElevator()
 
-    override fun onStart() = stop()
-
     fun set(speed: Double) = elevator.set(speed)
 
     fun stop() = elevator.stopMotor()
