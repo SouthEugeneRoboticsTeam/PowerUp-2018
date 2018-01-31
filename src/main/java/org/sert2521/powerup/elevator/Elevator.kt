@@ -9,7 +9,7 @@ import org.sertain.hardware.Talon
 import org.sertain.hardware.autoBreak
 import org.sertain.hardware.plus
 
-object Elevator : Subsystem(), RobotLifecycle {
+object Elevator : Subsystem() {
     private val elevator =
             Talon(LEFT_ELEVATOR_MOTOR).autoBreak() + Talon(RIGHT_ELEVATOR_MOTOR).autoBreak()
 
@@ -20,5 +20,4 @@ object Elevator : Subsystem(), RobotLifecycle {
     fun set(speed: Double) = elevator.set(speed)
 
     fun stop() = elevator.stopMotor()
-
 }
