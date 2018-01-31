@@ -17,6 +17,6 @@ const val LEFT_REAR_MOTOR = 17
 const val RIGHT_INTAKE_MOTOR = 13
 const val LEFT_INTAKE_MOTOR = 12
 
-// TODO: set this port later
+// TODO: get correct port values
 const val RIGHT_CLIMBER_MOTOR = -1
 const val LEFT_CLIMBER_MOTOR = -1
