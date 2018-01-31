@@ -30,12 +30,12 @@ class TeleopClimber : Command() {
                 val rightSpeed = controller.getTriggerAxis(GenericHID.Hand.kRight)
 
                 // Support variable intake speeds through self-cancellation
-                Intake.set(leftSpeed - rightSpeed)
+                Climber.set(leftSpeed - rightSpeed)
             }
         }
 
         return false
     }
 
-    override fun onDestroy() = Intake.stop()
+    override fun onDestroy() = Climber.stop()
 }
