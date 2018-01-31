@@ -3,7 +3,6 @@ package org.sert2521.powerup.elevator
 import org.sert2521.powerup.elevator.commands.TeleopElevator
 import org.sert2521.powerup.util.LEFT_ELEVATOR_MOTOR
 import org.sert2521.powerup.util.RIGHT_ELEVATOR_MOTOR
-import org.sertain.RobotLifecycle
 import org.sertain.command.Subsystem
 import org.sertain.hardware.Talon
 import org.sertain.hardware.autoBreak
