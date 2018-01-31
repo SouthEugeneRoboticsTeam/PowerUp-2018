@@ -7,9 +7,8 @@ import org.sertain.command.Subsystem
 import org.sertain.hardware.Talon
 import org.sertain.hardware.autoBreak
 import org.sertain.hardware.plus
-// rename everything to climber, change to port 1
 /**
- * The robot's climber. Controlled by throttle on controller when 11 is pressed
+ * The robot's climber. Changed intake to climber wherever it showed up
  */
 object Climber : Subsystem() {
     private val intake =
