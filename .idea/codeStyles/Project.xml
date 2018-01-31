@@ -89,8 +89,11 @@
           <package name="kotlinx.android.synthetic" withSubpackages="true" static="false" />
         </value>
       </option>
-      <option name="NAME_COUNT_TO_USE_STAR_IMPORT" value="2147483647" />
-      <option name="NAME_COUNT_TO_USE_STAR_IMPORT_FOR_MEMBERS" value="2147483647" />
+      <option name="NAME_COUNT_TO_USE_STAR_IMPORT" value="100" />
+      <option name="NAME_COUNT_TO_USE_STAR_IMPORT_FOR_MEMBERS" value="100" />
+      <option name="CONTINUATION_INDENT_IN_IF_CONDITIONS" value="false" />
+      <option name="WRAP_EXPRESSION_BODY_FUNCTIONS" value="1" />
+      <option name="IF_RPAREN_ON_NEW_LINE" value="true" />
     </JetCodeStyleSettings>
     <MarkdownNavigatorCodeStyleSettings>
       <option name="WRAP_ON_TYPING" value="1" />
@@ -731,6 +734,8 @@
       <option name="METHOD_PARAMETERS_LPAREN_ON_NEXT_LINE" value="true" />
       <option name="METHOD_PARAMETERS_RPAREN_ON_NEXT_LINE" value="true" />
       <option name="EXTENDS_LIST_WRAP" value="1" />
+      <option name="METHOD_CALL_CHAIN_WRAP" value="1" />
+      <option name="ASSIGNMENT_WRAP" value="1" />
       <option name="FIELD_ANNOTATION_WRAP" value="5" />
     </codeStyleSettings>
   </code_scheme>
