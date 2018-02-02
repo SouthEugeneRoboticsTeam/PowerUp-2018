@@ -89,8 +89,8 @@
           <package name="kotlinx.android.synthetic" withSubpackages="true" static="false" />
         </value>
       </option>
-      <option name="NAME_COUNT_TO_USE_STAR_IMPORT" value="2147483647" />
-      <option name="NAME_COUNT_TO_USE_STAR_IMPORT_FOR_MEMBERS" value="2147483647" />
+      <option name="NAME_COUNT_TO_USE_STAR_IMPORT" value="100" />
+      <option name="NAME_COUNT_TO_USE_STAR_IMPORT_FOR_MEMBERS" value="100" />
     </JetCodeStyleSettings>
     <MarkdownNavigatorCodeStyleSettings>
       <option name="WRAP_ON_TYPING" value="1" />
