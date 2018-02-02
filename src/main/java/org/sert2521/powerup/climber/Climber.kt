@@ -8,16 +8,13 @@ import org.sertain.hardware.Talon
 import org.sertain.hardware.autoBreak
 import org.sertain.hardware.plus
 
-/**
- * The robot's climber. Changed intake to climber wherever it showed up
- */
 object Climber : Subsystem() {
-    private val intake =
+    private val climber =
             Talon(LEFT_CLIMBER_MOTOR).autoBreak() + Talon(RIGHT_CLIMBER_MOTOR).autoBreak()
 
     override val defaultCommand = TeleopClimber()
 
-    fun set(speed: Double) = intake.set(speed)
+    fun set(speed: Double) = climber.set(speed)
 
     fun stop() = intake.stopMotor()
 }
