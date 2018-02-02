@@ -4,7 +4,7 @@ import org.sert2521.powerup.elevator.Elevator
 import org.sert2521.powerup.util.secondaryJoystick
 import org.sertain.command.Command
 
-class TeleopElevator : Command() {
+class Elevate : Command() {
     init {
         requires(Elevator)
     }

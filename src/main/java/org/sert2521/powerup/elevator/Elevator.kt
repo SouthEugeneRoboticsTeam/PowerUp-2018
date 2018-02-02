@@ -1,6 +1,6 @@
 package org.sert2521.powerup.elevator
 
-import org.sert2521.powerup.elevator.commands.TeleopElevator
+import org.sert2521.powerup.elevator.commands.Elevate
 import org.sert2521.powerup.util.LEFT_ELEVATOR_MOTOR
 import org.sert2521.powerup.util.RIGHT_ELEVATOR_MOTOR
 import org.sertain.command.Subsystem
@@ -12,7 +12,7 @@ object Elevator : Subsystem() {
     private val elevator =
             Talon(LEFT_ELEVATOR_MOTOR).autoBreak() + Talon(RIGHT_ELEVATOR_MOTOR).autoBreak()
 
-    override val defaultCommand = TeleopElevator()
+    override val defaultCommand = Elevate()
 
     fun set(speed: Double) = elevator.set(speed)
 
