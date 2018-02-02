@@ -10,9 +10,7 @@ class TeleopElevator : Command() {
     }
 
     override fun execute(): Boolean {
-        if (secondaryJoystick.trigger) {
-            Elevator.set(secondaryJoystick.y)
-        }
+        if (secondaryJoystick.trigger) Elevator.set(secondaryJoystick.y)
         return false
     }
 
