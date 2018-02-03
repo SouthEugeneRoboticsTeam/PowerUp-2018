@@ -37,3 +37,8 @@ const val WHEELBASE_WIDTH = 0.7
 const val MAX_VELOCITY = 0.6
 const val MAX_ACCELERATION = 0.1
 const val MAX_JERK = 60.0
+
+// Camera
+const val CAMERA_FOV = 60 // Microsoft LifeCam HD 3000 field of view
+const val CAMERA_WIDTH = 680
+const val DEGREES_PER_PIXEL = CAMERA_FOV / CAMERA_WIDTH
