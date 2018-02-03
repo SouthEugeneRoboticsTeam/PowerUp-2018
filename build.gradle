@@ -1,7 +1,7 @@
 buildscript {
     ext.kotlinVersion = '1.2.21'
     ext.gradleRioVersion = '2018.01.22'
-    ext.sertainVersion = '0.0.3'
+    ext.sertainVersion = '0.0.4'
     ext.ktlintVersion = '0.15.0'
 
     repositories {
@@ -90,4 +90,9 @@ task ktlint(type: JavaExec) {
     main = 'com.github.shyiko.ktlint.Main'
     classpath = configurations.ktlint
     args 'src/**/*.kt'
+}
+
+task generatePaths(type: JavaExec) {
+    main = 'org.sert2521.path.Main'
+    classpath = files(sourceSets.main.runtimeClasspath)
 }
