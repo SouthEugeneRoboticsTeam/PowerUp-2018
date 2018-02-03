@@ -6,6 +6,7 @@ import org.sertain.command.Command
 class NavigateToCube : Command() {
     private var cached_nt_loc = Pair(-1, -1)
     private var nt_table = NetworkTableInstance.getDefault()
+
     override fun execute(): Boolean {
         if (!nt_table.isValid) {
             return true
