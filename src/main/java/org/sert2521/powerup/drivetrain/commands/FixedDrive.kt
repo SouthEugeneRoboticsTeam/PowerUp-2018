@@ -41,7 +41,7 @@ class FixedDrive : Command {
     }
 
     override fun execute(): Boolean {
-        Drivetrain.tank(leftSpeed, rightSpeed)
+        Drivetrain.drive(leftSpeed, rightSpeed)
         return !continuous
     }
 }

@@ -1,6 +1,5 @@
 package org.sert2521.powerup.paths
 
-import jaci.pathfinder.Pathfinder
 import org.sert2521.powerup.util.ENCODER_TICKS_PER_REVOLUTION
 import org.sert2521.powerup.util.WHEELBASE_WIDTH
 import org.sert2521.powerup.util.WHEEL_DIAMETER
@@ -11,7 +10,6 @@ import org.sertain.util.angle
 import org.sertain.util.generate
 import org.sertain.util.split
 import org.sertain.util.with
-import java.io.File
 
 object LeftToLeft : PathInitializer() {
     private const val MAX_VELOCITY = 0.35
@@ -26,9 +24,6 @@ object LeftToLeft : PathInitializer() {
 
     init {
         logGeneratedPoints()
-
-        val saveFile = File("LeftToLeft.csv")
-        Pathfinder.writeToCSV(saveFile, trajectory)
 
         left.configureEncoder(0, ENCODER_TICKS_PER_REVOLUTION, WHEEL_DIAMETER)
         left.configurePIDVA(2.75, 0.0, 0.25, 1 / MAX_VELOCITY, 0.5)

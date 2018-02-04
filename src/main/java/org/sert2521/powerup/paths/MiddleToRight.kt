@@ -28,9 +28,9 @@ object MiddleToRight : PathInitializer() {
         logGeneratedPoints()
 
         left.configureEncoder(0, ENCODER_TICKS_PER_REVOLUTION, WHEEL_DIAMETER)
-        left.configurePIDVA(2.75, 0.0, 0.25, 1 / MAX_VELOCITY, 0.5)
+        left.configurePIDVA(1.0, 0.0, 0.0, 1 / MAX_VELOCITY, 0.0)
 
         right.configureEncoder(0, ENCODER_TICKS_PER_REVOLUTION, WHEEL_DIAMETER)
-        right.configurePIDVA(2.75, 0.0, 0.25, 1 / MAX_VELOCITY, 0.5)
+        right.configurePIDVA(1.0, 0.0, 0.0, 1 / MAX_VELOCITY, 0.0)
     }
 }

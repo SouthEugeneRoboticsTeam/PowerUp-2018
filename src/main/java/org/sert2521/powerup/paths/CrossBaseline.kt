@@ -11,13 +11,13 @@ import org.sertain.util.generate
 import org.sertain.util.split
 import org.sertain.util.with
 
-object MiddleToLeft : PathInitializer() {
+object CrossBaseline : PathInitializer() {
     private const val MAX_VELOCITY = 0.35
     private const val MAX_ACCEL = 0.075
 
     override val trajectory = TrajectoryConfig(MAX_VELOCITY, MAX_ACCEL, 60.0).generate(arrayOf(
-            7.5 with .2 angle 0.0,
-            4.5 with -1.25 angle 0.0
+            0.0 with 0.0 angle 0.0,
+            2.7 with 0.0 angle 0.0
     ))
     override val followers = TankModifier(trajectory, WHEELBASE_WIDTH).split()
 
