@@ -10,7 +10,7 @@ class Elevate : Command() {
     }
 
     override fun execute(): Boolean {
-        if (secondaryJoystick.trigger) Elevator.set(secondaryJoystick.y)
+        Elevator.set(if (secondaryJoystick.trigger) secondaryJoystick.y else 0.0)
         return false
     }
 
