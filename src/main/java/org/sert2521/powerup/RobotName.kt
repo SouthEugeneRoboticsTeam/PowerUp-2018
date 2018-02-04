@@ -17,10 +17,11 @@ class RobotName : Robot() {
     }
 
     override fun execute() {
-        println("Left: ${Drivetrain.leftPosition}, Right: ${Drivetrain.rightPosition}")
+//        println("${Math.random()} Left: ${Drivetrain.leftPosition}, Right: ${Drivetrain.rightPosition}")
     }
 
     override fun onAutoStart() {
+        Drivetrain.resetEncoders()
         startAuto()
     }
 }
