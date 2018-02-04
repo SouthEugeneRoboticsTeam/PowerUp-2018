@@ -12,7 +12,7 @@ import org.sertain.util.split
 import org.sertain.util.with
 
 object CrossBaseline : PathInitializer() {
-    private const val MAX_VELOCITY = 0.35
+    private const val MAX_VELOCITY = 0.75
     private const val MAX_ACCEL = 0.075
 
     override val trajectory = TrajectoryConfig(MAX_VELOCITY, MAX_ACCEL, 60.0).generate(arrayOf(
@@ -25,9 +25,9 @@ object CrossBaseline : PathInitializer() {
         logGeneratedPoints()
 
         left.configureEncoder(0, ENCODER_TICKS_PER_REVOLUTION, WHEEL_DIAMETER)
-        left.configurePIDVA(2.75, 0.0, 0.25, 1 / MAX_VELOCITY, 0.5)
+        left.configurePIDVA(1.0, 0.0, 0.0, 1 / MAX_VELOCITY, 0.0)
 
         right.configureEncoder(0, ENCODER_TICKS_PER_REVOLUTION, WHEEL_DIAMETER)
-        right.configurePIDVA(2.75, 0.0, 0.25, 1 / MAX_VELOCITY, 0.5)
+        right.configurePIDVA(1.0, 0.0, 0.0, 1 / MAX_VELOCITY, 0.0)
     }
 }

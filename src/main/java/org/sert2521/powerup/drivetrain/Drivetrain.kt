@@ -26,7 +26,7 @@ object Drivetrain : Subsystem() {
     val leftSpeed get() = leftDrive.get()
     val rightSpeed get() = leftDrive.get()
 
-    val leftPosition get() = leftDrive.encoderPosition
+    val leftPosition get() = -leftDrive.encoderPosition
     val rightPosition get() = rightDrive.encoderPosition
 
     private val leftDrive =
@@ -54,11 +54,11 @@ object Drivetrain : Subsystem() {
 
     fun arcade(speed: Double, rotation: Double) = drive.arcadeDrive(speed, rotation)
 
-    fun tank(left: Double, right: Double) = drive.tankDrive(left, right)
+    fun tank(left: Double, right: Double) = drive.tankDrive(left, -right)
 
     fun drive(left: Double, right: Double) {
         leftDrive.set(left)
-        rightDrive.set(right)
+        rightDrive.set(-right)
     }
 
     fun stop() = drive.stopMotor()

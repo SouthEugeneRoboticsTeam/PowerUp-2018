@@ -13,14 +13,14 @@ import org.sertain.util.with
 import java.io.File
 
 object MiddleToRight : PathInitializer() {
-    private const val MAX_VELOCITY = 0.35
+    private const val MAX_VELOCITY = 0.75
     private const val MAX_ACCEL = 0.075
 
     private val saveFile = File("MiddleToRight.csv")
 
     override val trajectory = TrajectoryConfig(MAX_VELOCITY, MAX_ACCEL, 60.0).generate(arrayOf(
             7.5 with .2 angle 0.0,
-            4.5 with 1.5 angle 0.0
+            4.8 with 1.6 angle 0.0
     ))
     override val followers = TankModifier(trajectory, WHEELBASE_WIDTH).split()
 
