@@ -1,6 +1,6 @@
 package org.sert2521.powerup
 
-import org.sert2521.powerup.autonomous.initAuto
+import org.sert2521.powerup.autonomous.prepAuto
 import org.sert2521.powerup.autonomous.startAuto
 import org.sert2521.powerup.drivetrain.Drivetrain
 import org.sert2521.powerup.elevator.Elevator
@@ -13,15 +13,10 @@ class RobotName : Robot() {
         Intake
         Elevator
 
-        initAuto()
-    }
-
-    override fun execute() {
-//        println("${Math.random()} Left: ${Drivetrain.leftPosition}, Right: ${Drivetrain.rightPosition}")
+        prepAuto()
     }
 
     override fun onAutoStart() {
-        Drivetrain.resetEncoders()
         startAuto()
     }
 }
