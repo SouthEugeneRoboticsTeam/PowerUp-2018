@@ -24,6 +24,6 @@ const val LEFT_CLIMBER_MOTOR = -1
 const val RIGHT_CLIMBER_MOTOR = -1
 
 // Camera
-const val CAMERA_FOV = 60 // Microsoft LifeCam HD 3000 FOV
+const val CAMERA_FOV = 60 // Microsoft LifeCam HD 3000 field of view
 const val CAMERA_WIDTH = 680
 const val DEGREES_PER_PIXEL = CAMERA_FOV / CAMERA_WIDTH
