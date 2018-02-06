@@ -32,11 +32,11 @@ private val executor: Executor = ForkJoinPool()
 
 @Deprecated("Remove when reading from files")
 fun initAuto() {
-//    executor.execute { CrossBaseline }
-//    executor.execute { LeftToLeft }
-//    executor.execute { RightToRight }
-//    executor.execute { MiddleToLeft }
-//    executor.execute { MiddleToRight }
+    executor.execute { CrossBaseline }
+    executor.execute { LeftToLeft }
+    executor.execute { RightToRight }
+    executor.execute { MiddleToLeft }
+    executor.execute { MiddleToRight }
     executor.execute { Backup }
 }
 
@@ -125,7 +125,6 @@ object Backup : PathInitializer() {
             0.0 with 0.0 angle 0.0,
             0.5 with 0.5 angle 90.0,
             -0.7 with 2.0 angle 90.0
-
     ))
     override val followers = TankModifier(trajectory, WHEELBASE_WIDTH).split()
 }
