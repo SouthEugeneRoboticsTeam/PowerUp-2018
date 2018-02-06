@@ -11,7 +11,7 @@ class NavigateToCube : Command() {
     override fun execute(): Boolean {
         if (!table.getEntry("cube_found").getBoolean(false)) return true
 
-        val degrees = table.getEntry("cube_offset_x").getNumber(0).toInt() * DEGREES_PER_PIXEL
+        val degrees = table.getEntry("cube_offset_x").getDouble(0.0) * DEGREES_PER_PIXEL
         val turn = degrees * TURN_MODIFIER
 
         Drivetrain.tank(BASE_SPEED - turn, BASE_SPEED + turn)
