@@ -2,14 +2,11 @@ package org.sert2521.powerup.autonomous
 
 import jaci.pathfinder.Pathfinder
 import org.sert2521.powerup.drivetrain.Drivetrain
-import org.sert2521.powerup.util.Auto
-import org.sert2521.powerup.util.ENCODER_TICKS_PER_REVOLUTION
-import org.sert2521.powerup.util.MAX_VELOCITY
-import org.sert2521.powerup.util.WHEEL_DIAMETER
-import org.sert2521.powerup.util.autoMode
+import org.sert2521.powerup.util.*
 import org.sertain.command.Command
 import org.sertain.command.then
 import org.sertain.util.PathInitializer
+import org.sertain.util.SendableChooser
 import java.util.concurrent.Executor
 import java.util.concurrent.ForkJoinPool
 
@@ -90,3 +87,4 @@ private class Reverse : PathFollowerBase(ReversePath) {
         super.drive(-left, -right)
     }
 }
+

@@ -3,6 +3,14 @@ package org.sert2521.powerup.util
 import edu.wpi.first.wpilibj.Joystick
 import edu.wpi.first.wpilibj.Preferences
 import edu.wpi.first.wpilibj.XboxController
+import edu.wpi.first.wpilibj.command.Command
+import edu.wpi.first.wpilibj.command.Subsystem
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser
+import org.sert2521.powerup.autonomous.CrossBaselinePath
+import org.sert2521.powerup.autonomous.LeftToLeftPath
+import org.sert2521.powerup.autonomous.MiddleToRightPath
+import org.sert2521.powerup.autonomous.RightToRightPath
+import org.sertain.util.SendableChooser
 
 // Driver joysticks. Left and right used for tank drive, only right used for arcade drive.
 val leftJoystick = Joystick(LEFT_STICK_PORT)
@@ -43,3 +51,10 @@ enum class Control {
 enum class Auto {
     CrossBaseline, LeftToLeft, RightToRight, MiddleToLeft, MiddleToRight
 }
+
+val autoChooser = SendableChooser("Cross Baseline" to CrossBaselinePath,
+        "Left To Left" to LeftToLeftPath,
+        "Middle To Left" to MiddleToRightPath,
+        "Middle To Right" to MiddleToRightPath,
+        "Right To Right" to RightToRightPath)
+
