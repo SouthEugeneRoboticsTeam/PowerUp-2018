@@ -1,8 +1,8 @@
 package org.sert2521.powerup.paths
 
-import org.sert2521.powerup.util.ENCODER_TICKS_PER_REVOLUTION
+import org.sert2521.powerup.util.MAX_ACCELERATION
+import org.sert2521.powerup.util.MAX_VELOCITY
 import org.sert2521.powerup.util.WHEELBASE_WIDTH
-import org.sert2521.powerup.util.WHEEL_DIAMETER
 import org.sertain.util.PathInitializer
 import org.sertain.util.TankModifier
 import org.sertain.util.TrajectoryConfig
@@ -12,23 +12,10 @@ import org.sertain.util.split
 import org.sertain.util.with
 
 object RightToRight : PathInitializer() {
-    private const val MAX_VELOCITY = 0.35
-    private const val MAX_ACCEL = 0.075
-
-    override val trajectory = TrajectoryConfig(MAX_VELOCITY, MAX_ACCEL, 60.0).generate(arrayOf(
-            7.5 with -3.0 angle 0.0,
-            5.5 with 3.5 angle -15.0,
-            4.0 with 2.0 angle 90.0
+    override val trajectory = TrajectoryConfig(MAX_VELOCITY, MAX_ACCELERATION, 60.0).generate(arrayOf(
+            7.5 with 3.0 angle 0.0,
+            5.2 with 3.5 angle 0.0,
+            3.8 with 2.5 angle 95.0
     ))
     override val followers = TankModifier(trajectory, WHEELBASE_WIDTH).split()
-
-    init {
-        logGeneratedPoints()
-
-        left.configureEncoder(0, ENCODER_TICKS_PER_REVOLUTION, WHEEL_DIAMETER)
-        left.configurePIDVA(2.75, 0.0, 0.25, 1 / MAX_VELOCITY, 0.5)
-
-        right.configureEncoder(0, ENCODER_TICKS_PER_REVOLUTION, WHEEL_DIAMETER)
-        right.configurePIDVA(2.75, 0.0, 0.25, 1 / MAX_VELOCITY, 0.5)
-    }
 }

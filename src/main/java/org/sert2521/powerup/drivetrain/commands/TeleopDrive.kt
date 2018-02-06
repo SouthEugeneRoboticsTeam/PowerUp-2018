@@ -19,7 +19,7 @@ class TeleopDrive : Command() {
 
     override fun execute(): Boolean {
         when (controlMode) {
-            Control.Arcade -> Drivetrain.arcade(-rightJoystick.y, rightJoystick.x)
+            Control.Arcade -> Drivetrain.curvature(-rightJoystick.y, rightJoystick.x, rightJoystick.trigger)
             Control.Tank -> Drivetrain.tank(leftJoystick.y, rightJoystick.y)
             Control.Controller -> Drivetrain.arcade(
                     -controller.getY(GenericHID.Hand.kLeft),
