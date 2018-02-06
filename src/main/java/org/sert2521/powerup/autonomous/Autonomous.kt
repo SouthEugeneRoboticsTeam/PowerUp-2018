@@ -14,14 +14,14 @@ import java.util.concurrent.Executor
 import java.util.concurrent.ForkJoinPool
 
 private val executor: Executor = ForkJoinPool()
-@Deprecated("Remove when reading from files")
+
 fun prepAuto() {
-    executor.execute { CrossBaselinePath }
-    executor.execute { LeftToLeftPath }
-    executor.execute { RightToRightPath }
-    executor.execute { MiddleToLeftPath }
-    executor.execute { MiddleToRightPath }
-    executor.execute { ReversePath }
+    CrossBaselinePath.reset()
+//    LeftToLeftPath.reset()
+//    RightToRightPath.reset()
+//    MiddleToLeftPath.reset()
+//    MiddleToRightPath.reset()
+//    ReversePath.reset()
 }
 
 fun startAuto() {
