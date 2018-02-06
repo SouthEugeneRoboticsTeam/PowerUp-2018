@@ -91,8 +91,3 @@ task ktlint(type: JavaExec) {
     classpath = configurations.ktlint
     args 'src/**/*.kt'
 }
-
-task generatePaths(type: JavaExec) {
-    main = 'org.sert2521.path.Main'
-    classpath = files(sourceSets.main.runtimeClasspath)
-}
