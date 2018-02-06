@@ -1,4 +1,4 @@
-package org.sert2521.powerup.paths
+package org.sert2521.powerup.autonomous.paths
 
 import org.sert2521.powerup.util.MAX_ACCELERATION
 import org.sert2521.powerup.util.MAX_VELOCITY
@@ -11,10 +11,11 @@ import org.sertain.util.generate
 import org.sertain.util.split
 import org.sertain.util.with
 
-object CrossBaseline : PathInitializer() {
+object LeftToLeft : PathInitializer() {
     override val trajectory = TrajectoryConfig(MAX_VELOCITY, MAX_ACCELERATION, 60.0).generate(arrayOf(
-            0.0 with 0.0 angle 0.0,
-            2.7 with 0.0 angle 0.0
+            7.5 with -3.0 angle 0.0,
+            5.2 with -3.5 angle 0.0,
+            3.9 with -2.4 angle -100.0
     ))
     override val followers = TankModifier(trajectory, WHEELBASE_WIDTH).split()
 }

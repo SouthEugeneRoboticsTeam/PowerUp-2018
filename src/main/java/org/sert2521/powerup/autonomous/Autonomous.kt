@@ -1,7 +1,13 @@
 package org.sert2521.powerup.autonomous
 
 import jaci.pathfinder.Pathfinder
+import org.sert2521.powerup.autonomous.paths.CrossBaseline
+import org.sert2521.powerup.autonomous.paths.LeftToLeft
+import org.sert2521.powerup.autonomous.paths.MiddleToLeft
+import org.sert2521.powerup.autonomous.paths.MiddleToRight
+import org.sert2521.powerup.autonomous.paths.RightToRight
 import org.sert2521.powerup.drivetrain.Drivetrain
+import org.sert2521.powerup.util.Auto
 import org.sert2521.powerup.util.ENCODER_TICKS_PER_REVOLUTION
 import org.sert2521.powerup.util.MAX_ACCELERATION
 import org.sert2521.powerup.util.MAX_VELOCITY
@@ -9,6 +15,7 @@ import org.sert2521.powerup.util.WHEELBASE_WIDTH
 import org.sert2521.powerup.util.WHEEL_DIAMETER
 import org.sert2521.powerup.util.autoMode
 import org.sertain.command.Command
+import org.sertain.command.then
 import org.sertain.util.PathInitializer
 import org.sertain.util.TankModifier
 import org.sertain.util.TrajectoryConfig
@@ -35,17 +42,19 @@ fun initAuto() {
 
 fun startAuto() {
     println("Following: $autoMode")
-//    (PathFollower(when (autoMode) {
-//        Auto.CrossBaseline -> CrossBaseline
-//        Auto.LeftToLeft -> LeftToLeft
-//        Auto.RightToRight -> RightToRight
-//        Auto.MiddleToLeft -> MiddleToLeft
-//        Auto.MiddleToRight -> MiddleToRight
-//    }) then PathFollower(Backup)).start()
-    PathFollower(Backup).start()
+    (PathFollower(when (autoMode) {
+        Auto.CrossBaseline -> CrossBaseline
+        Auto.LeftToLeft -> LeftToLeft
+        Auto.RightToRight -> RightToRight
+        Auto.MiddleToLeft -> MiddleToLeft
+        Auto.MiddleToRight -> MiddleToRight
+    }) then PathFollower(Backup)).start()
 }
 
-class PathFollower(private val path: PathInitializer) : Command() {
+class PathFollower(
+        private val path: PathInitializer,
+        private val reverse: Boolean = false
+) : Command() {
     init {
         requires(Drivetrain)
     }
@@ -69,8 +78,13 @@ class PathFollower(private val path: PathInitializer) : Command() {
                 Pathfinder.boundHalfDegrees(Pathfinder.r2d(path.heading) - Drivetrain.ahrs.angle)
         val turn = 0.00025 * angleDiff
 
-        val leftSpeed = path.left.calculate(leftPosition) - turn
-        val rightSpeed = path.right.calculate(rightPosition) + turn
+        val multiplier = when {
+            reverse -> -1
+            else -> 1
+        }
+
+        val leftSpeed = (path.left.calculate(leftPosition) - turn * multiplier) * multiplier
+        val rightSpeed = (path.right.calculate(rightPosition) + turn * multiplier) * multiplier
 
         Drivetrain.drive(leftSpeed, rightSpeed)
 
@@ -114,9 +128,4 @@ object Backup : PathInitializer() {
 
     ))
     override val followers = TankModifier(trajectory, WHEELBASE_WIDTH).split()
-
-    init {
-        logGeneratedPoints()
-    }
 }
-
