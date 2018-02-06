@@ -26,6 +26,7 @@ fun prepAuto() {
 
 fun startAuto() {
     println("Following: $autoMode")
+    Drivetrain.resetEncoders()
     (when (autoMode) {
         Auto.CrossBaseline -> CrossBaseline()
         Auto.LeftToLeft -> LeftToLeft()
