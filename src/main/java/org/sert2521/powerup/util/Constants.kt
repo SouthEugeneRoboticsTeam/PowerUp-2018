@@ -23,6 +23,13 @@ const val RIGHT_ELEVATOR_MOTOR = -1
 const val LEFT_CLIMBER_MOTOR = -1
 const val RIGHT_CLIMBER_MOTOR = -1
 
+// Auto
+const val ENCODER_TICKS_PER_REVOLUTION = 8192
+const val WHEEL_DIAMETER = 0.15
+const val WHEELBASE_WIDTH = 0.7
+const val MAX_VELOCITY = 0.75
+const val MAX_ACCELERATION = 0.075
+
 // Camera
 const val CAMERA_FOV = 60 // Microsoft LifeCam HD 3000 field of view
 const val CAMERA_WIDTH = 680
