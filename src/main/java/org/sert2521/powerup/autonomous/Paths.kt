@@ -18,16 +18,14 @@ import java.io.File
 abstract class PathBase : PathInitializer() {
     protected abstract val points: Array<Waypoint>
     override val trajectory: Trajectory by lazy {
-        val pathFile = File("/home/lvuser/${hashCode()}.csv").also { println(it.absoluteFile) }
+        val pathFile = File("/home/lvuser/${hashCode()}.csv")
         (if (pathFile.exists()) {
             Pathfinder.readFromCSV(pathFile)
         } else {
             TrajectoryConfig(MAX_VELOCITY, MAX_ACCELERATION, 60.0).generate(points).apply {
                 Pathfinder.writeToCSV(pathFile, this)
             }
-        }).also {
-            logGeneratedPoints()
-        }
+        })
     }
     override val followers by lazy {
         TankModifier(trajectory, WHEELBASE_WIDTH).split()

@@ -11,15 +11,14 @@ import org.sertain.command.Command
 import org.sertain.command.then
 import org.sertain.util.PathInitializer
 
-//private val executor: Executor = ForkJoinPool()
-
 fun prepAuto() {
-    CrossBaselinePath.reset()
-//    LeftToLeftPath.reset()
-//    RightToRightPath.reset()
-//    MiddleToLeftPath.reset()
-//    MiddleToRightPath.reset()
-//    ReversePath.reset()
+    CrossBaselinePath.logGeneratedPoints()
+    LeftToLeftPath.logGeneratedPoints()
+    RightToRightPath.logGeneratedPoints()
+    MiddleToLeftPath.logGeneratedPoints()
+    MiddleToRightPath.logGeneratedPoints()
+    ReversePath.logGeneratedPoints()
+    println("Done generating paths")
 }
 
 fun startAuto() {
@@ -57,7 +56,7 @@ private abstract class PathFollowerBase(private val path: PathInitializer) : Com
         val rightPosition = Drivetrain.rightPosition
 
         val angleDiff =
-                Pathfinder.boundHalfDegrees(Pathfinder.r2d(path.heading) - Drivetrain.ahrs.angle)
+                Pathfinder.boundHalfDegrees(path.heading - Drivetrain.ahrs.angle)
         val turn = TURN_IMPORTANCE * angleDiff
         drive(path.left.calculate(leftPosition) - turn, path.right.calculate(rightPosition) + turn)
 
@@ -88,4 +87,3 @@ private class Reverse : PathFollowerBase(ReversePath) {
         super.drive(-left, -right)
     }
 }
-
