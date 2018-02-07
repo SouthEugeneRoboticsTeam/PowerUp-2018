@@ -54,8 +54,6 @@ object Drivetrain : Subsystem() {
 
     fun arcade(speed: Double, rotation: Double) = drive.arcadeDrive(speed, rotation)
 
-    fun curvature(speed: Double, rotation: Double, quickTurn: Boolean) = drive.curvatureDrive(speed, rotation, quickTurn)
-
     fun tank(left: Double, right: Double) = drive.tankDrive(left, -right)
 
     fun drive(left: Double, right: Double) {

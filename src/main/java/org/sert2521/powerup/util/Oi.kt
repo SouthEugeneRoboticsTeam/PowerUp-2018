@@ -25,23 +25,34 @@ val controlMode
         }
     }
 
+val autoMode
+    get() = Preferences.getInstance().getInt("auto_mode", 4).let {
+        when (it) {
+            1 -> AutoMode.LeftToLeft
+            2 -> AutoMode.RightToRight
+            3 -> AutoMode.MiddleToLeft
+            4 -> AutoMode.MiddleToRight
+            else -> AutoMode.CrossBaseline
+        }
+    }
+
 val intakeSpeedScalar get() = Preferences.getInstance().getDouble("intake_speed_scalar", 0.5)
 
 enum class Control {
     Tank, Arcade, Controller
 }
 
-enum class Auto {
+enum class AutoMode {
     CrossBaseline, LeftToLeft, RightToRight, MiddleToLeft, MiddleToRight
 }
 
 object Dashboard {
     val autoMode = SendableChooser(
-            "Cross Baseline" to Auto.CrossBaseline,
-            "Left To Left" to Auto.LeftToLeft,
-            "Middle To Left" to Auto.MiddleToLeft,
-            "Middle To Right" to Auto.MiddleToRight,
-            "Right To Right" to Auto.RightToRight
+            "Cross Baseline" to AutoMode.CrossBaseline,
+            "Left To Left" to AutoMode.LeftToLeft,
+            "Middle To Left" to AutoMode.MiddleToLeft,
+            "Middle To Right" to AutoMode.MiddleToRight,
+            "Right To Right" to AutoMode.RightToRight
     )
 
     fun init() {

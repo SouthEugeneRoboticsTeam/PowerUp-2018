@@ -2,35 +2,42 @@ package org.sert2521.powerup.autonomous
 
 import jaci.pathfinder.Pathfinder
 import org.sert2521.powerup.drivetrain.Drivetrain
-import org.sert2521.powerup.util.Auto
-import org.sert2521.powerup.util.Dashboard.autoMode
+import org.sert2521.powerup.util.AutoMode
 import org.sert2521.powerup.util.ENCODER_TICKS_PER_REVOLUTION
 import org.sert2521.powerup.util.MAX_VELOCITY
 import org.sert2521.powerup.util.WHEEL_DIAMETER
+import org.sert2521.powerup.util.autoMode
+import org.sertain.RobotLifecycle
 import org.sertain.command.Command
 import org.sertain.command.then
 import org.sertain.util.PathInitializer
 
-fun prepAuto() {
-    CrossBaselinePath.logGeneratedPoints()
-    LeftToLeftPath.logGeneratedPoints()
-    RightToRightPath.logGeneratedPoints()
-    MiddleToLeftPath.logGeneratedPoints()
-    MiddleToRightPath.logGeneratedPoints()
-    ReversePath.logGeneratedPoints()
-    println("Done generating paths")
-}
+object Auto : RobotLifecycle {
+    init {
+        RobotLifecycle.addListener(this)
+    }
 
-fun startAuto() {
-    println("Following: ${autoMode.selected}")
-    Drivetrain.resetEncoders()
-    (when (autoMode.selected) {
-        Auto.LeftToLeft -> LeftToLeft()
-        Auto.RightToRight -> RightToRight()
-        Auto.MiddleToLeft -> MiddleToLeft()
-        Auto.MiddleToRight -> MiddleToRight()
-        else -> CrossBaseline()
-    } then Reverse()).start()
+    override fun onCreate() {
+        CrossBaselinePath.logGeneratedPoints()
+        LeftToLeftPath.logGeneratedPoints()
+        RightToRightPath.logGeneratedPoints()
+        MiddleToLeftPath.logGeneratedPoints()
+        MiddleToRightPath.logGeneratedPoints()
+        ReversePath.logGeneratedPoints()
+        println("Done generating paths")
+    }
+
+    override fun onAutoStart() {
+        println("Following: $autoMode")
+        Drivetrain.resetEncoders()
+        (when (autoMode) {
+            AutoMode.CrossBaseline -> CrossBaseline()
+            AutoMode.LeftToLeft -> LeftToLeft()
+            AutoMode.RightToRight -> RightToRight()
+            AutoMode.MiddleToLeft -> MiddleToLeft()
+            AutoMode.MiddleToRight -> MiddleToRight()
+        } then Reverse()).start()
+    }
 }
 
 private abstract class PathFollowerBase(private val path: PathInitializer) : Command() {
