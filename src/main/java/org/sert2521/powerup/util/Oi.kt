@@ -3,9 +3,7 @@ package org.sert2521.powerup.util
 import edu.wpi.first.wpilibj.Joystick
 import edu.wpi.first.wpilibj.Preferences
 import edu.wpi.first.wpilibj.XboxController
-import edu.wpi.first.wpilibj.command.Command
-import edu.wpi.first.wpilibj.command.Subsystem
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
 import org.sert2521.powerup.autonomous.CrossBaselinePath
 import org.sert2521.powerup.autonomous.LeftToLeftPath
 import org.sert2521.powerup.autonomous.MiddleToRightPath
@@ -52,9 +50,13 @@ enum class Auto {
     CrossBaseline, LeftToLeft, RightToRight, MiddleToLeft, MiddleToRight
 }
 
-val autoChooser = SendableChooser("Cross Baseline" to CrossBaselinePath,
-        "Left To Left" to LeftToLeftPath,
-        "Middle To Left" to MiddleToRightPath,
-        "Middle To Right" to MiddleToRightPath,
-        "Right To Right" to RightToRightPath)
-
+object Dashboard : SmartDashboard() {
+    fun chooseAuto() {
+        val autoChooser = SendableChooser("Cross Baseline" to CrossBaselinePath,
+                                          "Left To Left" to LeftToLeftPath,
+                                          "Middle To Left" to MiddleToRightPath,
+                                          "Middle To Right" to MiddleToRightPath,
+                                          "Right To Right" to RightToRightPath)
+        SmartDashboard.putData(autoChooser)
+    }
+}
