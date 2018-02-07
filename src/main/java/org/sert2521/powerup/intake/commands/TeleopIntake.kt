@@ -19,13 +19,13 @@ class TeleopIntake : Command() {
 
     override fun execute(): Boolean {
         when (controlMode) {
-            Control.Arcade, Control.Tank -> Intake.set(when {
+            is Control.Arcade, is Control.Tank -> Intake.set(when {
                 // TODO tune defaults
                 rightJoystick.trigger -> intakeSpeedScalar * 1.0
                 rightJoystick.top -> -intakeSpeedScalar * 1.0
                 else -> 0.0
             })
-            Control.Controller -> {
+            is Control.Controller -> {
                 val leftSpeed = controller.getTriggerAxis(GenericHID.Hand.kLeft)
                 val rightSpeed = controller.getTriggerAxis(GenericHID.Hand.kRight)
 
