@@ -12,6 +12,7 @@ class Elevate : Command() {
     override fun execute(): Boolean {
         Elevator.set(if (secondaryJoystick.trigger) secondaryJoystick.y else 0.0)
         if (secondaryJoystick.getRawButton(5)) ReachToScale().start()
+        if (secondaryJoystick.getRawButton(4)) Return().start()
         return false
     }
 
