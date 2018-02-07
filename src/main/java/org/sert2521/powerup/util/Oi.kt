@@ -4,10 +4,6 @@ import edu.wpi.first.wpilibj.Joystick
 import edu.wpi.first.wpilibj.Preferences
 import edu.wpi.first.wpilibj.XboxController
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
-import org.sert2521.powerup.autonomous.CrossBaselinePath
-import org.sert2521.powerup.autonomous.LeftToLeftPath
-import org.sert2521.powerup.autonomous.MiddleToRightPath
-import org.sert2521.powerup.autonomous.RightToRightPath
 import org.sertain.util.SendableChooser
 
 // Driver joysticks. Left and right used for tank drive, only right used for arcade drive.
@@ -29,17 +25,6 @@ val controlMode
         }
     }
 
-val autoMode
-    get() = Preferences.getInstance().getInt("auto_mode", 4).let {
-        when (it) {
-            1 -> Auto.LeftToLeft
-            2 -> Auto.RightToRight
-            3 -> Auto.MiddleToLeft
-            4 -> Auto.MiddleToRight
-            else -> Auto.CrossBaseline
-        }
-    }
-
 val intakeSpeedScalar get() = Preferences.getInstance().getDouble("intake_speed_scalar", 0.5)
 
 enum class Control {
@@ -50,13 +35,16 @@ enum class Auto {
     CrossBaseline, LeftToLeft, RightToRight, MiddleToLeft, MiddleToRight
 }
 
-object Dashboard : SmartDashboard() {
-    fun chooseAuto() {
-        val autoChooser = SendableChooser("Cross Baseline" to CrossBaselinePath,
-                                          "Left To Left" to LeftToLeftPath,
-                                          "Middle To Left" to MiddleToRightPath,
-                                          "Middle To Right" to MiddleToRightPath,
-                                          "Right To Right" to RightToRightPath)
-        SmartDashboard.putData(autoChooser)
+object Dashboard {
+    val autoMode = SendableChooser(
+            "Cross Baseline" to Auto.CrossBaseline,
+            "Left To Left" to Auto.LeftToLeft,
+            "Middle To Left" to Auto.MiddleToLeft,
+            "Middle To Right" to Auto.MiddleToRight,
+            "Right To Right" to Auto.RightToRight
+    )
+
+    fun init() {
+        SmartDashboard.putData("Auto Mode", autoMode)
     }
 }

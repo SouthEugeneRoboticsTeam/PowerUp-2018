@@ -13,7 +13,7 @@ class RobotName : Robot() {
         Drivetrain
         Intake
         Elevator
-        Dashboard.chooseAuto()
+        Dashboard.init()
         prepAuto()
     }
 
