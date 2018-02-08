@@ -4,6 +4,7 @@ import jaci.pathfinder.Pathfinder
 import jaci.pathfinder.Trajectory
 import jaci.pathfinder.Waypoint
 import org.sert2521.powerup.util.MAX_ACCELERATION
+import org.sert2521.powerup.util.MAX_JERK
 import org.sert2521.powerup.util.MAX_VELOCITY
 import org.sert2521.powerup.util.WHEELBASE_WIDTH
 import org.sertain.util.PathInitializer
@@ -22,7 +23,7 @@ abstract class PathBase : PathInitializer() {
         (if (pathFile.exists()) {
             Pathfinder.readFromCSV(pathFile)
         } else {
-            TrajectoryConfig(MAX_VELOCITY, MAX_ACCELERATION, 60.0).generate(points).apply {
+            TrajectoryConfig(MAX_VELOCITY, MAX_ACCELERATION, MAX_JERK).generate(points).apply {
                 Pathfinder.writeToCSV(pathFile, this)
             }
         })
@@ -46,6 +47,9 @@ abstract class PathBase : PathInitializer() {
         var result = it.x.hashCode()
         result = 31 * result + it.y.hashCode()
         result = 31 * result + it.angle.hashCode()
+        result = 31 * result + MAX_VELOCITY.hashCode()
+        result = 31 * result + MAX_ACCELERATION.hashCode()
+        result = 31 * result + MAX_JERK.hashCode()
         result
     }
 }

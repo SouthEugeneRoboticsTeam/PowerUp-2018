@@ -29,3 +29,4 @@ const val WHEEL_DIAMETER = 0.15
 const val WHEELBASE_WIDTH = 0.7
 const val MAX_VELOCITY = 0.75
 const val MAX_ACCELERATION = 0.075
+const val MAX_JERK = 60.0
