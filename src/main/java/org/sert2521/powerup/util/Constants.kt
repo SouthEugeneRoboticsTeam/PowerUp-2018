@@ -14,8 +14,8 @@ const val LEFT_REAR_MOTOR = 11
 const val RIGHT_FRONT_MOTOR = 12
 const val RIGHT_REAR_MOTOR = 13
 
-const val LEFT_INTAKE_MOTOR = -1
-const val RIGHT_INTAKE_MOTOR = -1
+const val LEFT_INTAKE_MOTOR = 0
+const val RIGHT_INTAKE_MOTOR = 1
 
 const val LEFT_ELEVATOR_MOTOR = 14
 const val RIGHT_ELEVATOR_MOTOR = 15
