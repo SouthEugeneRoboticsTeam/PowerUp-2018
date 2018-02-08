@@ -11,6 +11,7 @@ import org.sertain.RobotLifecycle
 import org.sertain.command.Command
 import org.sertain.command.then
 import org.sertain.util.PathInitializer
+import kotlin.concurrent.thread
 
 object Auto : RobotLifecycle {
     init {
@@ -18,13 +19,15 @@ object Auto : RobotLifecycle {
     }
 
     override fun onCreate() {
-        CrossBaselinePath.logGeneratedPoints()
-        LeftToLeftPath.logGeneratedPoints()
-        RightToRightPath.logGeneratedPoints()
-        MiddleToLeftPath.logGeneratedPoints()
-        MiddleToRightPath.logGeneratedPoints()
-        ReversePath.logGeneratedPoints()
-        println("Done generating paths")
+        thread {
+            CrossBaselinePath.logGeneratedPoints()
+            LeftToLeftPath.logGeneratedPoints()
+            RightToRightPath.logGeneratedPoints()
+            MiddleToLeftPath.logGeneratedPoints()
+            MiddleToRightPath.logGeneratedPoints()
+            ReversePath.logGeneratedPoints()
+            println("Done generating paths")
+        }
     }
 
     override fun onAutoStart() {
