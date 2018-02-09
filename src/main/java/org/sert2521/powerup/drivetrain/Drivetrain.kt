@@ -2,7 +2,6 @@ package org.sert2521.powerup.drivetrain
 
 import com.ctre.phoenix.motorcontrol.FeedbackDevice
 import com.kauailabs.navx.frc.AHRS
-import edu.wpi.first.wpilibj.DriverStation
 import edu.wpi.first.wpilibj.I2C
 import edu.wpi.first.wpilibj.drive.DifferentialDrive
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
@@ -50,10 +49,8 @@ object Drivetrain : Subsystem() {
     }
 
     override fun execute() {
-        if (!DriverStation.getInstance().isDisabled) {
-            SmartDashboard.putNumber("Drivetrain left encoder position", leftPosition.toDouble())
-            SmartDashboard.putNumber("Drivetrain right encoder position", rightPosition.toDouble())
-        }
+        SmartDashboard.putNumber("Drivetrain left encoder position", leftPosition.toDouble())
+        SmartDashboard.putNumber("Drivetrain right encoder position", rightPosition.toDouble())
     }
 
     fun resetEncoders() {
