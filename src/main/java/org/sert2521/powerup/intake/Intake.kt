@@ -1,6 +1,7 @@
 package org.sert2521.powerup.intake
 
 import edu.wpi.first.wpilibj.Spark
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
 import org.sert2521.powerup.intake.commands.TeleopIntake
 import org.sert2521.powerup.util.LEFT_INTAKE_MOTOR
 import org.sert2521.powerup.util.RIGHT_INTAKE_MOTOR
@@ -16,6 +17,7 @@ object Intake : Subsystem() {
     override val defaultCommand = TeleopIntake()
 
     fun set(speed: Double) {
+        SmartDashboard.putNumber("Intake speed", speed)
         left.set(speed)
         right.set(speed)
     }

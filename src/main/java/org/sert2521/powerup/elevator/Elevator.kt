@@ -1,5 +1,6 @@
 package org.sert2521.powerup.elevator
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
 import org.sert2521.powerup.elevator.commands.Elevate
 import org.sert2521.powerup.util.LEFT_ELEVATOR_MOTOR
 import org.sert2521.powerup.util.RIGHT_ELEVATOR_MOTOR
@@ -15,7 +16,10 @@ object Elevator : Subsystem() {
 
     override val defaultCommand = Elevate()
 
-    fun set(speed: Double) = elevator.set(speed)
+    fun set(speed: Double) {
+        SmartDashboard.putNumber("Elevator speed", speed)
+        elevator.set(speed)
+    }
 
     fun stop() = elevator.stopMotor()
 }
