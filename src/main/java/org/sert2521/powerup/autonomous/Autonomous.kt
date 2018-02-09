@@ -34,11 +34,11 @@ object Auto : RobotLifecycle {
         println("Following: $autoMode")
         Drivetrain.resetEncoders()
         (when (autoMode) {
-            AutoMode.CrossBaseline -> CrossBaseline()
-            AutoMode.LeftToLeft -> LeftToLeft()
-            AutoMode.RightToRight -> RightToRight()
-            AutoMode.MiddleToLeft -> MiddleToLeft()
-            AutoMode.MiddleToRight -> MiddleToRight()
+            AutoMode.CROSS_BASELINE -> CrossBaseline()
+            AutoMode.LEFT_TO_LEFT -> LeftToLeft()
+            AutoMode.RIGHT_TO_RIGHT -> RightToRight()
+            AutoMode.MIDDLE_TO_LEFT -> MiddleToLeft()
+            AutoMode.MIDDLE_TO_RIGHT -> MiddleToRight()
         } then Reverse()).start()
     }
 }

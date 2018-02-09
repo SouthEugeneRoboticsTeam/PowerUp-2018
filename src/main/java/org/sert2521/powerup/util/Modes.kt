@@ -1,12 +1,36 @@
 package org.sert2521.powerup.util
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
+import openrio.powerup.MatchData
 import org.sertain.RobotLifecycle
 import org.sertain.util.SendableChooser
 
 val controlMode: Control get() = Modes.controlChooser.selected
 
-val autoMode: AutoMode get() = Modes.autoModeChooser.selected
+val autoMode: AutoMode
+    get() = when (MatchData.getOwnedSide(MatchData.GameFeature.SWITCH_NEAR)) {
+        MatchData.OwnedSide.LEFT -> when (Modes.autoModeChooserStart) {
+            AutoMode.Start.MIDDLE -> AutoMode.MIDDLE_TO_LEFT
+            AutoMode.Start.LEFT -> when (Modes.autoModeChooserEnd) {
+                AutoMode.End.BASELINE -> AutoMode.CROSS_BASELINE
+                AutoMode.End.SWITCH -> AutoMode.LEFT_TO_LEFT
+                AutoMode.End.SCALE -> throw UnsupportedOperationException()
+                else -> error("Unknown mode: ${Modes.autoModeChooserEnd}")
+            }
+            else -> AutoMode.CROSS_BASELINE
+        }
+        MatchData.OwnedSide.RIGHT -> when (Modes.autoModeChooserStart) {
+            AutoMode.Start.MIDDLE -> AutoMode.MIDDLE_TO_RIGHT
+            AutoMode.Start.RIGHT -> when (Modes.autoModeChooserEnd) {
+                AutoMode.End.BASELINE -> AutoMode.CROSS_BASELINE
+                AutoMode.End.SWITCH -> AutoMode.RIGHT_TO_RIGHT
+                AutoMode.End.SCALE -> throw UnsupportedOperationException()
+                else -> error("Unknown mode: ${Modes.autoModeChooserEnd}")
+            }
+            else -> AutoMode.CROSS_BASELINE
+        }
+        else -> Modes.autoModeChooser.selected
+    }
 
 sealed class Control {
     class Tank : Control()
@@ -18,7 +42,15 @@ sealed class Control {
 }
 
 enum class AutoMode {
-    CrossBaseline, LeftToLeft, RightToRight, MiddleToLeft, MiddleToRight
+    CROSS_BASELINE, LEFT_TO_LEFT, RIGHT_TO_RIGHT, MIDDLE_TO_LEFT, MIDDLE_TO_RIGHT;
+
+    enum class Start {
+        LEFT, MIDDLE, RIGHT
+    }
+
+    enum class End {
+        BASELINE, SWITCH, SCALE
+    }
 }
 
 object Modes : RobotLifecycle {
@@ -29,11 +61,21 @@ object Modes : RobotLifecycle {
             "Controller" to Control.Controller()
     )
     val autoModeChooser = SendableChooser(
-            "Cross Baseline" to AutoMode.CrossBaseline,
-            "Left To Left" to AutoMode.LeftToLeft,
-            "Middle To Left" to AutoMode.MiddleToLeft,
-            "Middle To Right" to AutoMode.MiddleToRight,
-            "Right To Right" to AutoMode.RightToRight
+            "Cross baseline" to AutoMode.CROSS_BASELINE,
+            "Left to left" to AutoMode.LEFT_TO_LEFT,
+            "Middle to left" to AutoMode.MIDDLE_TO_LEFT,
+            "Middle to right" to AutoMode.MIDDLE_TO_RIGHT,
+            "Right to right" to AutoMode.RIGHT_TO_RIGHT
+    )
+    val autoModeChooserStart = SendableChooser(
+            "Middle" to AutoMode.Start.MIDDLE,
+            "Left" to AutoMode.Start.LEFT,
+            "Right" to AutoMode.Start.RIGHT
+    )
+    val autoModeChooserEnd = SendableChooser(
+            "Baseline" to AutoMode.End.BASELINE,
+            "Switch" to AutoMode.End.SWITCH,
+            "Scale" to AutoMode.End.SCALE
     )
 
     init {
@@ -42,6 +84,8 @@ object Modes : RobotLifecycle {
 
     override fun onCreate() {
         SmartDashboard.putData("Control mode", controlChooser)
-        SmartDashboard.putData("Auto Mode", autoModeChooser)
+        SmartDashboard.putData("Auto mode", autoModeChooser)
+        SmartDashboard.putData("Auto mode start position", autoModeChooserStart)
+        SmartDashboard.putData("Auto mode end result", autoModeChooserEnd)
     }
 }
