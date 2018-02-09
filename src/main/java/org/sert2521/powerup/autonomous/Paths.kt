@@ -4,6 +4,7 @@ import jaci.pathfinder.Pathfinder
 import jaci.pathfinder.Trajectory
 import jaci.pathfinder.Waypoint
 import org.sert2521.powerup.util.MAX_ACCELERATION
+import org.sert2521.powerup.util.MAX_JERK
 import org.sert2521.powerup.util.MAX_VELOCITY
 import org.sert2521.powerup.util.WHEELBASE_WIDTH
 import org.sertain.util.PathInitializer
@@ -22,7 +23,7 @@ abstract class PathBase : PathInitializer() {
         (if (pathFile.exists()) {
             Pathfinder.readFromCSV(pathFile)
         } else {
-            TrajectoryConfig(MAX_VELOCITY, MAX_ACCELERATION, 60.0).generate(points).apply {
+            trajectoryConfig.generate(points).apply {
                 Pathfinder.writeToCSV(pathFile, this)
             }
         })
@@ -30,6 +31,7 @@ abstract class PathBase : PathInitializer() {
     override val followers by lazy {
         TankModifier(trajectory, WHEELBASE_WIDTH).split()
     }
+    private val trajectoryConfig = TrajectoryConfig(MAX_VELOCITY, MAX_ACCELERATION, MAX_JERK)
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -40,13 +42,28 @@ abstract class PathBase : PathInitializer() {
         val transform: (Waypoint) -> Triple<Double, Double, Double> =
                 { Triple(it.x, it.y, it.angle) }
         return points.map(transform) == other.points.map(transform)
+                && trajectoryConfig.max_velocity == other.trajectoryConfig.max_velocity
+                && trajectoryConfig.max_acceleration == other.trajectoryConfig.max_acceleration
+                && trajectoryConfig.max_jerk == other.trajectoryConfig.max_jerk
+                && trajectoryConfig.dt == other.trajectoryConfig.dt
+                && trajectoryConfig.fit == other.trajectoryConfig.fit
+                && trajectoryConfig.sample_count == other.trajectoryConfig.sample_count
     }
 
-    override fun hashCode() = points.sumBy {
-        var result = it.x.hashCode()
-        result = 31 * result + it.y.hashCode()
-        result = 31 * result + it.angle.hashCode()
-        result
+    override fun hashCode(): Int {
+        var result = points.sumBy {
+            var result = it.x.hashCode()
+            result = 31 * result + it.y.hashCode()
+            result = 31 * result + it.angle.hashCode()
+            result
+        }
+        result = 31 * result + trajectoryConfig.max_velocity.hashCode()
+        result = 31 * result + trajectoryConfig.max_acceleration.hashCode()
+        result = 31 * result + trajectoryConfig.max_jerk.hashCode()
+        result = 31 * result + trajectoryConfig.dt.hashCode()
+        result = 31 * result + trajectoryConfig.fit.hashCode()
+        result = 31 * result + trajectoryConfig.sample_count
+        return result
     }
 }
 

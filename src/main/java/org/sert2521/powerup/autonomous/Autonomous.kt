@@ -11,6 +11,7 @@ import org.sertain.RobotLifecycle
 import org.sertain.command.Command
 import org.sertain.command.then
 import org.sertain.util.PathInitializer
+import kotlin.concurrent.thread
 
 object Auto : RobotLifecycle {
     init {
@@ -18,24 +19,26 @@ object Auto : RobotLifecycle {
     }
 
     override fun onCreate() {
-        CrossBaselinePath.logGeneratedPoints()
-        LeftToLeftPath.logGeneratedPoints()
-        RightToRightPath.logGeneratedPoints()
-        MiddleToLeftPath.logGeneratedPoints()
-        MiddleToRightPath.logGeneratedPoints()
-        ReversePath.logGeneratedPoints()
-        println("Done generating paths")
+        thread {
+            CrossBaselinePath.logGeneratedPoints()
+            LeftToLeftPath.logGeneratedPoints()
+            RightToRightPath.logGeneratedPoints()
+            MiddleToLeftPath.logGeneratedPoints()
+            MiddleToRightPath.logGeneratedPoints()
+            ReversePath.logGeneratedPoints()
+            println("Done generating paths")
+        }
     }
 
     override fun onAutoStart() {
         println("Following: $autoMode")
         Drivetrain.resetEncoders()
         (when (autoMode) {
-            AutoMode.CrossBaseline -> CrossBaseline()
-            AutoMode.LeftToLeft -> LeftToLeft()
-            AutoMode.RightToRight -> RightToRight()
-            AutoMode.MiddleToLeft -> MiddleToLeft()
-            AutoMode.MiddleToRight -> MiddleToRight()
+            AutoMode.CROSS_BASELINE -> CrossBaseline()
+            AutoMode.LEFT_TO_LEFT -> LeftToLeft()
+            AutoMode.RIGHT_TO_RIGHT -> RightToRight()
+            AutoMode.MIDDLE_TO_LEFT -> MiddleToLeft()
+            AutoMode.MIDDLE_TO_RIGHT -> MiddleToRight()
         } then Reverse()).start()
     }
 }
