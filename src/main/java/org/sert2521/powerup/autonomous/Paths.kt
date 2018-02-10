@@ -19,7 +19,7 @@ import java.io.File
 abstract class PathBase : PathInitializer() {
     protected abstract val points: Array<Waypoint>
     override val trajectory: Trajectory by lazy {
-        val pathFile = File(ROOT, "${hashCode()}.csv")
+        val pathFile = File(ROOT, "${hash()}.csv")
         if (pathFile.exists()) {
             Pathfinder.readFromCSV(pathFile)
         } else {
@@ -33,39 +33,22 @@ abstract class PathBase : PathInitializer() {
     }
     private val trajectoryConfig = TrajectoryConfig(MAX_VELOCITY, MAX_ACCELERATION, MAX_JERK)
 
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-
-        other as PathBase
-
-        val transform: (Waypoint) -> Triple<Double, Double, Double> =
-                { Triple(it.x, it.y, it.angle) }
-        return points.map(transform) == other.points.map(transform)
-                && trajectoryConfig.max_velocity == other.trajectoryConfig.max_velocity
-                && trajectoryConfig.max_acceleration == other.trajectoryConfig.max_acceleration
-                && trajectoryConfig.max_jerk == other.trajectoryConfig.max_jerk
-                && trajectoryConfig.dt == other.trajectoryConfig.dt
-                && trajectoryConfig.fit == other.trajectoryConfig.fit
-                && trajectoryConfig.sample_count == other.trajectoryConfig.sample_count
-    }
-
-    override fun hashCode(): Int {
-        var result = points.sumBy {
-            fun Double.hashWithSign() = if (this > 0) 0 else 31 + hashCode()
+    private fun hash(): String {
+        var result = points.sumByDouble {
+            fun Double.hashWithSign() = if (this > 0.0) 0.0 else 31.0 + this
 
             var result = it.x.hashWithSign()
-            result = 31 * result + it.y.hashWithSign()
-            result = 31 * result + it.angle.hashWithSign()
+            result = 31.0 * result + it.y.hashWithSign()
+            result = 31.0 * result + it.angle.hashWithSign()
             result
         }
-        result = 31 * result + trajectoryConfig.max_velocity.hashCode()
-        result = 31 * result + trajectoryConfig.max_acceleration.hashCode()
-        result = 31 * result + trajectoryConfig.max_jerk.hashCode()
-        result = 31 * result + trajectoryConfig.dt.hashCode()
-        result = 31 * result + trajectoryConfig.fit.ordinal
-        result = 31 * result + trajectoryConfig.sample_count
-        return result
+        result = 31.0 * result + trajectoryConfig.max_velocity
+        result = 31.0 * result + trajectoryConfig.max_acceleration
+        result = 31.0 * result + trajectoryConfig.max_jerk
+        result = 31.0 * result + trajectoryConfig.dt
+        result = 31.0 * result + trajectoryConfig.fit.ordinal.toDouble()
+        result = 31.0 * result + trajectoryConfig.sample_count.toDouble()
+        return result.toString()
     }
 
     private companion object {
