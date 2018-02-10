@@ -3,6 +3,7 @@ package org.sert2521.powerup.autonomous
 import jaci.pathfinder.Pathfinder
 import jaci.pathfinder.Trajectory
 import jaci.pathfinder.Waypoint
+import org.sert2521.powerup.util.HashUtils
 import org.sert2521.powerup.util.MAX_ACCELERATION
 import org.sert2521.powerup.util.MAX_JERK
 import org.sert2521.powerup.util.MAX_VELOCITY
@@ -35,20 +36,18 @@ abstract class PathBase : PathInitializer() {
 
     private fun hash(): String {
         var result = points.sumByDouble {
-            fun Double.hashWithSign() = if (this > 0.0) 0.0 else 31.0 + this
-
-            var result = it.x.hashWithSign()
-            result = 31.0 * result + it.y.hashWithSign()
-            result = 31.0 * result + it.angle.hashWithSign()
+            var result = it.x
+            result = 31.0 * result + it.y
+            result = 31.0 * result + it.angle
             result
-        }
-        result = 31.0 * result + trajectoryConfig.max_velocity
-        result = 31.0 * result + trajectoryConfig.max_acceleration
-        result = 31.0 * result + trajectoryConfig.max_jerk
-        result = 31.0 * result + trajectoryConfig.dt
-        result = 31.0 * result + trajectoryConfig.fit.ordinal.toDouble()
-        result = 31.0 * result + trajectoryConfig.sample_count.toDouble()
-        return result.toString()
+        }.toString()
+        result += trajectoryConfig.max_velocity.toString()
+        result += trajectoryConfig.max_acceleration.toString()
+        result += trajectoryConfig.max_jerk.toString()
+        result += trajectoryConfig.dt.toString()
+        result += trajectoryConfig.fit.ordinal.toString()
+        result += trajectoryConfig.sample_count.toString()
+        return HashUtils.sha256(result)
     }
 
     private companion object {
@@ -93,10 +92,26 @@ object RightToRightPath : PathBase() {
     )
 }
 
+object RightToScalePath : PathBase() {
+    override val points = arrayOf(
+            7.5 with 3.0 angle 0.0,
+            1.3 with 3.1 angle 0.0,
+            -0.3 with 2.0 angle 90.1
+    )
+}
+
+object LeftToScalePath : PathBase() {
+    override val points = arrayOf(
+            7.5 with -3.0 angle 0.0,
+            1.3 with -3.1 angle 0.0,
+            -0.3 with -2.0 angle -90.0
+    )
+}
+
 object ReversePath : PathBase() {
     override val points = arrayOf(
             0.0 with 0.0 angle 0.0,
             0.5 with 0.5 angle 90.0,
-            -0.5 with 2.25 angle 180.0
+            -0.7 with 2.0 angle 90.0
     )
 }
