@@ -14,7 +14,7 @@ val autoMode: AutoMode
             AutoMode.Start.LEFT -> when (Modes.autoModeChooserEnd) {
                 AutoMode.End.BASELINE -> AutoMode.CROSS_BASELINE
                 AutoMode.End.SWITCH -> AutoMode.LEFT_TO_LEFT
-                AutoMode.End.SCALE -> throw UnsupportedOperationException()
+                AutoMode.End.SCALE -> AutoMode.LEFT_TO_SCALE
                 else -> error("Unknown mode: ${Modes.autoModeChooserEnd}")
             }
             else -> AutoMode.CROSS_BASELINE
@@ -24,7 +24,7 @@ val autoMode: AutoMode
             AutoMode.Start.RIGHT -> when (Modes.autoModeChooserEnd) {
                 AutoMode.End.BASELINE -> AutoMode.CROSS_BASELINE
                 AutoMode.End.SWITCH -> AutoMode.RIGHT_TO_RIGHT
-                AutoMode.End.SCALE -> throw UnsupportedOperationException()
+                AutoMode.End.SCALE -> AutoMode.RIGHT_TO_SCALE
                 else -> error("Unknown mode: ${Modes.autoModeChooserEnd}")
             }
             else -> AutoMode.CROSS_BASELINE
@@ -42,7 +42,10 @@ sealed class Control {
 }
 
 enum class AutoMode {
-    CROSS_BASELINE, LEFT_TO_LEFT, RIGHT_TO_RIGHT, MIDDLE_TO_LEFT, MIDDLE_TO_RIGHT;
+    CROSS_BASELINE,
+    LEFT_TO_LEFT, LEFT_TO_SCALE,
+    RIGHT_TO_RIGHT, RIGHT_TO_SCALE,
+    MIDDLE_TO_LEFT, MIDDLE_TO_RIGHT;
 
     enum class Start {
         LEFT, MIDDLE, RIGHT
@@ -63,9 +66,11 @@ object Modes : RobotLifecycle {
     val autoModeChooser = SendableChooser(
             "Cross baseline" to AutoMode.CROSS_BASELINE,
             "Left to left" to AutoMode.LEFT_TO_LEFT,
+            "Left to scale" to AutoMode.LEFT_TO_SCALE,
+            "Right to right" to AutoMode.RIGHT_TO_RIGHT,
+            "Right to scale" to AutoMode.RIGHT_TO_SCALE,
             "Middle to left" to AutoMode.MIDDLE_TO_LEFT,
-            "Middle to right" to AutoMode.MIDDLE_TO_RIGHT,
-            "Right to right" to AutoMode.RIGHT_TO_RIGHT
+            "Middle to right" to AutoMode.MIDDLE_TO_RIGHT
     )
     val autoModeChooserStart = SendableChooser(
             "Middle" to AutoMode.Start.MIDDLE,

@@ -24,6 +24,8 @@ object Auto : RobotLifecycle {
 //            RightToRightPath.logGeneratedPoints()
 //            MiddleToLeftPath.logGeneratedPoints()
 //            MiddleToRightPath.logGeneratedPoints()
+            LeftToScalePath.logGeneratedPoints()
+            RightToScalePath.logGeneratedPoints()
             ReversePath.logGeneratedPoints()
             println("Done generating paths")
         }
@@ -35,11 +37,12 @@ object Auto : RobotLifecycle {
 //        (when (autoMode) {
 //            AutoMode.CROSS_BASELINE -> CrossBaseline()
 //            AutoMode.LEFT_TO_LEFT -> LeftToLeft()
+//            AutoMode.LEFT_TO_SCALE -> LeftToScale()
 //            AutoMode.RIGHT_TO_RIGHT -> RightToRight()
+//            AutoMode.RIGHT_TO_SCALE -> RightToScale()
 //            AutoMode.MIDDLE_TO_LEFT -> MiddleToLeft()
 //            AutoMode.MIDDLE_TO_RIGHT -> MiddleToRight()
-//        } then DriveToAngle(90.0)).start()
-//        (Reverse() then DriveToAngle(-90.0)).start()
+//        } then Reverse()).start()
         DriveToAngle(-90.0).start()
     }
 }
@@ -69,7 +72,6 @@ private abstract class PathFollowerBase(protected val path: PathInitializer) : C
         val angleDiff =
                 Pathfinder.boundHalfDegrees(path.heading - Drivetrain.ahrs.angle)
         val turn = TURN_IMPORTANCE * angleDiff
-        println("turn: $turn, left: $leftPosition, right: $rightPosition")
         calculate(leftPosition, rightPosition, turn).apply { drive(first, second) }
 
         return path.isFinished
@@ -91,16 +93,14 @@ private class CrossBaseline : PathFollowerBase(CrossBaselinePath)
 
 private class LeftToLeft : PathFollowerBase(LeftToLeftPath)
 
+private class LeftToScale : PathFollowerBase(LeftToScalePath)
+
+private class RightToRight : PathFollowerBase(RightToRightPath)
+
+private class RightToScale : PathFollowerBase(RightToScalePath)
+
 private class MiddleToLeft : PathFollowerBase(MiddleToLeftPath)
 
 private class MiddleToRight : PathFollowerBase(MiddleToRightPath)
 
-private class RightToRight : PathFollowerBase(RightToRightPath)
-
 private class Reverse : PathFollowerBase(ReversePath)
-
-//private class Reverse : PathFollowerBase(ReversePath) {
-//    override fun drive(left: Double, right: Double) {
-//        super.drive(-left, -right)
-//    }
-//}
