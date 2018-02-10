@@ -28,5 +28,10 @@ object Elevator : Subsystem() {
 
     fun set(speed: Double) = elevator.set(speed * SPEED_FACTOR)
 
+    fun restrictiveSet(speed: Double) {
+        if (!((topSwitch1.get() && topSwitch2.get() && speed > 0.0)
+                        || (bottomSwitch.get() && speed < 0.0))) set(speed)
+    }
+
     fun stop() = elevator.stopMotor()
 }
