@@ -1,5 +1,6 @@
 package org.sert2521.powerup.autonomous
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
 import jaci.pathfinder.Pathfinder
 import org.sert2521.powerup.drivetrain.Drivetrain
 import org.sert2521.powerup.util.AutoMode
@@ -9,8 +10,8 @@ import org.sert2521.powerup.util.WHEEL_DIAMETER
 import org.sert2521.powerup.util.autoMode
 import org.sertain.RobotLifecycle
 import org.sertain.command.Command
-import org.sertain.command.then
 import org.sertain.util.PathInitializer
+import kotlin.concurrent.thread
 
 object Auto : RobotLifecycle {
     init {
@@ -18,35 +19,40 @@ object Auto : RobotLifecycle {
     }
 
     override fun onCreate() {
-        CrossBaselinePath.logGeneratedPoints()
-        LeftToLeftPath.logGeneratedPoints()
-        RightToRightPath.logGeneratedPoints()
-        MiddleToLeftPath.logGeneratedPoints()
-        MiddleToRightPath.logGeneratedPoints()
-        ReversePath.logGeneratedPoints()
-        println("Done generating paths")
+        thread {
+            CrossBaselinePath.logGeneratedPoints()
+            LeftToLeftPath.logGeneratedPoints()
+            RightToRightPath.logGeneratedPoints()
+            MiddleToLeftPath.logGeneratedPoints()
+            MiddleToRightPath.logGeneratedPoints()
+            LeftToScalePath.logGeneratedPoints()
+            RightToScalePath.logGeneratedPoints()
+            ReversePath.logGeneratedPoints()
+            println("Done generating paths")
+        }
     }
 
     override fun onAutoStart() {
         println("Following: $autoMode")
-        Drivetrain.resetEncoders()
-        (when (autoMode) {
-            AutoMode.CrossBaseline -> CrossBaseline()
-            AutoMode.LeftToLeft -> LeftToLeft()
-            AutoMode.RightToRight -> RightToRight()
-            AutoMode.MiddleToLeft -> MiddleToLeft()
-            AutoMode.MiddleToRight -> MiddleToRight()
-        } then Reverse()).start()
+        when (autoMode) {
+            AutoMode.CROSS_BASELINE -> CrossBaseline()
+            AutoMode.LEFT_TO_LEFT -> LeftToLeft()
+            AutoMode.LEFT_TO_SCALE -> LeftToScale()
+            AutoMode.RIGHT_TO_RIGHT -> RightToRight()
+            AutoMode.RIGHT_TO_SCALE -> RightToScale()
+            AutoMode.MIDDLE_TO_LEFT -> MiddleToLeft()
+            AutoMode.MIDDLE_TO_RIGHT -> MiddleToRight()
+        }.start()
     }
 }
 
-private abstract class PathFollowerBase(private val path: PathInitializer) : Command() {
+private abstract class PathFollowerBase(protected val path: PathInitializer) : Command() {
     init {
         requires(Drivetrain)
     }
 
     override fun onCreate() {
-        Drivetrain.resetEncoders()
+        Drivetrain.reset()
         path.apply {
             reset()
 
@@ -65,10 +71,14 @@ private abstract class PathFollowerBase(private val path: PathInitializer) : Com
         val angleDiff =
                 Pathfinder.boundHalfDegrees(path.heading - Drivetrain.ahrs.angle)
         val turn = TURN_IMPORTANCE * angleDiff
-        drive(path.left.calculate(leftPosition) - turn, path.right.calculate(rightPosition) + turn)
+        SmartDashboard.putNumber("Auto turn", turn)
+        calculate(leftPosition, rightPosition, turn).apply { drive(first, second) }
 
         return path.isFinished
     }
+
+    protected open fun calculate(leftPosition: Int, rightPosition: Int, turn: Double) =
+            path.left.calculate(leftPosition) - turn to path.right.calculate(rightPosition) + turn
 
     protected open fun drive(left: Double, right: Double) {
         Drivetrain.drive(left, right)
@@ -83,14 +93,14 @@ private class CrossBaseline : PathFollowerBase(CrossBaselinePath)
 
 private class LeftToLeft : PathFollowerBase(LeftToLeftPath)
 
+private class LeftToScale : PathFollowerBase(LeftToScalePath)
+
+private class RightToRight : PathFollowerBase(RightToRightPath)
+
+private class RightToScale : PathFollowerBase(RightToScalePath)
+
 private class MiddleToLeft : PathFollowerBase(MiddleToLeftPath)
 
 private class MiddleToRight : PathFollowerBase(MiddleToRightPath)
 
-private class RightToRight : PathFollowerBase(RightToRightPath)
-
-private class Reverse : PathFollowerBase(ReversePath) {
-    override fun drive(left: Double, right: Double) {
-        super.drive(-left, -right)
-    }
-}
+private class Reverse : PathFollowerBase(ReversePath)

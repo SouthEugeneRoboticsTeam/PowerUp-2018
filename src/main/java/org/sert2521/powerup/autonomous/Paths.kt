@@ -4,6 +4,7 @@ import jaci.pathfinder.Pathfinder
 import jaci.pathfinder.Trajectory
 import jaci.pathfinder.Waypoint
 import org.sert2521.powerup.util.MAX_ACCELERATION
+import org.sert2521.powerup.util.MAX_JERK
 import org.sert2521.powerup.util.MAX_VELOCITY
 import org.sert2521.powerup.util.WHEELBASE_WIDTH
 import org.sertain.util.PathInitializer
@@ -14,39 +15,60 @@ import org.sertain.util.generate
 import org.sertain.util.split
 import org.sertain.util.with
 import java.io.File
+import java.security.MessageDigest
+
+private const val SHA_256 = "SHA-256"
+private const val HEX_CHARS = "0123456789abcdef"
+
+private fun sha256(vararg inputs: Any?): String {
+    val bytes = MessageDigest.getInstance(SHA_256).digest(inputs.map {
+        it.toString().toByteArray().toList()
+    }.flatten().toByteArray())
+    val result = StringBuilder(bytes.size * 2)
+
+    for (byte in bytes) {
+        val i = byte.toInt()
+        result.append(HEX_CHARS[i shr 4 and 0x0f])
+        result.append(HEX_CHARS[i and 0x0f])
+    }
+
+    return result.toString()
+}
 
 abstract class PathBase : PathInitializer() {
     protected abstract val points: Array<Waypoint>
     override val trajectory: Trajectory by lazy {
-        val pathFile = File("/home/lvuser/${hashCode()}.csv")
-        (if (pathFile.exists()) {
+        val pathFile = File(ROOT, "${hash()}.csv")
+        if (pathFile.exists()) {
             Pathfinder.readFromCSV(pathFile)
         } else {
-            TrajectoryConfig(MAX_VELOCITY, MAX_ACCELERATION, 60.0).generate(points).apply {
-                Pathfinder.writeToCSV(pathFile, this)
+            trajectoryConfig.generate(points).apply {
+                if (ROOT.exists() || ROOT.mkdirs()) Pathfinder.writeToCSV(pathFile, this)
             }
-        })
+        }
     }
     override val followers by lazy {
         TankModifier(trajectory, WHEELBASE_WIDTH).split()
     }
+    private val trajectoryConfig = TrajectoryConfig(MAX_VELOCITY, MAX_ACCELERATION, MAX_JERK)
 
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
+    private fun hash() = sha256(
+            points.sumByDouble {
+                var result = it.x
+                result = 31.0 * result + it.y
+                result = 31.0 * result + it.angle
+                result
+            },
+            trajectoryConfig.max_velocity,
+            trajectoryConfig.max_acceleration,
+            trajectoryConfig.max_jerk,
+            trajectoryConfig.dt,
+            trajectoryConfig.fit,
+            trajectoryConfig.sample_count
+    )
 
-        other as PathBase
-
-        val transform: (Waypoint) -> Triple<Double, Double, Double> =
-                { Triple(it.x, it.y, it.angle) }
-        return points.map(transform) == other.points.map(transform)
-    }
-
-    override fun hashCode() = points.sumBy {
-        var result = it.x.hashCode()
-        result = 31 * result + it.y.hashCode()
-        result = 31 * result + it.angle.hashCode()
-        result
+    private companion object {
+        val ROOT = File("/home/lvuser/paths")
     }
 }
 
@@ -84,6 +106,22 @@ object RightToRightPath : PathBase() {
             7.5 with 3.0 angle 0.0,
             5.2 with 3.5 angle 0.0,
             3.8 with 2.5 angle 95.0
+    )
+}
+
+object RightToScalePath : PathBase() {
+    override val points = arrayOf(
+            7.5 with 3.0 angle 0.0,
+            1.3 with 3.1 angle 0.0,
+            -0.3 with 2.0 angle 90.1
+    )
+}
+
+object LeftToScalePath : PathBase() {
+    override val points = arrayOf(
+            7.5 with -3.0 angle 0.0,
+            1.3 with -3.1 angle 0.0,
+            -0.3 with -2.0 angle -90.0
     )
 }
 

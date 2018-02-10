@@ -1,23 +1,29 @@
 package org.sert2521.powerup.intake
 
+import edu.wpi.first.wpilibj.Spark
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
 import org.sert2521.powerup.intake.commands.TeleopIntake
 import org.sert2521.powerup.util.LEFT_INTAKE_MOTOR
 import org.sert2521.powerup.util.RIGHT_INTAKE_MOTOR
 import org.sertain.command.Subsystem
-import org.sertain.hardware.Talon
-import org.sertain.hardware.autoBreak
-import org.sertain.hardware.plus
 
 /**
  * The robot's Power Cube intake system, consisting of two sets of fly wheels.
  */
 object Intake : Subsystem() {
-    private val intake =
-            Talon(LEFT_INTAKE_MOTOR).autoBreak() + Talon(RIGHT_INTAKE_MOTOR).autoBreak()
+    private val left = Spark(LEFT_INTAKE_MOTOR)
+    private val right = Spark(RIGHT_INTAKE_MOTOR)
 
     override val defaultCommand = TeleopIntake()
 
-    fun set(speed: Double) = intake.set(speed)
+    fun set(speed: Double) {
+        SmartDashboard.putNumber("Intake speed", speed)
+        left.set(speed)
+        right.set(speed)
+    }
 
-    fun stop() = intake.stopMotor()
+    fun stop() {
+        left.stopMotor()
+        right.stopMotor()
+    }
 }

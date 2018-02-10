@@ -1,7 +1,7 @@
 buildscript {
     ext.kotlinVersion = '1.2.21'
     ext.gradleRioVersion = '2018.01.22'
-    ext.sertainVersion = '0.0.9'
+    ext.sertainVersion = '0.0.11'
     ext.ktlintVersion = '0.15.0'
 
     repositories {
@@ -42,6 +42,7 @@ dependencies {
     compile navx()
     compile ctre()
     compile pathfinder()
+    compile openrio.powerup.matchData()
 
     ktlint "com.github.shyiko:ktlint:$ktlintVersion"
 }
@@ -54,7 +55,7 @@ deploy {
     targets {
         target('roborio', jaci.openrio.gradle.frc.RoboRIO) {
             team = 2521
-            addresses << '10.25.21.89'
+            addresses << '10.25.21.89' << '10.25.21.90'
         }
     }
 
