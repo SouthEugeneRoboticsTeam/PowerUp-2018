@@ -15,6 +15,7 @@ import org.sertain.command.Subsystem
 import org.sertain.hardware.Talon
 import org.sertain.hardware.autoBreak
 import org.sertain.hardware.encoderPosition
+import org.sertain.hardware.invert
 import org.sertain.hardware.plus
 import org.sertain.hardware.resetEncoder
 
@@ -31,9 +32,9 @@ object Drivetrain : Subsystem() {
     val rightPosition get() = rightDrive.encoderPosition
 
     private val leftDrive =
-            Talon(LEFT_FRONT_MOTOR).autoBreak() + Talon(LEFT_REAR_MOTOR).autoBreak()
+            Talon(LEFT_FRONT_MOTOR).autoBreak() + Talon(LEFT_REAR_MOTOR).autoBreak().invert()
     private val rightDrive =
-            Talon(RIGHT_FRONT_MOTOR).autoBreak() + Talon(RIGHT_REAR_MOTOR).autoBreak()
+            Talon(RIGHT_FRONT_MOTOR).autoBreak() + Talon(RIGHT_REAR_MOTOR).autoBreak().invert()
     private val drive = DifferentialDrive(leftDrive, rightDrive)
 
     override val defaultCommand = TeleopDrive()
@@ -41,8 +42,8 @@ object Drivetrain : Subsystem() {
     override fun onStart() {
         EmergencyAbort().start()
 
-        leftDrive.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 1000)
-        rightDrive.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 1000)
+        leftDrive.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0)
+        rightDrive.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0)
 
         leftDrive.resetEncoder()
         rightDrive.resetEncoder()

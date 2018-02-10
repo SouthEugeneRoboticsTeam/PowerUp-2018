@@ -108,6 +108,6 @@ object ReversePath : PathBase() {
     override val points = arrayOf(
             0.0 with 0.0 angle 0.0,
             0.5 with 0.5 angle 90.0,
-            -0.7 with 2.0 angle 90.0
+            -0.5 with 2.25 angle 180.0
     )
 }
