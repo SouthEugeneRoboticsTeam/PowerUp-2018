@@ -51,6 +51,9 @@ object Drivetrain : Subsystem() {
     override fun execute() {
         SmartDashboard.putNumber("Drivetrain left encoder position", leftPosition.toDouble())
         SmartDashboard.putNumber("Drivetrain right encoder position", rightPosition.toDouble())
+        SmartDashboard.putNumber("Drivetrain pitch", ahrs.pitch.toDouble())
+        SmartDashboard.putNumber("Drivetrain roll", ahrs.roll.toDouble())
+        SmartDashboard.putNumber("Drivetrain yaw", ahrs.yaw.toDouble())
     }
 
     fun resetEncoders() {
