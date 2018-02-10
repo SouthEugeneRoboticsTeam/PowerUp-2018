@@ -1,5 +1,6 @@
 package org.sert2521.powerup.autonomous
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
 import jaci.pathfinder.Pathfinder
 import org.sert2521.powerup.drivetrain.Drivetrain
 import org.sert2521.powerup.util.AutoMode
@@ -9,7 +10,6 @@ import org.sert2521.powerup.util.WHEEL_DIAMETER
 import org.sert2521.powerup.util.autoMode
 import org.sertain.RobotLifecycle
 import org.sertain.command.Command
-import org.sertain.command.then
 import org.sertain.util.PathInitializer
 import kotlin.concurrent.thread
 
@@ -34,8 +34,7 @@ object Auto : RobotLifecycle {
 
     override fun onAutoStart() {
         println("Following: $autoMode")
-        Drivetrain.resetEncoders()
-        (when (autoMode) {
+        when (autoMode) {
             AutoMode.CROSS_BASELINE -> CrossBaseline()
             AutoMode.LEFT_TO_LEFT -> LeftToLeft()
             AutoMode.LEFT_TO_SCALE -> LeftToScale()
@@ -43,7 +42,7 @@ object Auto : RobotLifecycle {
             AutoMode.RIGHT_TO_SCALE -> RightToScale()
             AutoMode.MIDDLE_TO_LEFT -> MiddleToLeft()
             AutoMode.MIDDLE_TO_RIGHT -> MiddleToRight()
-        } then Reverse()).start()
+        }.start()
     }
 }
 
@@ -53,7 +52,7 @@ private abstract class PathFollowerBase(protected val path: PathInitializer) : C
     }
 
     override fun onCreate() {
-        Drivetrain.resetEncoders()
+        Drivetrain.reset()
         path.apply {
             reset()
 
@@ -72,6 +71,7 @@ private abstract class PathFollowerBase(protected val path: PathInitializer) : C
         val angleDiff =
                 Pathfinder.boundHalfDegrees(path.heading - Drivetrain.ahrs.angle)
         val turn = TURN_IMPORTANCE * angleDiff
+        SmartDashboard.putNumber("Auto turn", turn)
         calculate(leftPosition, rightPosition, turn).apply { drive(first, second) }
 
         return path.isFinished
