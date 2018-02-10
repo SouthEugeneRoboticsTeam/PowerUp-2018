@@ -61,7 +61,7 @@ abstract class PathBase : PathInitializer() {
         result = 31 * result + trajectoryConfig.max_acceleration.hashCode()
         result = 31 * result + trajectoryConfig.max_jerk.hashCode()
         result = 31 * result + trajectoryConfig.dt.hashCode()
-        result = 31 * result + trajectoryConfig.fit.hashCode()
+        result = 31 * result + trajectoryConfig.fit.ordinal
         result = 31 * result + trajectoryConfig.sample_count
         return result
     }
