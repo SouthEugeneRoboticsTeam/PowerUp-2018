@@ -52,9 +52,11 @@ abstract class PathBase : PathInitializer() {
 
     override fun hashCode(): Int {
         var result = points.sumBy {
-            var result = it.x.hashCode()
-            result = 31 * result + it.y.hashCode()
-            result = 31 * result + it.angle.hashCode()
+            fun Double.hashWithSign() = if (this > 0) 0 else 31 + hashCode()
+
+            var result = it.x.hashWithSign()
+            result = 31 * result + it.y.hashWithSign()
+            result = 31 * result + it.angle.hashWithSign()
             result
         }
         result = 31 * result + trajectoryConfig.max_velocity.hashCode()
