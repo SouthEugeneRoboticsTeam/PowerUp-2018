@@ -19,12 +19,14 @@ object Elevator : Subsystem() {
 
     override val defaultCommand = Elevate()
 
-    fun set(speed: Double) = elevator.set(speed)
-
     val topSwitch1 = DigitalInput(TOP_SWITCH_1)
     val topSwitch2 = DigitalInput(TOP_SWITCH_2)
     val middleSwitch = DigitalInput(MIDDLE_SWITCH)
     val bottomSwitch = DigitalInput(BOTTOM_SWITCH)
+
+    private const val SPEED_FACTOR = 0.5
+
+    fun set(speed: Double) = elevator.set(speed * SPEED_FACTOR)
 
     fun stop() = elevator.stopMotor()
 }
