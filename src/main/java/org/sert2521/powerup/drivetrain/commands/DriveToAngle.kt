@@ -3,26 +3,21 @@ package org.sert2521.powerup.drivetrain.commands
 import org.sert2521.powerup.drivetrain.Drivetrain
 import org.sertain.command.PidCommand
 import kotlin.math.absoluteValue
-import kotlin.properties.Delegates
 
 class DriveToAngle(private val angle: Double, private val baseSpeed: Double = 0.0) :
         PidCommand(P, I, D) {
-    private var startAngle: Float by Delegates.notNull()
+    private val startAngle by lazy { Drivetrain.ahrs.yaw }
 
     init {
         requires(Drivetrain)
     }
 
     override fun onCreate() {
-        startAngle = Drivetrain.ahrs.yaw
         setpoint = startAngle + angle
     }
 
-    override fun execute(): Boolean {
-        println(Drivetrain.ahrs.yaw)
-        println((Drivetrain.ahrs.yaw - startAngle - angle).absoluteValue)
-        return (Drivetrain.ahrs.yaw - startAngle - angle).absoluteValue < ALLOWABLE_ERROR
-    }
+    override fun execute() =
+            (Drivetrain.ahrs.yaw - startAngle - angle).absoluteValue < ALLOWABLE_ERROR
 
     override fun returnPidInput() = Drivetrain.ahrs.yaw.toDouble()
 
