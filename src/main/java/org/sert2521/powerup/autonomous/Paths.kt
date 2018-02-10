@@ -15,6 +15,25 @@ import org.sertain.util.generate
 import org.sertain.util.split
 import org.sertain.util.with
 import java.io.File
+import java.security.MessageDigest
+
+private const val SHA_256 = "SHA-256"
+private const val HEX_CHARS = "0123456789abcdef"
+
+private fun sha256(vararg inputs: Any?): String {
+    val bytes = MessageDigest.getInstance(SHA_256).digest(inputs.map {
+        it.toString().toByteArray().toList()
+    }.flatten().toByteArray())
+    val result = StringBuilder(bytes.size * 2)
+
+    for (byte in bytes) {
+        val i = byte.toInt()
+        result.append(HEX_CHARS[i shr 4 and 0x0f])
+        result.append(HEX_CHARS[i and 0x0f])
+    }
+
+    return result.toString()
+}
 
 abstract class PathBase : PathInitializer() {
     protected abstract val points: Array<Waypoint>
@@ -33,23 +52,20 @@ abstract class PathBase : PathInitializer() {
     }
     private val trajectoryConfig = TrajectoryConfig(MAX_VELOCITY, MAX_ACCELERATION, MAX_JERK)
 
-    private fun hash(): String {
-        var result = points.sumByDouble {
-            fun Double.hashWithSign() = if (this > 0.0) 0.0 else 31.0 + this
-
-            var result = it.x.hashWithSign()
-            result = 31.0 * result + it.y.hashWithSign()
-            result = 31.0 * result + it.angle.hashWithSign()
-            result
-        }
-        result = 31.0 * result + trajectoryConfig.max_velocity
-        result = 31.0 * result + trajectoryConfig.max_acceleration
-        result = 31.0 * result + trajectoryConfig.max_jerk
-        result = 31.0 * result + trajectoryConfig.dt
-        result = 31.0 * result + trajectoryConfig.fit.ordinal.toDouble()
-        result = 31.0 * result + trajectoryConfig.sample_count.toDouble()
-        return result.toString()
-    }
+    private fun hash() = sha256(
+            points.sumByDouble {
+                var result = it.x
+                result = 31.0 * result + it.y
+                result = 31.0 * result + it.angle
+                result
+            },
+            trajectoryConfig.max_velocity,
+            trajectoryConfig.max_acceleration,
+            trajectoryConfig.max_jerk,
+            trajectoryConfig.dt,
+            trajectoryConfig.fit,
+            trajectoryConfig.sample_count
+    )
 
     private companion object {
         val ROOT = File("/home/lvuser/paths")
