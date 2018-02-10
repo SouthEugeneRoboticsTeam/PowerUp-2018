@@ -6,6 +6,7 @@ import org.sert2521.powerup.util.BOTTOM_SWITCH
 import org.sert2521.powerup.util.LEFT_ELEVATOR_MOTOR
 import org.sert2521.powerup.util.MIDDLE_SWITCH
 import org.sert2521.powerup.util.RIGHT_ELEVATOR_MOTOR
+import org.sert2521.powerup.util.SadFlimsyEncoder
 import org.sert2521.powerup.util.TOP_SWITCH_1
 import org.sert2521.powerup.util.TOP_SWITCH_2
 import org.sertain.command.Subsystem
@@ -23,6 +24,8 @@ object Elevator : Subsystem() {
     val topSwitch2 = DigitalInput(TOP_SWITCH_2)
     val middleSwitch = DigitalInput(MIDDLE_SWITCH)
     val bottomSwitch = DigitalInput(BOTTOM_SWITCH)
+
+    val encoder = SadFlimsyEncoder(9, elevator)
 
     private const val SPEED_FACTOR = 0.5
 
