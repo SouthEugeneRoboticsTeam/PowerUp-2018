@@ -23,14 +23,14 @@ class TeleopIntake : Command() {
                 // TODO tune defaults
                 rightJoystick.trigger -> intakeSpeedScalar * 1.0
                 rightJoystick.top -> -intakeSpeedScalar * 1.0
-                else -> 0.0
+                else -> 0.1
             })
             is Control.Controller -> {
                 val leftSpeed = controller.getTriggerAxis(GenericHID.Hand.kLeft)
                 val rightSpeed = controller.getTriggerAxis(GenericHID.Hand.kRight)
 
                 // Support variable intake speeds through self-cancellation
-                Intake.set(leftSpeed - rightSpeed)
+                Intake.set((leftSpeed - rightSpeed).coerceAtLeast(0.1))
             }
         }
 
