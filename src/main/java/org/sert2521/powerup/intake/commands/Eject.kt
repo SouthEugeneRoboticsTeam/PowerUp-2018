@@ -1,5 +1,6 @@
-package org.sert2521.powerup.intake
+package org.sert2521.powerup.intake.commands
 
+import org.sert2521.powerup.intake.Intake
 import org.sertain.command.Command
 import java.util.concurrent.TimeUnit
 
