@@ -7,11 +7,12 @@ import org.sert2521.powerup.util.REAR_CLIMBER_MOTOR
 import org.sertain.command.Subsystem
 import org.sertain.hardware.Talon
 import org.sertain.hardware.autoBreak
+import org.sertain.hardware.invert
 import org.sertain.hardware.plus
 
 object Climber : Subsystem() {
-    private val climber =
-            Talon(FRONT_CLIMBER_MOTOR).autoBreak() + Talon(REAR_CLIMBER_MOTOR).autoBreak()
+    private val climber = Talon(FRONT_CLIMBER_MOTOR).autoBreak().invert() +
+            Talon(REAR_CLIMBER_MOTOR).autoBreak().invert()
 
     override val defaultCommand = Climb()
 
