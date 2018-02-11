@@ -13,8 +13,10 @@ class Elevate : Command() {
         val atTop = !Elevator.middleTrigger.get() && !Elevator.topTrigger.get()
         val atBottom = !Elevator.bottomTrigger.get()
 
-        Elevator.set(if (secondaryJoystick.trigger && !atTop && !atBottom) {
-            secondaryJoystick.y
+        val y = secondaryJoystick.y
+        val isNotLeavingExtremities = (!atTop || y < 0.0) && (!atBottom || y > 0.0)
+        Elevator.set(if (secondaryJoystick.trigger && isNotLeavingExtremities) {
+            y
         } else {
             0.1
         })
