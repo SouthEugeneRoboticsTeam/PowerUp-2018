@@ -10,8 +10,13 @@ class Elevate : Command() {
     }
 
     override fun execute(): Boolean {
-        Elevator.restrictiveSet(if (secondaryJoystick.trigger) secondaryJoystick.y else 0.1)
-        if (secondaryJoystick.getRawButton(5)) ReachToScale().start()
+        val atTop = Elevator.middleTrigger.get() && Elevator.topTrigger.get()
+        val atBottom = Elevator.bottomTrigger.get()
+        if (atTop && secondaryJoystick.y > 0.0)
+//        if ((atTop && secondaryJoystick.y > 0.0) || (atBottom && secondaryJoystick.y < 0.0)) {
+//            Elevator.set(if (secondaryJoystick.trigger) secondaryJoystick.y else 0.1)
+//        }
+        if (secondaryJoystick.getRawButton(5)) ElevateToScale().start()
         if (secondaryJoystick.getRawButton(3)) ReachToSwitch().start()
         if (secondaryJoystick.getRawButton(4)) Return().start()
         return false

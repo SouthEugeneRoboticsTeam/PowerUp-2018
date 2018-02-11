@@ -23,11 +23,11 @@ const val RIGHT_ELEVATOR_MOTOR = 15
 const val FRONT_CLIMBER_MOTOR = 16
 const val REAR_CLIMBER_MOTOR = 17
 
-// Switch ports
-const val TOP_SWITCH_1 = 0
-const val TOP_SWITCH_2 = 0
-const val MIDDLE_SWITCH = 0
-const val BOTTOM_SWITCH = 0
+// Sensors
+const val BOTTOM_TRIGGER_PORT = 0
+const val MIDDLE_TRIGGER_PORT = 1
+const val TOP_TRIGGER_PORT = 2
+const val SWITCH_TRIGGER_PORT = 4
 
 // Auto
 const val ENCODER_TICKS_PER_REVOLUTION = 8192

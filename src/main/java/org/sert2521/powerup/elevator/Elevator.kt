@@ -1,44 +1,54 @@
 package org.sert2521.powerup.elevator
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
+import com.ctre.phoenix.motorcontrol.FeedbackDevice
 import edu.wpi.first.wpilibj.DigitalInput
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
 import org.sert2521.powerup.elevator.commands.Elevate
-import org.sert2521.powerup.util.BOTTOM_SWITCH
+import org.sert2521.powerup.util.BOTTOM_TRIGGER_PORT
 import org.sert2521.powerup.util.LEFT_ELEVATOR_MOTOR
-import org.sert2521.powerup.util.MIDDLE_SWITCH
+import org.sert2521.powerup.util.MIDDLE_TRIGGER_PORT
 import org.sert2521.powerup.util.RIGHT_ELEVATOR_MOTOR
-import org.sert2521.powerup.util.SadFlimsyEncoder
-import org.sert2521.powerup.util.TOP_SWITCH_1
-import org.sert2521.powerup.util.TOP_SWITCH_2
+import org.sert2521.powerup.util.SWITCH_TRIGGER_PORT
+import org.sert2521.powerup.util.TOP_TRIGGER_PORT
 import org.sertain.command.Subsystem
 import org.sertain.hardware.Talon
 import org.sertain.hardware.autoBreak
+import org.sertain.hardware.encoderPosition
 import org.sertain.hardware.invert
 import org.sertain.hardware.plus
+import org.sertain.hardware.resetEncoder
 
 object Elevator : Subsystem() {
-    private val elevator = Talon(LEFT_ELEVATOR_MOTOR).invert().autoBreak() +
-            Talon(RIGHT_ELEVATOR_MOTOR).autoBreak()
+    private val elevator =
+            Talon(RIGHT_ELEVATOR_MOTOR).autoBreak() + Talon(LEFT_ELEVATOR_MOTOR).autoBreak().invert()
+
+    val bottomTrigger = DigitalInput(BOTTOM_TRIGGER_PORT)
+    val middleTrigger = DigitalInput(MIDDLE_TRIGGER_PORT)
+    val topTrigger = DigitalInput(TOP_TRIGGER_PORT)
+    val switchTrigger = DigitalInput(SWITCH_TRIGGER_PORT)
+
+    val position get() = elevator.encoderPosition
 
     override val defaultCommand = Elevate()
 
-    val topSwitch1 = DigitalInput(TOP_SWITCH_1)
-    val topSwitch2 = DigitalInput(TOP_SWITCH_2)
-    val middleSwitch = DigitalInput(MIDDLE_SWITCH)
-    val bottomSwitch = DigitalInput(BOTTOM_SWITCH)
+    override fun onCreate() {
+        elevator.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0)
+        elevator.resetEncoder()
+        // -940 = switch
 
-    val encoder = SadFlimsyEncoder(9, elevator)
+    }
 
-    private const val SPEED_FACTOR = 0.5
+    override fun execute() {
+        SmartDashboard.putNumber("Elevator Position", elevator.encoderPosition.toDouble())
+        SmartDashboard.putData("Bottom Trigger", bottomTrigger)
+        SmartDashboard.putData("Middle Trigger", middleTrigger)
+        SmartDashboard.putData("Top Trigger", topTrigger)
+        SmartDashboard.putData("Switch Trigger", switchTrigger)
+    }
 
     fun set(speed: Double) {
         SmartDashboard.putNumber("Elevator speed", speed)
         elevator.set(speed)
-    }
-
-    fun restrictiveSet(speed: Double) {
-        if (!((topSwitch1.get() && topSwitch2.get() && speed > 0.0)
-                        || (bottomSwitch.get() && speed < 0.0))) set(speed)
     }
 
     fun stop() = elevator.stopMotor()

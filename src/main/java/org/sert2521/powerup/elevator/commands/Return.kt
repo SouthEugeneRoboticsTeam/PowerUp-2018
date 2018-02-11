@@ -6,7 +6,7 @@ import org.sertain.command.Command
 
 class Return : Command() {
     private val success: Boolean
-            get() = Elevator.bottomSwitch.get()
+            get() = Elevator.bottomTrigger.get()
     private val abort: Boolean
             get() = secondaryJoystick.trigger
 
