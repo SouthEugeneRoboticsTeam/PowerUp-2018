@@ -1,7 +1,7 @@
 buildscript {
     ext.kotlinVersion = '1.2.21'
     ext.gradleRioVersion = '2018.01.22'
-    ext.sertainVersion = '0.0.11'
+    ext.sertainVersion = '0.0.14'
     ext.ktlintVersion = '0.15.0'
 
     repositories {
@@ -36,7 +36,7 @@ configurations {
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
 
-    compile "org.sert2521.sertain:core:$sertainVersion"
+    compile "com.github.sertain.sertain:core:$sertainVersion"
 
     compile wpilib()
     compile navx()

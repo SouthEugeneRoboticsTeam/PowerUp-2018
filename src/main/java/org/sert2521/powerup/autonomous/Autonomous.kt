@@ -3,6 +3,8 @@ package org.sert2521.powerup.autonomous
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
 import jaci.pathfinder.Pathfinder
 import org.sert2521.powerup.drivetrain.Drivetrain
+import org.sert2521.powerup.drivetrain.commands.DriveToAngle
+import org.sert2521.powerup.intake.Eject
 import org.sert2521.powerup.util.AutoMode
 import org.sert2521.powerup.util.ENCODER_TICKS_PER_REVOLUTION
 import org.sert2521.powerup.util.MAX_VELOCITY
@@ -10,6 +12,7 @@ import org.sert2521.powerup.util.WHEEL_DIAMETER
 import org.sert2521.powerup.util.autoMode
 import org.sertain.RobotLifecycle
 import org.sertain.command.Command
+import org.sertain.command.then
 import org.sertain.util.PathInitializer
 import kotlin.concurrent.thread
 
@@ -27,7 +30,8 @@ object Auto : RobotLifecycle {
             MiddleToRightPath.logGeneratedPoints()
             LeftToScalePath.logGeneratedPoints()
             RightToScalePath.logGeneratedPoints()
-            ReversePath.logGeneratedPoints()
+            SwitchLeftToRearPath.logGeneratedPoints()
+            SwitchRightToRearPath.logGeneratedPoints()
             println("Done generating paths")
         }
     }
@@ -36,12 +40,14 @@ object Auto : RobotLifecycle {
         println("Following: $autoMode")
         when (autoMode) {
             AutoMode.CROSS_BASELINE -> CrossBaseline()
-            AutoMode.LEFT_TO_LEFT -> LeftToLeft()
-            AutoMode.LEFT_TO_SCALE -> LeftToScale()
-            AutoMode.RIGHT_TO_RIGHT -> RightToRight()
-            AutoMode.RIGHT_TO_SCALE -> RightToScale()
-            AutoMode.MIDDLE_TO_LEFT -> MiddleToLeft()
-            AutoMode.MIDDLE_TO_RIGHT -> MiddleToRight()
+            AutoMode.LEFT_TO_LEFT ->
+                LeftToLeft() then Eject() then SwitchLeftToRear() then DriveToAngle(-90.0)
+            AutoMode.LEFT_TO_SCALE -> LeftToScale() then Eject()
+            AutoMode.RIGHT_TO_RIGHT ->
+                RightToRight() then Eject() then SwitchRightToRear() then DriveToAngle(90.0)
+            AutoMode.RIGHT_TO_SCALE -> RightToScale() then Eject()
+            AutoMode.MIDDLE_TO_LEFT -> MiddleToLeft() then Eject()
+            AutoMode.MIDDLE_TO_RIGHT -> MiddleToRight() then Eject()
         }.start()
     }
 }
@@ -89,6 +95,16 @@ private abstract class PathFollowerBase(protected val path: PathInitializer) : C
     }
 }
 
+private abstract class ReversePathFollowerBase(path: PathInitializer) : PathFollowerBase(path) {
+    override fun drive(left: Double, right: Double) = super.drive(-right, -left)
+
+    override fun calculate(
+            leftPosition: Int,
+            rightPosition: Int,
+            turn: Double
+    ) = super.calculate(-rightPosition, -leftPosition, -turn)
+}
+
 private class CrossBaseline : PathFollowerBase(CrossBaselinePath)
 
 private class LeftToLeft : PathFollowerBase(LeftToLeftPath)
@@ -103,4 +119,6 @@ private class MiddleToLeft : PathFollowerBase(MiddleToLeftPath)
 
 private class MiddleToRight : PathFollowerBase(MiddleToRightPath)
 
-private class Reverse : PathFollowerBase(ReversePath)
+private class SwitchLeftToRear : ReversePathFollowerBase(SwitchLeftToRearPath)
+
+private class SwitchRightToRear : ReversePathFollowerBase(SwitchRightToRearPath)
