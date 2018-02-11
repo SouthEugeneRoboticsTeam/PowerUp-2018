@@ -22,23 +22,22 @@ object Elevator : Subsystem() {
     private val elevator =
             Talon(RIGHT_ELEVATOR_MOTOR).autoBreak() + Talon(LEFT_ELEVATOR_MOTOR).autoBreak().invert()
 
+    val position get() = elevator.encoderPosition
+
     val bottomTrigger = DigitalInput(BOTTOM_TRIGGER_PORT)
     val middleTrigger = DigitalInput(MIDDLE_TRIGGER_PORT)
     val topTrigger = DigitalInput(TOP_TRIGGER_PORT)
     val switchTrigger = DigitalInput(SWITCH_TRIGGER_PORT)
-
-    val position get() = elevator.encoderPosition
 
     override val defaultCommand = Elevate()
 
     override fun onCreate() {
         elevator.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0)
         elevator.resetEncoder()
-        // -940 = switch
     }
 
     override fun execute() {
-        SmartDashboard.putNumber("Elevator Position", elevator.encoderPosition.toDouble())
+        SmartDashboard.putNumber("Elevator Position", position.toDouble())
         SmartDashboard.putData("Bottom Trigger", bottomTrigger)
         SmartDashboard.putData("Middle Trigger", middleTrigger)
         SmartDashboard.putData("Top Trigger", topTrigger)
