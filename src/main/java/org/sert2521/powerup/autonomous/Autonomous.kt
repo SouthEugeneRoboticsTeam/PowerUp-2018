@@ -1,8 +1,8 @@
 package org.sert2521.powerup.autonomous
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
 import jaci.pathfinder.Pathfinder
 import org.sert2521.powerup.drivetrain.Drivetrain
-import org.sert2521.powerup.drivetrain.commands.DriveToAngle
 import org.sert2521.powerup.util.ENCODER_TICKS_PER_REVOLUTION
 import org.sert2521.powerup.util.MAX_VELOCITY
 import org.sert2521.powerup.util.WHEEL_DIAMETER
@@ -19,11 +19,11 @@ object Auto : RobotLifecycle {
 
     override fun onCreate() {
         thread {
-//            CrossBaselinePath.logGeneratedPoints()
-//            LeftToLeftPath.logGeneratedPoints()
-//            RightToRightPath.logGeneratedPoints()
-//            MiddleToLeftPath.logGeneratedPoints()
-//            MiddleToRightPath.logGeneratedPoints()
+            CrossBaselinePath.logGeneratedPoints()
+            LeftToLeftPath.logGeneratedPoints()
+            RightToRightPath.logGeneratedPoints()
+            MiddleToLeftPath.logGeneratedPoints()
+            MiddleToRightPath.logGeneratedPoints()
             LeftToScalePath.logGeneratedPoints()
             RightToScalePath.logGeneratedPoints()
             ReversePath.logGeneratedPoints()
@@ -33,8 +33,7 @@ object Auto : RobotLifecycle {
 
     override fun onAutoStart() {
         println("Following: $autoMode")
-        Drivetrain.resetEncoders()
-//        (when (autoMode) {
+//        when (autoMode) {
 //            AutoMode.CROSS_BASELINE -> CrossBaseline()
 //            AutoMode.LEFT_TO_LEFT -> LeftToLeft()
 //            AutoMode.LEFT_TO_SCALE -> LeftToScale()
@@ -42,8 +41,7 @@ object Auto : RobotLifecycle {
 //            AutoMode.RIGHT_TO_SCALE -> RightToScale()
 //            AutoMode.MIDDLE_TO_LEFT -> MiddleToLeft()
 //            AutoMode.MIDDLE_TO_RIGHT -> MiddleToRight()
-//        } then Reverse()).start()
-        DriveToAngle(-90.0).start()
+//        }.start()
     }
 }
 
@@ -53,7 +51,7 @@ private abstract class PathFollowerBase(protected val path: PathInitializer) : C
     }
 
     override fun onCreate() {
-        Drivetrain.resetEncoders()
+        Drivetrain.reset()
         path.apply {
             reset()
 
@@ -72,6 +70,7 @@ private abstract class PathFollowerBase(protected val path: PathInitializer) : C
         val angleDiff =
                 Pathfinder.boundHalfDegrees(path.heading - Drivetrain.ahrs.angle)
         val turn = TURN_IMPORTANCE * angleDiff
+        SmartDashboard.putNumber("Auto turn", turn)
         calculate(leftPosition, rightPosition, turn).apply { drive(first, second) }
 
         return path.isFinished

@@ -30,7 +30,8 @@ class TeleopIntake : Command() {
                 val rightSpeed = controller.getTriggerAxis(GenericHID.Hand.kRight)
 
                 // Support variable intake speeds through self-cancellation
-                Intake.set((leftSpeed - rightSpeed).coerceAtLeast(0.1))
+                val speed = leftSpeed - rightSpeed
+                Intake.set(if (speed == 0.0) 0.1 else speed)
             }
         }
 

@@ -54,12 +54,13 @@ object Drivetrain : Subsystem() {
         SmartDashboard.putNumber("Drivetrain right encoder position", rightPosition.toDouble())
         SmartDashboard.putNumber("Drivetrain pitch", ahrs.pitch.toDouble())
         SmartDashboard.putNumber("Drivetrain roll", ahrs.roll.toDouble())
-        SmartDashboard.putNumber("Drivetrain yaw", ahrs.yaw.toDouble())
+        SmartDashboard.putData("AHRS", ahrs)
     }
 
-    fun resetEncoders() {
+    fun reset() {
         leftDrive.resetEncoder()
         rightDrive.resetEncoder()
+        ahrs.reset()
     }
 
     fun arcade(speed: Double, rotation: Double) {
