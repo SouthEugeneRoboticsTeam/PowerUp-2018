@@ -40,7 +40,9 @@ object Elevator : Subsystem() {
     override fun onCreate() {
         elevator.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0)
         elevator.resetEncoder()
+    }
 
+    override fun onStart() {
         secondaryJoystick.whenActive(5, SendToScale())
     }
 
