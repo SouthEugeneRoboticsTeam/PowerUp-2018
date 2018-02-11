@@ -18,6 +18,7 @@ class Elevate : Command() {
         } else {
             Elevator.set(0.1)
         }
+        
         return false
     }
 
