@@ -16,24 +16,26 @@ import org.sertain.hardware.autoBreak
 import org.sertain.hardware.encoderPosition
 import org.sertain.hardware.invert
 import org.sertain.hardware.plus
-import org.sertain.hardware.resetEncoder
 
 object Elevator : Subsystem() {
     private val elevator =
             Talon(RIGHT_ELEVATOR_MOTOR).autoBreak() + Talon(LEFT_ELEVATOR_MOTOR).autoBreak().invert()
 
-    val bottomTrigger = DigitalInput(BOTTOM_TRIGGER_PORT)
-    val middleTrigger = DigitalInput(MIDDLE_TRIGGER_PORT)
-    val topTrigger = DigitalInput(TOP_TRIGGER_PORT)
-    val switchTrigger = DigitalInput(SWITCH_TRIGGER_PORT)
+    private val bottomTrigger = DigitalInput(BOTTOM_TRIGGER_PORT)
+    private val middleTrigger = DigitalInput(MIDDLE_TRIGGER_PORT)
+    private val topTrigger = DigitalInput(TOP_TRIGGER_PORT)
+    private val switchTrigger = DigitalInput(SWITCH_TRIGGER_PORT)
 
-    val position get() = elevator.encoderPosition
+    val atTop get() = !middleTrigger.get() && !topTrigger.get()
+    val atBottom get() = !bottomTrigger.get()
+
+    val position get() = -elevator.encoderPosition
 
     override val defaultCommand = Elevate()
 
     override fun onCreate() {
         elevator.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0)
-        elevator.resetEncoder()
+//        elevator.resetEncoder()
         // -940 = switch
     }
 
