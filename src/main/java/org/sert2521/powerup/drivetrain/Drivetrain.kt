@@ -32,7 +32,7 @@ object Drivetrain : Subsystem() {
     val rightPosition get() = rightDrive.encoderPosition
 
     private val leftDrive =
-            Talon(LEFT_FRONT_MOTOR).autoBreak() + Talon(LEFT_REAR_MOTOR).autoBreak().invert()
+            Talon(LEFT_FRONT_MOTOR).autoBreak() + Talon(LEFT_REAR_MOTOR).autoBreak()
     private val rightDrive =
             Talon(RIGHT_FRONT_MOTOR).autoBreak() + Talon(RIGHT_REAR_MOTOR).autoBreak().invert()
     private val drive = DifferentialDrive(leftDrive, rightDrive)
