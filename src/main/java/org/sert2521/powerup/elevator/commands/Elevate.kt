@@ -12,11 +12,13 @@ class Elevate : Command() {
     }
 
     override fun execute(): Boolean {
-        if (!(atTop && secondaryJoystick.y > 0.0) && !(atBottom && secondaryJoystick.y < 0.0)) {
-            Elevator.set(if (secondaryJoystick.trigger) secondaryJoystick.y else 0.1)
+        val y = secondaryJoystick.y
+        val isNotLeavingExtremities = (!atTop || y < 0.0) && (!atBottom || y > 0.0)
+        Elevator.set(if (secondaryJoystick.trigger && isNotLeavingExtremities) {
+            y
         } else {
-            Elevator.set(0.1)
-        }
+            0.1
+        })
 
         return false
     }

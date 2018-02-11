@@ -16,13 +16,12 @@ class DriveToAngle(private val angle: Double, private val baseSpeed: Double = 0.
         setpoint = startAngle + angle
     }
 
-    override fun execute() =
-            (Drivetrain.ahrs.yaw - startAngle - angle).absoluteValue < ALLOWABLE_ERROR
+    override fun execute(output: Double): Boolean {
+        Drivetrain.drive(baseSpeed + output, baseSpeed - output)
+        return (Drivetrain.ahrs.yaw - startAngle - angle).absoluteValue < ALLOWABLE_ERROR
+    }
 
     override fun returnPidInput() = Drivetrain.ahrs.yaw.toDouble()
-
-    override fun usePidOutput(output: Double) =
-            Drivetrain.drive(baseSpeed + output, baseSpeed - output)
 
     private companion object {
         const val P = 0.1
