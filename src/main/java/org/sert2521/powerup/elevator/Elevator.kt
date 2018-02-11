@@ -24,10 +24,10 @@ object Elevator : Subsystem() {
 
     val position get() = elevator.encoderPosition
 
-    val bottomTrigger = DigitalInput(BOTTOM_TRIGGER_PORT)
-    val middleTrigger = DigitalInput(MIDDLE_TRIGGER_PORT)
-    val topTrigger = DigitalInput(TOP_TRIGGER_PORT)
-    val switchTrigger = DigitalInput(SWITCH_TRIGGER_PORT)
+    private val bottomTrigger = DigitalInput(BOTTOM_TRIGGER_PORT)
+    private val middleTrigger = DigitalInput(MIDDLE_TRIGGER_PORT)
+    private val topTrigger = DigitalInput(TOP_TRIGGER_PORT)
+    private val switchTrigger = DigitalInput(SWITCH_TRIGGER_PORT)
 
     val atTop get() = !Elevator.middleTrigger.get() && !Elevator.topTrigger.get()
     val atBottom get() = !Elevator.bottomTrigger.get()
