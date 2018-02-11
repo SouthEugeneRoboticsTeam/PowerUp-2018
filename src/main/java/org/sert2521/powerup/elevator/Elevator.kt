@@ -34,7 +34,6 @@ object Elevator : Subsystem() {
     override fun onCreate() {
         elevator.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0)
         elevator.resetEncoder()
-        // -940 = switch
     }
 
     override fun execute() {
