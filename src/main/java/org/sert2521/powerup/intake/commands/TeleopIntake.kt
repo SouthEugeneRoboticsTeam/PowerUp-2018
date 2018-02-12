@@ -20,8 +20,8 @@ class TeleopIntake : Command() {
     override fun execute(): Boolean {
         when (controlMode) {
             is Control.Arcade, is Control.Tank -> Intake.set(when {
-                rightJoystick.trigger -> intakeSpeedScalar * 1.0
-                rightJoystick.top -> -intakeSpeedScalar * 1.0
+                rightJoystick.trigger -> intakeSpeedScalar
+                rightJoystick.top -> -intakeSpeedScalar
                 else -> DEFAULT_SPEED
             })
             is Control.Controller -> {
