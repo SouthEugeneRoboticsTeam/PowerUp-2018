@@ -83,7 +83,7 @@ object LeftToLeftPath : PathBase() {
     override val points = arrayOf(
             7.5 with -3.0 angle 0.0,
             5.2 with -3.5 angle 0.0,
-            3.9 with -2.4 angle -100.0
+            3.9 with -2.0 angle -100.0
     )
 }
 
@@ -105,7 +105,7 @@ object RightToRightPath : PathBase() {
     override val points = arrayOf(
             7.5 with 3.0 angle 0.0,
             5.2 with 3.5 angle 0.0,
-            3.8 with 2.5 angle 95.0
+            3.8 with 2.0 angle 100.0
     )
 }
 
@@ -113,7 +113,7 @@ object RightToScalePath : PathBase() {
     override val points = arrayOf(
             7.5 with 3.0 angle 0.0,
             1.3 with 3.1 angle 0.0,
-            -0.3 with 2.0 angle 90.1
+            -0.3 with 2.0 angle 90.0
     )
 }
 
@@ -129,7 +129,7 @@ object SwitchLeftToRearPath : PathBase() {
     override val points = arrayOf(
             4.0 with -2.0 angle -90.0,
             3.5 with -2.75 angle 0.0,
-            2.25 with -1.5 angle 90.0
+            3.0 with 0.0 angle 90.0
     )
 }
 
@@ -137,6 +137,6 @@ object SwitchRightToRearPath : PathBase() {
     override val points = arrayOf(
             4.0 with 2.0 angle 90.0,
             3.5 with 2.75 angle 0.0,
-            2.25 with 1.5 angle -90.0
+            3.0 with 0.0 angle -90.0
     )
 }
