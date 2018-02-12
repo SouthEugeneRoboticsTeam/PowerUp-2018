@@ -4,6 +4,7 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice
 import edu.wpi.first.wpilibj.DigitalInput
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
 import org.sert2521.powerup.elevator.commands.Elevate
+import org.sert2521.powerup.elevator.commands.EncoderResetter
 import org.sert2521.powerup.elevator.commands.SendToBottom
 import org.sert2521.powerup.elevator.commands.SendToScale
 import org.sert2521.powerup.elevator.commands.SendToSwitch
@@ -42,10 +43,14 @@ object Elevator : Subsystem() {
 
     override fun onCreate() {
         elevator.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0)
-        elevator.resetEncoder()
+        reset()
     }
 
     override fun onStart() {
+        EncoderResetter().start()
+    }
+
+    override fun onTeleopStart() {
         secondaryJoystick.whenActive(1, Elevate()) // Ensure drivers can override auto
         secondaryJoystick.whenActive(3, SendToBottom())
         secondaryJoystick.whenActive(4, SendToSwitch())
@@ -63,6 +68,10 @@ object Elevator : Subsystem() {
     fun set(speed: Double) {
         SmartDashboard.putNumber("Elevator speed", speed)
         elevator.set(speed)
+    }
+
+    fun reset() {
+        elevator.resetEncoder()
     }
 
     fun stop() = elevator.stopMotor()
