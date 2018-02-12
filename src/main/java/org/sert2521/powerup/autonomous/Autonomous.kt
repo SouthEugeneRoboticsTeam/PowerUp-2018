@@ -4,6 +4,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
 import jaci.pathfinder.Pathfinder
 import org.sert2521.powerup.drivetrain.Drivetrain
 import org.sert2521.powerup.drivetrain.commands.DriveToAngle
+import org.sert2521.powerup.elevator.commands.SendToScale
+import org.sert2521.powerup.elevator.commands.SendToSwitch
 import org.sert2521.powerup.intake.commands.Eject
 import org.sert2521.powerup.util.AutoMode
 import org.sert2521.powerup.util.ENCODER_TICKS_PER_REVOLUTION
@@ -12,6 +14,7 @@ import org.sert2521.powerup.util.WHEEL_DIAMETER
 import org.sert2521.powerup.util.autoMode
 import org.sertain.RobotLifecycle
 import org.sertain.command.Command
+import org.sertain.command.and
 import org.sertain.command.then
 import org.sertain.util.PathInitializer
 import kotlin.concurrent.thread
@@ -40,14 +43,14 @@ object Auto : RobotLifecycle {
         println("Following: $autoMode")
         when (autoMode) {
             AutoMode.CROSS_BASELINE -> CrossBaseline()
-            AutoMode.LEFT_TO_LEFT ->
-                LeftToLeft() then Eject() then SwitchLeftToRear() then DriveToAngle(-90.0)
-            AutoMode.LEFT_TO_SCALE -> LeftToScale() then Eject()
-            AutoMode.RIGHT_TO_RIGHT ->
-                RightToRight() then Eject() then SwitchRightToRear() then DriveToAngle(90.0)
-            AutoMode.RIGHT_TO_SCALE -> RightToScale() then Eject()
-            AutoMode.MIDDLE_TO_LEFT -> MiddleToLeft() then Eject()
-            AutoMode.MIDDLE_TO_RIGHT -> MiddleToRight() then Eject()
+            AutoMode.LEFT_TO_LEFT -> LeftToLeft() and SendToSwitch() then Eject() then
+                    SwitchLeftToRear() then DriveToAngle(-90.0)
+            AutoMode.LEFT_TO_SCALE -> LeftToScale() then SendToScale() then Eject()
+            AutoMode.RIGHT_TO_RIGHT -> RightToRight() and SendToSwitch() then Eject() then
+                    SwitchRightToRear() then DriveToAngle(90.0)
+            AutoMode.RIGHT_TO_SCALE -> RightToScale() then SendToScale() then Eject()
+            AutoMode.MIDDLE_TO_LEFT -> MiddleToLeft() and SendToSwitch() then Eject()
+            AutoMode.MIDDLE_TO_RIGHT -> MiddleToRight() and SendToSwitch() then Eject()
         }.start()
     }
 }
