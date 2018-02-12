@@ -14,4 +14,4 @@ val controller = XboxController(CONTROLLER_PORT)
 // Gunner joystick.
 val secondaryJoystick = Joystick(SECONDARY_STICK_PORT)
 
-val intakeSpeedScalar get() = Preferences.getInstance().getDouble("intake_speed_scalar", 0.5)
+val intakeSpeedScalar get() = Preferences.getInstance().getDouble("intake_speed_scalar", 0.6)
