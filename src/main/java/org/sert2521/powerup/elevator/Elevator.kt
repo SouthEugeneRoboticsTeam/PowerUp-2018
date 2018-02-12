@@ -4,6 +4,7 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice
 import edu.wpi.first.wpilibj.DigitalInput
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
 import org.sert2521.powerup.elevator.commands.Elevate
+import org.sert2521.powerup.elevator.commands.SendToBottom
 import org.sert2521.powerup.elevator.commands.SendToScale
 import org.sert2521.powerup.util.BOTTOM_TRIGGER_PORT
 import org.sert2521.powerup.util.LEFT_ELEVATOR_MOTOR
@@ -44,6 +45,7 @@ object Elevator : Subsystem() {
 
     override fun onStart() {
         secondaryJoystick.whenActive(5, SendToScale())
+        secondaryJoystick.whenActive(3, SendToBottom())
     }
 
     override fun execute() {
