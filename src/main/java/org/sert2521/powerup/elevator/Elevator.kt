@@ -28,7 +28,7 @@ object Elevator : Subsystem() {
     private val elevator =
             Talon(RIGHT_ELEVATOR_MOTOR).autoBreak() + Talon(LEFT_ELEVATOR_MOTOR).autoBreak().invert()
 
-    val position get() = elevator.encoderPosition
+    val position get() = -elevator.encoderPosition
 
     val atBottom get() = !Elevator.bottomTrigger.get()
     val atSwitch get() = !Elevator.switchTrigger.get()
@@ -43,7 +43,6 @@ object Elevator : Subsystem() {
 
     override fun onCreate() {
         elevator.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0)
-        reset()
     }
 
     override fun onStart() {
@@ -52,8 +51,8 @@ object Elevator : Subsystem() {
 
     override fun onTeleopStart() {
         secondaryJoystick.whenActive(1, Elevate()) // Ensure drivers can override auto
-        secondaryJoystick.whenActive(3, SendToBottom())
-        secondaryJoystick.whenActive(4, SendToSwitch())
+        secondaryJoystick.whenActive(4, SendToBottom())
+        secondaryJoystick.whenActive(3, SendToSwitch())
         secondaryJoystick.whenActive(5, SendToScale())
     }
 
