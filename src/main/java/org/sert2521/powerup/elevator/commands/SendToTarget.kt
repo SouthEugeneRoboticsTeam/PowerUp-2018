@@ -24,9 +24,10 @@ abstract class SendToTarget(private val target: Int) : Command(5, TimeUnit.SECON
 
         // Example: https://www.desmos.com/calculator/l3pczqcg88
         Elevator.set(if (wasBelowTarget) {
-            gradient.pow(1000 / (target - Elevator.position)) - maxPower + (1 - gradient)
+            (gradient.pow(1000 / (target - Elevator.position)) - maxPower + (1 - gradient))
+                    .coerceAtLeast(MIN_UP_POWER)
         } else {
-            gradient.pow(1000 / Elevator.position) - maxPower
+            (gradient.pow(1000 / Elevator.position) - maxPower).coerceAtMost(-MIN_DOWN_POWER)
         })
 
         return isAtTarget
@@ -38,6 +39,9 @@ abstract class SendToTarget(private val target: Int) : Command(5, TimeUnit.SECON
 
         const val MAX_UP_POWER = 0.85
         const val MAX_DOWN_POWER = 0.2
+
+        const val MIN_UP_POWER = 0.2
+        const val MIN_DOWN_POWER = 0.1
     }
 }
 
