@@ -18,17 +18,18 @@ import org.sert2521.powerup.util.secondaryJoystick
 import org.sertain.command.Subsystem
 import org.sertain.hardware.Talon
 import org.sertain.hardware.autoBreak
-import org.sertain.hardware.encoderPosition
+import org.sertain.hardware.getEncoderPosition
 import org.sertain.hardware.invert
 import org.sertain.hardware.plus
-import org.sertain.hardware.resetEncoder
+import org.sertain.hardware.setEncoderPosition
+import org.sertain.hardware.setSelectedSensor
 import org.sertain.hardware.whenActive
 
 object Elevator : Subsystem() {
     private val elevator =
             Talon(RIGHT_ELEVATOR_MOTOR).autoBreak() + Talon(LEFT_ELEVATOR_MOTOR).autoBreak().invert()
 
-    val position get() = -elevator.encoderPosition
+    val position get() = -elevator.getEncoderPosition()
 
     val atBottom get() = !Elevator.bottomTrigger.get()
     val atSwitch get() = !Elevator.switchTrigger.get()
@@ -42,7 +43,7 @@ object Elevator : Subsystem() {
     override val defaultCommand = Elevate()
 
     override fun onCreate() {
-        elevator.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0)
+        elevator.setSelectedSensor(FeedbackDevice.QuadEncoder)
     }
 
     override fun onStart() {
@@ -70,7 +71,7 @@ object Elevator : Subsystem() {
     }
 
     fun reset() {
-        elevator.resetEncoder()
+        elevator.setEncoderPosition(0)
     }
 
     fun stop() = elevator.stopMotor()
