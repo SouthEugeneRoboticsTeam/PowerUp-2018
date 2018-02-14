@@ -1,7 +1,6 @@
 package org.sert2521.powerup.elevator
 
 import com.ctre.phoenix.motorcontrol.FeedbackDevice
-import edu.wpi.first.wpilibj.DigitalInput
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
 import org.sert2521.powerup.elevator.commands.Elevate
 import org.sert2521.powerup.elevator.commands.EncoderResetter
@@ -16,6 +15,7 @@ import org.sert2521.powerup.util.SWITCH_TRIGGER_PORT
 import org.sert2521.powerup.util.TOP_TRIGGER_PORT
 import org.sert2521.powerup.util.secondaryJoystick
 import org.sertain.command.Subsystem
+import org.sertain.hardware.DigitalInput
 import org.sertain.hardware.Talon
 import org.sertain.hardware.autoBreak
 import org.sertain.hardware.getEncoderPosition
@@ -31,14 +31,14 @@ object Elevator : Subsystem() {
 
     val position get() = -elevator.getEncoderPosition()
 
-    val atBottom get() = !Elevator.bottomTrigger.get()
-    val atSwitch get() = !Elevator.switchTrigger.get()
-    val atTop get() = !Elevator.middleTrigger.get() && !Elevator.topTrigger.get()
+    val atBottom get() = bottomTrigger.get()
+    val atSwitch get() = switchTrigger.get()
+    val atTop get() = middleTrigger.get() && topTrigger.get()
 
-    private val bottomTrigger = DigitalInput(BOTTOM_TRIGGER_PORT)
-    private val middleTrigger = DigitalInput(MIDDLE_TRIGGER_PORT)
-    private val topTrigger = DigitalInput(TOP_TRIGGER_PORT)
-    private val switchTrigger = DigitalInput(SWITCH_TRIGGER_PORT)
+    private val bottomTrigger = DigitalInput(BOTTOM_TRIGGER_PORT, true)
+    private val middleTrigger = DigitalInput(MIDDLE_TRIGGER_PORT, true)
+    private val topTrigger = DigitalInput(TOP_TRIGGER_PORT, true)
+    private val switchTrigger = DigitalInput(SWITCH_TRIGGER_PORT, true)
 
     override val defaultCommand = Elevate()
 
