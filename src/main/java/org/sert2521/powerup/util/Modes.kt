@@ -65,12 +65,12 @@ object Modes : RobotLifecycle {
     )
     val autoModeChooser = SendableChooser(
             "Cross baseline" to AutoMode.CROSS_BASELINE,
-            "Left to left" to AutoMode.LEFT_TO_LEFT,
-            "Left to scale" to AutoMode.LEFT_TO_SCALE,
-            "Right to right" to AutoMode.RIGHT_TO_RIGHT,
-            "Right to scale" to AutoMode.RIGHT_TO_SCALE,
-            "Middle to left" to AutoMode.MIDDLE_TO_LEFT,
-            "Middle to right" to AutoMode.MIDDLE_TO_RIGHT
+            "Left to left switch" to AutoMode.LEFT_TO_LEFT,
+            "Left to left scale" to AutoMode.LEFT_TO_SCALE,
+            "Right to right switch" to AutoMode.RIGHT_TO_RIGHT,
+            "Right to right scale" to AutoMode.RIGHT_TO_SCALE,
+            "Middle to left switch" to AutoMode.MIDDLE_TO_LEFT,
+            "Middle to right switch" to AutoMode.MIDDLE_TO_RIGHT
     )
     val autoModeChooserStart = SendableChooser(
             "Middle" to AutoMode.Start.MIDDLE,
