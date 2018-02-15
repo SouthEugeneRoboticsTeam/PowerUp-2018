@@ -43,11 +43,11 @@ object Auto : RobotLifecycle {
         println("Following: $autoMode")
         when (autoMode) {
             AutoMode.CROSS_BASELINE -> CrossBaseline()
-            AutoMode.LEFT_TO_LEFT ->
-                LeftToLeftSwitch() and SendToSwitch() then Eject() then LeftSwitchToRear() then DriveToAngle(-90.0)
-            AutoMode.LEFT_TO_SCALE -> LeftToLeftScale() then SendToScale()then Eject()
-            AutoMode.RIGHT_TO_RIGHT ->
-                RightToRightSwitch() and SendToSwitch() then Eject() then RightSwitchToRear() then DriveToAngle(90.0)
+            AutoMode.LEFT_TO_LEFT -> LeftToLeftSwitch() and SendToSwitch() then Eject() then
+                    LeftSwitchToRear() then DriveToAngle(-90.0)
+            AutoMode.LEFT_TO_SCALE -> LeftToLeftScale() then SendToScale() then Eject()
+            AutoMode.RIGHT_TO_RIGHT -> RightToRightSwitch() and SendToSwitch() then Eject() then
+                    RightSwitchToRear() then DriveToAngle(90.0)
             AutoMode.RIGHT_TO_SCALE -> RightToRightScale() then SendToScale() then Eject()
             AutoMode.MIDDLE_TO_LEFT -> MiddleToLeftSwitch() and SendToSwitch() then Eject()
             AutoMode.MIDDLE_TO_RIGHT -> MiddleToRightSwitch() and SendToSwitch() then Eject()
