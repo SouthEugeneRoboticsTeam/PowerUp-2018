@@ -14,9 +14,10 @@ import org.sert2521.powerup.util.RIGHT_REAR_MOTOR
 import org.sertain.command.Subsystem
 import org.sertain.hardware.Talon
 import org.sertain.hardware.autoBreak
-import org.sertain.hardware.encoderPosition
+import org.sertain.hardware.getEncoderPosition
 import org.sertain.hardware.plus
-import org.sertain.hardware.resetEncoder
+import org.sertain.hardware.setEncoderPosition
+import org.sertain.hardware.setSelectedSensor
 
 /**
  * The robot's primary drive base.
@@ -27,8 +28,8 @@ object Drivetrain : Subsystem() {
     val leftSpeed get() = leftDrive.get()
     val rightSpeed get() = leftDrive.get()
 
-    val leftPosition get() = -leftDrive.encoderPosition
-    val rightPosition get() = rightDrive.encoderPosition
+    val leftPosition get() = -leftDrive.getEncoderPosition()
+    val rightPosition get() = rightDrive.getEncoderPosition()
 
     private val leftDrive =
             Talon(LEFT_FRONT_MOTOR).autoBreak() + Talon(LEFT_REAR_MOTOR).autoBreak()
@@ -38,14 +39,14 @@ object Drivetrain : Subsystem() {
 
     override val defaultCommand = TeleopDrive()
 
+    override fun onCreate() {
+        leftDrive.setSelectedSensor(FeedbackDevice.QuadEncoder)
+        rightDrive.setSelectedSensor(FeedbackDevice.QuadEncoder)
+    }
+
     override fun onStart() {
         EmergencyAbort().start()
-
-        leftDrive.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 1000)
-        rightDrive.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 1000)
-
-        leftDrive.resetEncoder()
-        rightDrive.resetEncoder()
+        reset()
     }
 
     override fun execute() {
@@ -57,8 +58,8 @@ object Drivetrain : Subsystem() {
     }
 
     fun reset() {
-        leftDrive.resetEncoder()
-        rightDrive.resetEncoder()
+        leftDrive.setEncoderPosition(0)
+        rightDrive.setEncoderPosition(0)
         ahrs.reset()
     }
 

@@ -4,6 +4,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
 import jaci.pathfinder.Pathfinder
 import org.sert2521.powerup.drivetrain.Drivetrain
 import org.sert2521.powerup.drivetrain.commands.DriveToAngle
+import org.sert2521.powerup.elevator.commands.SendToScale
+import org.sert2521.powerup.elevator.commands.SendToSwitch
 import org.sert2521.powerup.intake.commands.Eject
 import org.sert2521.powerup.util.AutoMode
 import org.sert2521.powerup.util.ENCODER_TICKS_PER_REVOLUTION
@@ -12,6 +14,7 @@ import org.sert2521.powerup.util.WHEEL_DIAMETER
 import org.sert2521.powerup.util.autoMode
 import org.sertain.RobotLifecycle
 import org.sertain.command.Command
+import org.sertain.command.and
 import org.sertain.command.then
 import org.sertain.util.PathInitializer
 import kotlin.concurrent.thread
@@ -41,13 +44,13 @@ object Auto : RobotLifecycle {
         when (autoMode) {
             AutoMode.CROSS_BASELINE -> CrossBaseline()
             AutoMode.LEFT_TO_LEFT ->
-                LeftToLeftSwitch() then Eject() then LeftSwitchToRear() then DriveToAngle(-90.0)
-            AutoMode.LEFT_TO_SCALE -> LeftToLeftScale() then Eject()
+                LeftToLeftSwitch() and SendToSwitch()then Eject() then LeftSwitchToRear() then DriveToAngle(-90.0)
+            AutoMode.LEFT_TO_SCALE -> LeftToLeftScale() then SendToScale()then Eject()
             AutoMode.RIGHT_TO_RIGHT ->
-                RightToRightSwitch() then Eject() then RightSwitchToRear() then DriveToAngle(90.0)
-            AutoMode.RIGHT_TO_SCALE -> RightToRightScale() then Eject()
-            AutoMode.MIDDLE_TO_LEFT -> MiddleToLeftSwitch() then Eject()
-            AutoMode.MIDDLE_TO_RIGHT -> MiddleToRightSwitch() then Eject()
+                RightToRightSwitch() and SendToSwitch()then Eject() then RightSwitchToRear() then DriveToAngle(90.0)
+            AutoMode.RIGHT_TO_SCALE -> RightToRightScale() then SendToScale() thenEject()
+            AutoMode.MIDDLE_TO_LEFT -> MiddleToLeftSwitch() and SendToSwitch()then Eject()
+            AutoMode.MIDDLE_TO_RIGHT -> MiddleToRightSwitch() and SendToSwitch()then Eject()
         }.start()
     }
 }
