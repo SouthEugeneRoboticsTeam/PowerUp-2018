@@ -24,14 +24,14 @@ object Auto : RobotLifecycle {
     override fun onCreate() {
         thread {
             CrossBaselinePath.logGeneratedPoints()
-            LeftToLeftPath.logGeneratedPoints()
-            RightToRightPath.logGeneratedPoints()
-            MiddleToLeftPath.logGeneratedPoints()
-            MiddleToRightPath.logGeneratedPoints()
-            LeftToScalePath.logGeneratedPoints()
-            RightToScalePath.logGeneratedPoints()
-            SwitchLeftToRearPath.logGeneratedPoints()
-            SwitchRightToRearPath.logGeneratedPoints()
+            LeftToLeftSwitchPath.logGeneratedPoints()
+            RightToRightSwitchPath.logGeneratedPoints()
+            MiddleToLeftSwitchPath.logGeneratedPoints()
+            MiddleToRightSwitchPath.logGeneratedPoints()
+            LeftToLeftScalePath.logGeneratedPoints()
+            RightToRightScalePath.logGeneratedPoints()
+            LeftSwitchToRearPath.logGeneratedPoints()
+            RightSwitchToRearPath.logGeneratedPoints()
             println("Done generating paths")
         }
     }
@@ -41,13 +41,13 @@ object Auto : RobotLifecycle {
         when (autoMode) {
             AutoMode.CROSS_BASELINE -> CrossBaseline()
             AutoMode.LEFT_TO_LEFT ->
-                LeftToLeft() then Eject() then SwitchLeftToRear() then DriveToAngle(-90.0)
-            AutoMode.LEFT_TO_SCALE -> LeftToScale() then Eject()
+                LeftToLeftSwitch() then Eject() then LeftSwitchToRear() then DriveToAngle(-90.0)
+            AutoMode.LEFT_TO_SCALE -> LeftToLeftScale() then Eject()
             AutoMode.RIGHT_TO_RIGHT ->
-                RightToRight() then Eject() then SwitchRightToRear() then DriveToAngle(90.0)
-            AutoMode.RIGHT_TO_SCALE -> RightToScale() then Eject()
-            AutoMode.MIDDLE_TO_LEFT -> MiddleToLeft() then Eject()
-            AutoMode.MIDDLE_TO_RIGHT -> MiddleToRight() then Eject()
+                RightToRightSwitch() then Eject() then RightSwitchToRear() then DriveToAngle(90.0)
+            AutoMode.RIGHT_TO_SCALE -> RightToRightScale() then Eject()
+            AutoMode.MIDDLE_TO_LEFT -> MiddleToLeftSwitch() then Eject()
+            AutoMode.MIDDLE_TO_RIGHT -> MiddleToRightSwitch() then Eject()
         }.start()
     }
 }
@@ -107,18 +107,18 @@ private abstract class ReversePathFollowerBase(path: PathInitializer) : PathFoll
 
 private class CrossBaseline : PathFollowerBase(CrossBaselinePath)
 
-private class LeftToLeft : PathFollowerBase(LeftToLeftPath)
+private class LeftToLeftSwitch : PathFollowerBase(LeftToLeftSwitchPath)
 
-private class LeftToScale : PathFollowerBase(LeftToScalePath)
+private class LeftToLeftScale : PathFollowerBase(LeftToLeftScalePath)
 
-private class RightToRight : PathFollowerBase(RightToRightPath)
+private class RightToRightSwitch : PathFollowerBase(RightToRightSwitchPath)
 
-private class RightToScale : PathFollowerBase(RightToScalePath)
+private class RightToRightScale : PathFollowerBase(RightToRightScalePath)
 
-private class MiddleToLeft : PathFollowerBase(MiddleToLeftPath)
+private class MiddleToLeftSwitch : PathFollowerBase(MiddleToLeftSwitchPath)
 
-private class MiddleToRight : PathFollowerBase(MiddleToRightPath)
+private class MiddleToRightSwitch : PathFollowerBase(MiddleToRightSwitchPath)
 
-private class SwitchLeftToRear : ReversePathFollowerBase(SwitchLeftToRearPath)
+private class LeftSwitchToRear : ReversePathFollowerBase(LeftSwitchToRearPath)
 
-private class SwitchRightToRear : ReversePathFollowerBase(SwitchRightToRearPath)
+private class RightSwitchToRear : ReversePathFollowerBase(RightSwitchToRearPath)
