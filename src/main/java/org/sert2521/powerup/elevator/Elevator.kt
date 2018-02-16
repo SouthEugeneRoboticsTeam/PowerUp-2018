@@ -29,6 +29,7 @@ object Elevator : Subsystem() {
     const val BOTTOM_TARGET = 0
     const val SWITCH_TARGET = 1000
     const val SCALE_TARGET = 3400
+    const val SAFE_MAX_TARGET = 4000
 
     private val elevator = Talon(RIGHT_ELEVATOR_MOTOR).autoBreak() +
             Talon(LEFT_ELEVATOR_MOTOR).autoBreak().invert()
