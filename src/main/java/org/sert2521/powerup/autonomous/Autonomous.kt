@@ -24,6 +24,9 @@ object Auto : RobotLifecycle {
     }
 
     override fun onCreate() {
+        TestLeftPath
+        TestRightPath
+
         CrossBaselinePath
         LeftToLeftSwitchPath
         RightToRightSwitchPath
@@ -47,6 +50,8 @@ object Auto : RobotLifecycle {
             AutoMode.RIGHT_TO_SCALE -> RightToRightScale() then SendToScale() then Eject()
             AutoMode.MIDDLE_TO_LEFT -> MiddleToLeftSwitch() and SendToSwitch() then Eject()
             AutoMode.MIDDLE_TO_RIGHT -> MiddleToRightSwitch() and SendToSwitch() then Eject()
+            AutoMode.TEST_LEFT -> TestLeft()
+            AutoMode.TEST_RIGHT -> TestRight()
         }.start()
     }
 }
@@ -121,3 +126,7 @@ private class MiddleToRightSwitch : PathFollowerBase(MiddleToRightSwitchPath)
 private class LeftSwitchToRear : ReversePathFollowerBase(LeftSwitchToRearPath)
 
 private class RightSwitchToRear : ReversePathFollowerBase(RightSwitchToRearPath)
+
+private class TestLeft : PathFollowerBase(TestLeftPath)
+
+private class TestRight : PathFollowerBase(TestRightPath)

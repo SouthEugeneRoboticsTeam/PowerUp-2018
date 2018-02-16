@@ -45,7 +45,8 @@ enum class AutoMode {
     CROSS_BASELINE,
     LEFT_TO_LEFT, LEFT_TO_SCALE,
     RIGHT_TO_RIGHT, RIGHT_TO_SCALE,
-    MIDDLE_TO_LEFT, MIDDLE_TO_RIGHT;
+    MIDDLE_TO_LEFT, MIDDLE_TO_RIGHT,
+    TEST_LEFT, TEST_RIGHT;
 
     enum class Start {
         LEFT, MIDDLE, RIGHT
@@ -70,7 +71,9 @@ object Modes : RobotLifecycle {
             "Right to right switch" to AutoMode.RIGHT_TO_RIGHT,
             "Right to right scale" to AutoMode.RIGHT_TO_SCALE,
             "Middle to left switch" to AutoMode.MIDDLE_TO_LEFT,
-            "Middle to right switch" to AutoMode.MIDDLE_TO_RIGHT
+            "Middle to right switch" to AutoMode.MIDDLE_TO_RIGHT,
+            "Test left" to AutoMode.TEST_LEFT,
+            "Test right" to AutoMode.TEST_RIGHT
     )
     val autoModeChooserStart = SendableChooser(
             "Middle" to AutoMode.Start.MIDDLE,
