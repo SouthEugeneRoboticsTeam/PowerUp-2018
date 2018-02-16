@@ -45,14 +45,14 @@ abstract class SendToTarget(private val target: Int) : Command(5, TimeUnit.SECON
     }
 }
 
-class SendToBottom : SendToTarget(0) {
+class SendToBottom : SendToTarget(Elevator.BOTTOM_TARGET) {
     override val isAtTarget get() = Elevator.atBottom
 }
 
-class SendToSwitch : SendToTarget(1000) {
+class SendToSwitch : SendToTarget(Elevator.SWITCH_TARGET) {
     override val isAtTarget get() = Elevator.atSwitch
 }
 
-class SendToScale : SendToTarget(3400) {
+class SendToScale : SendToTarget(Elevator.SCALE_TARGET) {
     override val isAtTarget get() = Elevator.atTop
 }

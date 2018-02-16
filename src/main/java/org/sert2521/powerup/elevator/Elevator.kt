@@ -26,19 +26,23 @@ import org.sertain.hardware.setSelectedSensor
 import org.sertain.hardware.whenActive
 
 object Elevator : Subsystem() {
-    private val elevator =
-            Talon(RIGHT_ELEVATOR_MOTOR).autoBreak() + Talon(LEFT_ELEVATOR_MOTOR).autoBreak().invert()
+    const val BOTTOM_TARGET = 0
+    const val SWITCH_TARGET = 1000
+    const val SCALE_TARGET = 3400
+
+    private val elevator = Talon(RIGHT_ELEVATOR_MOTOR).autoBreak() +
+            Talon(LEFT_ELEVATOR_MOTOR).autoBreak().invert()
 
     val position get() = -elevator.getEncoderPosition()
+
+    val atBottom get() = bottomTrigger.get()
+    val atSwitch get() = switchTrigger.get()
+    val atTop get() = middleTrigger.get() && topTrigger.get()
 
     private val bottomTrigger = DigitalInput(BOTTOM_TRIGGER_PORT, true)
     private val middleTrigger = DigitalInput(MIDDLE_TRIGGER_PORT, true)
     private val topTrigger = DigitalInput(TOP_TRIGGER_PORT, true)
     private val switchTrigger = DigitalInput(SWITCH_TRIGGER_PORT, true)
-
-    val atBottom get() = bottomTrigger.get()
-    val atSwitch get() = switchTrigger.get()
-    val atTop get() = middleTrigger.get() && topTrigger.get()
 
     override val defaultCommand = Elevate()
 
@@ -70,9 +74,7 @@ object Elevator : Subsystem() {
         elevator.set(speed)
     }
 
-    fun reset() {
-        elevator.setEncoderPosition(0)
-    }
+    fun reset() = elevator.setEncoderPosition(0)
 
     fun stop() = elevator.stopMotor()
 }
