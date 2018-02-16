@@ -83,7 +83,7 @@ object LeftToLeftSwitchPath : PathBase() {
     override val points = arrayOf(
             0.0 with 3.0 angle 0.0,
             2.3 with 3.5 angle 0.0,
-            3.7 with 2.0 angle 100.0
+            3.7 with 2.0 angle 90.0
     )
 }
 
@@ -91,7 +91,7 @@ object RightToRightSwitchPath : PathBase() {
     override val points = arrayOf(
             0.0 with -3.0 angle 0.0,
             2.3 with -3.5 angle 0.0,
-            3.6 with -2.0 angle -100.0
+            3.6 with -2.0 angle -90.0
     )
 }
 
