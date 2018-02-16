@@ -26,8 +26,12 @@ import org.sertain.hardware.setSelectedSensor
 import org.sertain.hardware.whenActive
 
 object Elevator : Subsystem() {
-    private val elevator =
-            Talon(RIGHT_ELEVATOR_MOTOR).autoBreak() + Talon(LEFT_ELEVATOR_MOTOR).autoBreak().invert()
+    const val BOTTOM_TARGET = 0
+    const val SWITCH_TARGET = 1000
+    const val SCALE_TARGET = 3400
+
+    private val elevator = Talon(RIGHT_ELEVATOR_MOTOR).autoBreak() +
+            Talon(LEFT_ELEVATOR_MOTOR).autoBreak().invert()
 
     val position get() = -elevator.getEncoderPosition()
 
@@ -70,9 +74,7 @@ object Elevator : Subsystem() {
         elevator.set(speed)
     }
 
-    fun reset() {
-        elevator.setEncoderPosition(0)
-    }
+    fun reset() = elevator.setEncoderPosition(0)
 
     fun stop() = elevator.stopMotor()
 }

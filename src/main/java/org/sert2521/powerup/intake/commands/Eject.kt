@@ -15,7 +15,5 @@ class Eject : Command(1, TimeUnit.SECONDS) {
         return false
     }
 
-    override fun onDestroy() {
-        Intake.set(0.0)
-    }
+    override fun onDestroy() = Intake.set(0.0)
 }
