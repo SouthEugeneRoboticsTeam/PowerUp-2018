@@ -26,6 +26,9 @@ object Auto : RobotLifecycle {
 
     override fun onCreate() {
         thread {
+            TestLeftPath.logGeneratedPoints()
+            TestRightPath.logGeneratedPoints()
+
             CrossBaselinePath.logGeneratedPoints()
             LeftToLeftSwitchPath.logGeneratedPoints()
             RightToRightSwitchPath.logGeneratedPoints()
@@ -35,6 +38,7 @@ object Auto : RobotLifecycle {
             RightToRightScalePath.logGeneratedPoints()
             LeftSwitchToRearPath.logGeneratedPoints()
             RightSwitchToRearPath.logGeneratedPoints()
+
             println("Done generating paths")
         }
     }
@@ -51,6 +55,8 @@ object Auto : RobotLifecycle {
             AutoMode.RIGHT_TO_SCALE -> RightToRightScale() then SendToScale() then Eject()
             AutoMode.MIDDLE_TO_LEFT -> MiddleToLeftSwitch() and SendToSwitch() then Eject()
             AutoMode.MIDDLE_TO_RIGHT -> MiddleToRightSwitch() and SendToSwitch() then Eject()
+            AutoMode.TEST_LEFT -> TestLeft()
+            AutoMode.TEST_RIGHT -> TestRight()
         }.start()
     }
 }
@@ -66,10 +72,10 @@ private abstract class PathFollowerBase(protected val path: PathInitializer) : C
             reset()
 
             left.configureEncoder(0, ENCODER_TICKS_PER_REVOLUTION, WHEEL_DIAMETER)
-            left.configurePIDVA(1.0, 0.0, 0.0, 1 / MAX_VELOCITY, 0.0)
+            left.configurePIDVA(1.0, 0.0, 0.05, 1 / MAX_VELOCITY, 0.0)
 
             right.configureEncoder(0, ENCODER_TICKS_PER_REVOLUTION, WHEEL_DIAMETER)
-            right.configurePIDVA(1.0, 0.0, 0.0, 1 / MAX_VELOCITY, 0.0)
+            right.configurePIDVA(1.0, 0.0, 0.05, 1 / MAX_VELOCITY, 0.0)
         }
     }
 
@@ -78,23 +84,27 @@ private abstract class PathFollowerBase(protected val path: PathInitializer) : C
         val rightPosition = Drivetrain.rightPosition
 
         val angleDiff =
-                Pathfinder.boundHalfDegrees(path.heading - Drivetrain.ahrs.angle)
+                Pathfinder.boundHalfDegrees(180 - path.heading - Drivetrain.ahrs.angle)
         val turn = TURN_IMPORTANCE * angleDiff
         SmartDashboard.putNumber("Auto turn", turn)
         calculate(leftPosition, rightPosition, turn).apply { drive(first, second) }
+
+        if (!path.isFinished) {
+            println("Angle: expected=${180 - path.heading} actual=${Drivetrain.ahrs.angle}")
+        }
 
         return path.isFinished
     }
 
     protected open fun calculate(leftPosition: Int, rightPosition: Int, turn: Double) =
-            path.left.calculate(leftPosition) - turn to path.right.calculate(rightPosition) + turn
+            path.left.calculate(leftPosition) + turn to path.right.calculate(rightPosition) - turn
 
     protected open fun drive(left: Double, right: Double) {
         Drivetrain.drive(left, right)
     }
 
     private companion object {
-        const val TURN_IMPORTANCE = 0.00025
+        const val TURN_IMPORTANCE = 0.055
     }
 }
 
@@ -125,3 +135,7 @@ private class MiddleToRightSwitch : PathFollowerBase(MiddleToRightSwitchPath)
 private class LeftSwitchToRear : ReversePathFollowerBase(LeftSwitchToRearPath)
 
 private class RightSwitchToRear : ReversePathFollowerBase(RightSwitchToRearPath)
+
+private class TestLeft : PathFollowerBase(TestLeftPath)
+
+private class TestRight : PathFollowerBase(TestRightPath)
