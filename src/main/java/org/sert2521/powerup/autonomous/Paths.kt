@@ -7,6 +7,7 @@ import org.sert2521.powerup.util.MAX_ACCELERATION
 import org.sert2521.powerup.util.MAX_JERK
 import org.sert2521.powerup.util.MAX_VELOCITY
 import org.sert2521.powerup.util.WHEELBASE_WIDTH
+import org.sertain.RobotLifecycle
 import org.sertain.util.PathInitializer
 import org.sertain.util.TankModifier
 import org.sertain.util.TrajectoryConfig
@@ -16,6 +17,8 @@ import org.sertain.util.split
 import org.sertain.util.with
 import java.io.File
 import java.security.MessageDigest
+import java.util.concurrent.Executor
+import java.util.concurrent.Executors
 
 private const val SHA_256 = "SHA-256"
 private const val HEX_CHARS = "0123456789abcdef"
@@ -35,7 +38,7 @@ private fun sha256(vararg inputs: Any?): String {
     return result.toString()
 }
 
-abstract class PathBase : PathInitializer() {
+abstract class PathBase : PathInitializer(), RobotLifecycle {
     protected abstract val points: Array<Waypoint>
     override val trajectory: Trajectory by lazy {
         val pathFile = File(ROOT, "${hash()}.csv")
@@ -51,6 +54,17 @@ abstract class PathBase : PathInitializer() {
         TankModifier(trajectory, WHEELBASE_WIDTH).split()
     }
     private val trajectoryConfig = TrajectoryConfig(MAX_VELOCITY, MAX_ACCELERATION, MAX_JERK)
+
+    init {
+        RobotLifecycle.addListener(this)
+    }
+
+    override fun onCreate() {
+        executor.execute {
+            followers // Force initialization
+            logGeneratedPoints()
+        }
+    }
 
     private fun hash() = sha256(
             points.sumByDouble {
@@ -69,6 +83,7 @@ abstract class PathBase : PathInitializer() {
 
     private companion object {
         val ROOT = File("/home/lvuser/paths")
+        val executor: Executor = Executors.newSingleThreadExecutor()
     }
 }
 
