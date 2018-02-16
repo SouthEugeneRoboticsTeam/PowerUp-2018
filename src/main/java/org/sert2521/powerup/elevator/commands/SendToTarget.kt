@@ -41,7 +41,7 @@ abstract class SendToTarget(private val target: Int) : Command(5, TimeUnit.SECON
         const val MAX_DOWN_POWER = 0.2
 
         const val MIN_UP_POWER = 0.25
-        const val MIN_DOWN_POWER = -0.1
+        const val MIN_DOWN_POWER = -0.05
     }
 }
 
