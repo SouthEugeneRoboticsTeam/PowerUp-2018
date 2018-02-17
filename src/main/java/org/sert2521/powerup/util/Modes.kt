@@ -59,10 +59,10 @@ enum class AutoMode {
 
 object Modes : RobotLifecycle {
     val controlChooser = SendableChooser(
+            "Controller" to Control.Controller(),
             "Arcade" to Control.Arcade(),
             "Tank" to Control.Tank(),
-            "Curvature" to Control.Curvature(),
-            "Controller" to Control.Controller()
+            "Curvature" to Control.Curvature()
     )
     val autoModeChooser = SendableChooser(
             "Cross baseline" to AutoMode.CROSS_BASELINE,
