@@ -40,10 +40,10 @@ object Elevator : Subsystem() {
     val atSwitch get() = switchTrigger.get()
     val atTop get() = middleTrigger.get() && topTrigger.get()
 
-    private val bottomTrigger = DigitalInput(BOTTOM_TRIGGER_PORT, true)
-    private val middleTrigger = DigitalInput(MIDDLE_TRIGGER_PORT, true)
-    private val topTrigger = DigitalInput(TOP_TRIGGER_PORT, true)
-    private val switchTrigger = DigitalInput(SWITCH_TRIGGER_PORT, true)
+    private val bottomTrigger = DigitalInput(BOTTOM_TRIGGER_PORT).invert()
+    private val middleTrigger = DigitalInput(MIDDLE_TRIGGER_PORT).invert()
+    private val topTrigger = DigitalInput(TOP_TRIGGER_PORT).invert()
+    private val switchTrigger = DigitalInput(SWITCH_TRIGGER_PORT).invert()
 
     override val defaultCommand = Elevate()
 
