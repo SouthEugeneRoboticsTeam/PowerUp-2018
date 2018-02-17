@@ -1,8 +1,12 @@
 package org.sert2521.powerup.autonomous
 
+import edu.wpi.first.networktables.NetworkTableEntry
+import edu.wpi.first.wpilibj.SendableBase
+import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder
 import jaci.pathfinder.Pathfinder
 import jaci.pathfinder.Trajectory
 import jaci.pathfinder.Waypoint
+import jaci.pathfinder.followers.EncoderFollower
 import org.sert2521.powerup.util.MAX_ACCELERATION
 import org.sert2521.powerup.util.MAX_JERK
 import org.sert2521.powerup.util.MAX_VELOCITY
@@ -19,6 +23,9 @@ import java.io.File
 import java.security.MessageDigest
 import java.util.concurrent.Executor
 import java.util.concurrent.Executors
+import java.util.concurrent.locks.ReentrantReadWriteLock
+import kotlin.concurrent.read
+import kotlin.concurrent.write
 
 private const val SHA_256 = "SHA-256"
 private const val HEX_CHARS = "0123456789abcdef"
@@ -39,21 +46,26 @@ private fun sha256(vararg inputs: Any?): String {
 }
 
 abstract class PathBase : PathInitializer(), RobotLifecycle {
-    protected abstract val points: Array<Waypoint>
-    override val trajectory: Trajectory by lazy {
-        val pathFile = File(ROOT, "${hash()}.csv")
-        if (pathFile.exists()) {
-            Pathfinder.readFromCSV(pathFile)
-        } else {
-            trajectoryConfig.generate(points).apply {
-                if (ROOT.exists() || ROOT.mkdirs()) Pathfinder.writeToCSV(pathFile, this)
-            }
-        }
-    }
-    override val followers by lazy {
-        TankModifier(trajectory, WHEELBASE_WIDTH).split()
-    }
+    protected abstract var points: Array<Waypoint>
+
     private val trajectoryConfig = TrajectoryConfig(MAX_VELOCITY, MAX_ACCELERATION, MAX_JERK)
+    private val defaultTrajectory by lazy { newTrajectory() }
+    private val defaultFollowers by lazy { newFollower() }
+    private var liveTrajectory: Trajectory? = null
+    private var liveFollowers: Pair<EncoderFollower, EncoderFollower>? = null
+
+    private val lock = ReentrantReadWriteLock()
+    override val trajectory get() = lock.read { liveTrajectory } ?: defaultTrajectory
+    override val followers get() = lock.read { liveFollowers } ?: defaultFollowers
+
+    private var sendableEntry: NetworkTableEntry? = null
+    private var latestEntry: String? = null
+
+    private val pathName: String = javaClass.simpleName
+    private val humanReadablePoints
+        get() = points.joinToString(" - ") {
+            listOf(it.x, it.y, Math.toDegrees(it.angle)).joinToString()
+        }
 
     init {
         RobotLifecycle.addListener(this)
@@ -61,25 +73,90 @@ abstract class PathBase : PathInitializer(), RobotLifecycle {
 
     override fun onCreate() {
         executor.execute {
+            println("Generating path for $pathName...")
             followers // Force initialization
             logGeneratedPoints()
+            println("Path generation complete for $pathName.")
+        }
+
+        object : SendableBase() {
+            init {
+                name = pathName
+            }
+
+            override fun initSendable(builder: SendableBuilder) {
+                builder.setSmartDashboardType("String Chooser")
+                sendableEntry = builder.getEntry("selected").also {
+                    it.setDefaultString(humanReadablePoints)
+                }
+            }
         }
     }
 
-    private fun hash() = sha256(
-            points.sumByDouble {
-                var result = it.x
-                result = 31.0 * result + it.y
-                result = 31.0 * result + it.angle
-                result
-            },
-            trajectoryConfig.max_velocity,
-            trajectoryConfig.max_acceleration,
-            trajectoryConfig.max_jerk,
-            trajectoryConfig.dt,
-            trajectoryConfig.fit,
-            trajectoryConfig.sample_count
-    )
+    override fun onStart() {
+        val current = sendableEntry?.getString(null).let {
+            if (it.isNullOrBlank()) null else it
+        }
+        if (latestEntry == current) return
+        latestEntry = current
+
+        try {
+            this.points = current!!.replace(" ", "").split("-").map {
+                val flatPoint = it.split(",")
+                check(flatPoint.size == 3) { "Points must contain an x, y, and angle component." }
+                Waypoint(
+                        flatPoint[0].toDouble(),
+                        flatPoint[1].toDouble(),
+                        Pathfinder.d2r(flatPoint[2].toDouble())
+                )
+            }.toTypedArray()
+
+            executor.execute {
+                println("Generating path for $pathName...")
+                println("Using points: $humanReadablePoints")
+                lock.write {
+                    liveTrajectory = newTrajectory()
+                    liveFollowers = newFollower()
+                }
+                logGeneratedPoints()
+                println("Path generation complete for $pathName.")
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            lock.write {
+                liveTrajectory = null
+                liveFollowers = null
+            }
+        }
+    }
+
+    private fun newTrajectory(): Trajectory {
+        fun hash() = sha256(
+                points.sumByDouble {
+                    var result = it.x
+                    result = 31.0 * result + it.y
+                    result = 31.0 * result + it.angle
+                    result
+                },
+                trajectoryConfig.max_velocity,
+                trajectoryConfig.max_acceleration,
+                trajectoryConfig.max_jerk,
+                trajectoryConfig.dt,
+                trajectoryConfig.fit,
+                trajectoryConfig.sample_count
+        )
+
+        val pathFile = File(ROOT, "${hash()}.csv")
+        return if (pathFile.exists()) {
+            Pathfinder.readFromCSV(pathFile)
+        } else {
+            trajectoryConfig.generate(points).apply {
+                if (ROOT.exists() || ROOT.mkdirs()) Pathfinder.writeToCSV(pathFile, this)
+            }
+        }
+    }
+
+    private fun newFollower() = TankModifier(trajectory, WHEELBASE_WIDTH).split()
 
     private companion object {
         val ROOT = File("/home/lvuser/paths")
@@ -88,14 +165,14 @@ abstract class PathBase : PathInitializer(), RobotLifecycle {
 }
 
 object CrossBaselinePath : PathBase() {
-    override val points = arrayOf(
+    override var points = arrayOf(
             0.0 with 0.0 angle 0.0,
             2.7 with 0.0 angle 0.0
     )
 }
 
 object LeftToLeftSwitchPath : PathBase() {
-    override val points = arrayOf(
+    override var points = arrayOf(
             0.0 with 3.0 angle 0.0,
             2.3 with 3.4 angle 0.0,
             3.5 with 2.0 angle 90.0
@@ -103,7 +180,7 @@ object LeftToLeftSwitchPath : PathBase() {
 }
 
 object RightToRightSwitchPath : PathBase() {
-    override val points = arrayOf(
+    override var points = arrayOf(
             0.0 with -3.0 angle 0.0,
             2.3 with -3.2 angle 0.0,
             3.5 with -1.6 angle -90.0
@@ -111,21 +188,21 @@ object RightToRightSwitchPath : PathBase() {
 }
 
 object MiddleToLeftSwitchPath : PathBase() {
-    override val points = arrayOf(
+    override var points = arrayOf(
             0.0 with 0.2 angle 0.0,
             2.9 with 1.3 angle 0.0
     )
 }
 
 object MiddleToRightSwitchPath : PathBase() {
-    override val points = arrayOf(
+    override var points = arrayOf(
             0.0 with .2 angle 0.0,
             2.7 with -0.5 angle 20.0
     )
 }
 
 object LeftToLeftScalePath : PathBase() {
-    override val points = arrayOf(
+    override var points = arrayOf(
             0.0 with 3.0 angle 0.0,
             6.2 with 3.1 angle 0.0,
             7.5 with 2.0 angle 90.0
@@ -133,7 +210,7 @@ object LeftToLeftScalePath : PathBase() {
 }
 
 object RightToRightScalePath : PathBase() {
-    override val points = arrayOf(
+    override var points = arrayOf(
             0.0 with -3.0 angle 0.0,
             6.2 with -3.1 angle 0.0,
             7.5 with -2.0 angle -90.0
@@ -141,7 +218,7 @@ object RightToRightScalePath : PathBase() {
 }
 
 object LeftSwitchToRearPath : PathBase() {
-    override val points = arrayOf(
+    override var points = arrayOf(
             0.0 with 2.0 angle 90.0,
             0.5 with 2.75 angle 0.0,
             1.0 with 0.0 angle -90.0
@@ -149,7 +226,7 @@ object LeftSwitchToRearPath : PathBase() {
 }
 
 object RightSwitchToRearPath : PathBase() {
-    override val points = arrayOf(
+    override var points = arrayOf(
             4.0 with 2.0 angle 90.0,
             3.5 with 2.75 angle 0.0,
             2.25 with 1.5 angle -90.0
@@ -157,7 +234,7 @@ object RightSwitchToRearPath : PathBase() {
 }
 
 object ScaleLeftToRearPath : PathBase() {
-    override val points = arrayOf(
+    override var points = arrayOf(
             0.0 with -2.3 angle 90.0,
             1.5 with -3.2 angle 0.0,
             2.6 with -1.8 angle -90.0
@@ -165,7 +242,7 @@ object ScaleLeftToRearPath : PathBase() {
 }
 
 object ScaleRightToRearPath : PathBase() {
-    override val points = arrayOf(
+    override var points = arrayOf(
             0.0 with 2.3 angle -90.0,
             1.5 with 3.2 angle 0.0,
             2.6 with 1.8 angle 90.0
@@ -173,7 +250,7 @@ object ScaleRightToRearPath : PathBase() {
 }
 
 object SwitchLeftToScalePath : PathBase() {
-    override val points = arrayOf(
+    override var points = arrayOf(
             3.1 with -1.8 angle -90.0,
             1.5 with -3.7 angle 0.0,
             0.0 with -2.3 angle -90.0
@@ -181,7 +258,7 @@ object SwitchLeftToScalePath : PathBase() {
 }
 
 object SwitchRightToScalePath : PathBase() {
-    override val points = arrayOf(
+    override var points = arrayOf(
             3.1 with 1.8 angle 90.0,
             1.5 with 3.7 angle 0.0,
             0.0 with 2.3 angle 90.0
@@ -189,14 +266,14 @@ object SwitchRightToScalePath : PathBase() {
 }
 
 object TestLeftPath : PathBase() {
-    override val points = arrayOf(
+    override var points = arrayOf(
             0.0 with 0.0 angle 0.0,
             2.0 with 2.0 angle 90.0
     )
 }
 
 object TestRightPath : PathBase() {
-    override val points = arrayOf(
+    override var points = arrayOf(
             0.0 with 0.0 angle 0.0,
             2.0 with -2.0 angle -90.0
     )
