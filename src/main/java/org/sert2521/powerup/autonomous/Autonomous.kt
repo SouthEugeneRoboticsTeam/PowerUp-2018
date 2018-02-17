@@ -36,6 +36,10 @@ object Auto : RobotLifecycle {
         RightToRightScalePath
         LeftSwitchToRearPath
         RightSwitchToRearPath
+        ScaleLeftToRearPath
+        ScaleRightToRearPath
+        SwitchLeftToScalePath
+        SwitchRightToScalePath
     }
 
     override fun onAutoStart() {
@@ -99,7 +103,7 @@ private abstract class PathFollowerBase(protected val path: PathInitializer) : C
     }
 
     private companion object {
-        const val TURN_IMPORTANCE = 0.055
+        const val TURN_IMPORTANCE = 0.0005
     }
 }
 
