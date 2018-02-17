@@ -91,9 +91,9 @@ object Modes : RobotLifecycle {
     }
 
     override fun onCreate() {
-        SmartDashboard.putData("Control mode", controlChooser)
-        SmartDashboard.putData("Auto mode", autoModeChooser)
-        SmartDashboard.putData("Auto mode start position", autoModeChooserStart)
-        SmartDashboard.putData("Auto mode end result", autoModeChooserEnd)
+        SmartDashboard.putData("Control Mode", controlChooser)
+        SmartDashboard.putData("Auto Mode", autoModeChooser)
+        SmartDashboard.putData("Auto Mode Start Position", autoModeChooserStart)
+        SmartDashboard.putData("Auto Mode End Result", autoModeChooserEnd)
     }
 }

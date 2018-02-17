@@ -18,7 +18,7 @@ object Intake : Subsystem() {
     override val defaultCommand = TeleopIntake()
 
     fun set(speed: Double) {
-        SmartDashboard.putNumber("Intake speed", speed)
+        SmartDashboard.putNumber("Intake Speed", speed)
         left.set(speed)
         right.set(speed)
     }

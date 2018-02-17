@@ -81,7 +81,7 @@ private abstract class PathFollowerBase(protected val path: PathInitializer) : C
         val angleDiff =
                 Pathfinder.boundHalfDegrees(path.heading - Drivetrain.ahrs.angle)
         val turn = TURN_IMPORTANCE * angleDiff
-        SmartDashboard.putNumber("Auto turn", turn)
+        SmartDashboard.putNumber("Auto Turn", turn)
         calculate(leftPosition, rightPosition, turn).apply { drive(first, second) }
 
         if (!path.isFinished) {

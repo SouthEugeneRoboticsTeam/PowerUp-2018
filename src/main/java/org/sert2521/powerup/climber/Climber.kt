@@ -17,7 +17,7 @@ object Climber : Subsystem() {
     override val defaultCommand = Climb()
 
     fun set(speed: Double) {
-        SmartDashboard.putNumber("Climber speed", speed)
+        SmartDashboard.putNumber("Climber Speed", speed)
         climber.set(speed)
     }
 

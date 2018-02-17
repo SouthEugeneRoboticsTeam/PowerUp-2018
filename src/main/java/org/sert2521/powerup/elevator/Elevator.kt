@@ -71,7 +71,7 @@ object Elevator : Subsystem() {
     }
 
     fun set(speed: Double) {
-        SmartDashboard.putNumber("Elevator speed", speed)
+        SmartDashboard.putNumber("Elevator Speed", speed)
         elevator.set(speed)
     }
 

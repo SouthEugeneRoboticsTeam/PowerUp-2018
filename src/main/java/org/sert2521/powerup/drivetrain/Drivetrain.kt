@@ -50,10 +50,10 @@ object Drivetrain : Subsystem() {
     }
 
     override fun execute() {
-        SmartDashboard.putNumber("Drivetrain left encoder position", leftPosition.toDouble())
-        SmartDashboard.putNumber("Drivetrain right encoder position", rightPosition.toDouble())
-        SmartDashboard.putNumber("Drivetrain pitch", ahrs.pitch.toDouble())
-        SmartDashboard.putNumber("Drivetrain roll", ahrs.roll.toDouble())
+        SmartDashboard.putNumber("Drivetrain Left Position", leftPosition.toDouble())
+        SmartDashboard.putNumber("Drivetrain Right Position", rightPosition.toDouble())
+        SmartDashboard.putNumber("Drivetrain Pitch", ahrs.pitch.toDouble())
+        SmartDashboard.putNumber("Drivetrain Roll", ahrs.roll.toDouble())
         SmartDashboard.putData("AHRS", ahrs)
     }
 
@@ -87,13 +87,13 @@ object Drivetrain : Subsystem() {
     fun stop() = drive.stopMotor()
 
     private fun logArcade(speed: Double, rotation: Double, quickTurn: Boolean? = null) {
-        SmartDashboard.putNumber("Drivetrain speed", speed)
-        SmartDashboard.putNumber("Drivetrain rotation", rotation)
-        quickTurn?.let { SmartDashboard.putBoolean("Drivetrain quick turn", it) }
+        SmartDashboard.putNumber("Drivetrain Speed", speed)
+        SmartDashboard.putNumber("Drivetrain Rotation", rotation)
+        quickTurn?.let { SmartDashboard.putBoolean("Drivetrain Quick Turn", it) }
     }
 
     private fun logTank(left: Double, right: Double) {
-        SmartDashboard.putNumber("Drivetrain left speed", left)
-        SmartDashboard.putNumber("Drivetrain right speed", right)
+        SmartDashboard.putNumber("Drivetrain Left Speed", left)
+        SmartDashboard.putNumber("Drivetrain Right Speed", right)
     }
 }
