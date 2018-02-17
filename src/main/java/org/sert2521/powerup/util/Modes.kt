@@ -9,23 +9,23 @@ val controlMode: Control get() = Modes.controlChooser.selected
 
 val autoMode: AutoMode
     get() = when (MatchData.getOwnedSide(MatchData.GameFeature.SWITCH_NEAR)) {
-        MatchData.OwnedSide.LEFT -> when (Modes.autoModeChooserStart) {
+        MatchData.OwnedSide.LEFT -> when (Modes.autoModeChooserStart.selected) {
             AutoMode.Start.MIDDLE -> AutoMode.MIDDLE_TO_LEFT
-            AutoMode.Start.LEFT -> when (Modes.autoModeChooserEnd) {
+            AutoMode.Start.LEFT -> when (Modes.autoModeChooserEnd.selected) {
                 AutoMode.End.BASELINE -> AutoMode.CROSS_BASELINE
                 AutoMode.End.SWITCH -> AutoMode.LEFT_TO_LEFT
                 AutoMode.End.SCALE -> AutoMode.LEFT_TO_SCALE
-                else -> error("Unknown mode: ${Modes.autoModeChooserEnd}")
+                else -> error("Unknown mode: ${Modes.autoModeChooserEnd.selected}")
             }
             else -> AutoMode.CROSS_BASELINE
         }
-        MatchData.OwnedSide.RIGHT -> when (Modes.autoModeChooserStart) {
+        MatchData.OwnedSide.RIGHT -> when (Modes.autoModeChooserStart.selected) {
             AutoMode.Start.MIDDLE -> AutoMode.MIDDLE_TO_RIGHT
-            AutoMode.Start.RIGHT -> when (Modes.autoModeChooserEnd) {
+            AutoMode.Start.RIGHT -> when (Modes.autoModeChooserEnd.selected) {
                 AutoMode.End.BASELINE -> AutoMode.CROSS_BASELINE
                 AutoMode.End.SWITCH -> AutoMode.RIGHT_TO_RIGHT
                 AutoMode.End.SCALE -> AutoMode.RIGHT_TO_SCALE
-                else -> error("Unknown mode: ${Modes.autoModeChooserEnd}")
+                else -> error("Unknown mode: ${Modes.autoModeChooserEnd.selected}")
             }
             else -> AutoMode.CROSS_BASELINE
         }
