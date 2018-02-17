@@ -67,10 +67,10 @@ private abstract class PathFollowerBase(protected val path: PathInitializer) : C
             reset()
 
             left.configureEncoder(0, ENCODER_TICKS_PER_REVOLUTION, WHEEL_DIAMETER)
-            left.configurePIDVA(1.0, 0.0, 0.0, 1 / MAX_VELOCITY, 0.0)
+            left.configurePIDVA(1.0, 0.0, 0.05, 1 / MAX_VELOCITY, 0.0)
 
             right.configureEncoder(0, ENCODER_TICKS_PER_REVOLUTION, WHEEL_DIAMETER)
-            right.configurePIDVA(1.0, 0.0, 0.0, 1 / MAX_VELOCITY, 0.0)
+            right.configurePIDVA(1.0, 0.0, 0.05, 1 / MAX_VELOCITY, 0.0)
         }
     }
 
@@ -84,6 +84,10 @@ private abstract class PathFollowerBase(protected val path: PathInitializer) : C
         SmartDashboard.putNumber("Auto turn", turn)
         calculate(leftPosition, rightPosition, turn).apply { drive(first, second) }
 
+        if (!path.isFinished) {
+            println("Angle: expected=${path.heading} actual=${Drivetrain.ahrs.angle}")
+        }
+
         return path.isFinished
     }
 
@@ -95,7 +99,7 @@ private abstract class PathFollowerBase(protected val path: PathInitializer) : C
     }
 
     private companion object {
-        const val TURN_IMPORTANCE = 0.00025
+        const val TURN_IMPORTANCE = 0.055
     }
 }
 
