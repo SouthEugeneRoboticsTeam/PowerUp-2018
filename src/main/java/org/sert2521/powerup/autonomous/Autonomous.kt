@@ -46,14 +46,14 @@ object Auto : RobotLifecycle {
         println("Following: $autoMode")
         when (autoMode) {
             AutoMode.CROSS_BASELINE -> CrossBaseline()
-            AutoMode.LEFT_TO_LEFT -> LeftToLeftSwitch() and SendToSwitch() then Eject() then
+            AutoMode.LEFT_TO_LEFT_SWITCH -> LeftToLeftSwitch() and SendToSwitch() then Eject() then
                     LeftSwitchToRear() then DriveToAngle(-90.0)
-            AutoMode.LEFT_TO_SCALE -> LeftToLeftScale() then SendToScale() then Eject()
-            AutoMode.RIGHT_TO_RIGHT -> RightToRightSwitch() and SendToSwitch() then Eject() then
-                    RightSwitchToRear() then DriveToAngle(90.0)
-            AutoMode.RIGHT_TO_SCALE -> RightToRightScale() then SendToScale() then Eject()
-            AutoMode.MIDDLE_TO_LEFT -> MiddleToLeftSwitch() and SendToSwitch() then Eject()
-            AutoMode.MIDDLE_TO_RIGHT -> MiddleToRightSwitch() and SendToSwitch() then Eject()
+            AutoMode.RIGHT_TO_RIGHT_SWITCH -> RightToRightSwitch() and SendToSwitch() then Eject() then
+                RightSwitchToRear() then DriveToAngle(90.0)
+            AutoMode.MIDDLE_TO_LEFT_SWITCH -> MiddleToLeftSwitch() and SendToSwitch() then Eject()
+            AutoMode.MIDDLE_TO_RIGHT_SWITCH -> MiddleToRightSwitch() and SendToSwitch() then Eject()
+            AutoMode.LEFT_TO_LEFT_SCALE -> LeftToLeftScale() then SendToScale() then Eject()
+            AutoMode.RIGHT_TO_RIGHT_SCALE -> RightToRightScale() then SendToScale() then Eject()
             AutoMode.TEST_LEFT -> TestLeft()
             AutoMode.TEST_RIGHT -> TestRight()
         }.start()
@@ -121,15 +121,15 @@ private class CrossBaseline : PathFollowerBase(CrossBaselinePath)
 
 private class LeftToLeftSwitch : PathFollowerBase(LeftToLeftSwitchPath)
 
-private class LeftToLeftScale : PathFollowerBase(LeftToLeftScalePath)
-
 private class RightToRightSwitch : PathFollowerBase(RightToRightSwitchPath)
-
-private class RightToRightScale : PathFollowerBase(RightToRightScalePath)
 
 private class MiddleToLeftSwitch : PathFollowerBase(MiddleToLeftSwitchPath)
 
 private class MiddleToRightSwitch : PathFollowerBase(MiddleToRightSwitchPath)
+
+private class LeftToLeftScale : PathFollowerBase(LeftToLeftScalePath)
+
+private class RightToRightScale : PathFollowerBase(RightToRightScalePath)
 
 private class LeftSwitchToRear : ReversePathFollowerBase(LeftSwitchToRearPath)
 

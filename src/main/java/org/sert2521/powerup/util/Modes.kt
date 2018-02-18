@@ -10,21 +10,21 @@ val controlMode: Control get() = Modes.controlChooser.selected
 val autoMode: AutoMode
     get() = when (MatchData.getOwnedSide(MatchData.GameFeature.SWITCH_NEAR)) {
         MatchData.OwnedSide.LEFT -> when (Modes.autoModeChooserStart.selected) {
-            AutoMode.Start.MIDDLE -> AutoMode.MIDDLE_TO_LEFT
+            AutoMode.Start.MIDDLE -> AutoMode.MIDDLE_TO_LEFT_SWITCH
             AutoMode.Start.LEFT -> when (Modes.autoModeChooserEnd.selected) {
                 AutoMode.End.BASELINE -> AutoMode.CROSS_BASELINE
-                AutoMode.End.SWITCH -> AutoMode.LEFT_TO_LEFT
-                AutoMode.End.SCALE -> AutoMode.LEFT_TO_SCALE
+                AutoMode.End.SWITCH -> AutoMode.LEFT_TO_LEFT_SWITCH
+                AutoMode.End.SCALE -> AutoMode.LEFT_TO_LEFT_SCALE
                 else -> error("Unknown mode: ${Modes.autoModeChooserEnd.selected}")
             }
             else -> AutoMode.CROSS_BASELINE
         }
         MatchData.OwnedSide.RIGHT -> when (Modes.autoModeChooserStart.selected) {
-            AutoMode.Start.MIDDLE -> AutoMode.MIDDLE_TO_RIGHT
+            AutoMode.Start.MIDDLE -> AutoMode.MIDDLE_TO_RIGHT_SWITCH
             AutoMode.Start.RIGHT -> when (Modes.autoModeChooserEnd.selected) {
                 AutoMode.End.BASELINE -> AutoMode.CROSS_BASELINE
-                AutoMode.End.SWITCH -> AutoMode.RIGHT_TO_RIGHT
-                AutoMode.End.SCALE -> AutoMode.RIGHT_TO_SCALE
+                AutoMode.End.SWITCH -> AutoMode.RIGHT_TO_RIGHT_SWITCH
+                AutoMode.End.SCALE -> AutoMode.RIGHT_TO_RIGHT_SCALE
                 else -> error("Unknown mode: ${Modes.autoModeChooserEnd.selected}")
             }
             else -> AutoMode.CROSS_BASELINE
@@ -43,9 +43,9 @@ sealed class Control {
 
 enum class AutoMode {
     CROSS_BASELINE,
-    LEFT_TO_LEFT, LEFT_TO_SCALE,
-    RIGHT_TO_RIGHT, RIGHT_TO_SCALE,
-    MIDDLE_TO_LEFT, MIDDLE_TO_RIGHT,
+    LEFT_TO_LEFT_SWITCH, RIGHT_TO_RIGHT_SWITCH,
+    MIDDLE_TO_LEFT_SWITCH, MIDDLE_TO_RIGHT_SWITCH,
+    LEFT_TO_LEFT_SCALE, RIGHT_TO_RIGHT_SCALE,
     TEST_LEFT, TEST_RIGHT;
 
     enum class Start {
@@ -59,31 +59,32 @@ enum class AutoMode {
 
 object Modes : RobotLifecycle {
     val controlChooser = SendableChooser(
-            "Controller" to Control.Controller(),
-            "Arcade" to Control.Arcade(),
-            "Tank" to Control.Tank(),
-            "Curvature" to Control.Curvature()
+            "CONTROLLER" to Control.Controller(),
+            "ARCADE" to Control.Arcade(),
+            "TANK" to Control.Tank(),
+            "CURVATURE" to Control.Curvature()
     )
     val autoModeChooser = SendableChooser(
-            "Cross baseline" to AutoMode.CROSS_BASELINE,
-            "Left to left switch" to AutoMode.LEFT_TO_LEFT,
-            "Left to left scale" to AutoMode.LEFT_TO_SCALE,
-            "Right to right switch" to AutoMode.RIGHT_TO_RIGHT,
-            "Right to right scale" to AutoMode.RIGHT_TO_SCALE,
-            "Middle to left switch" to AutoMode.MIDDLE_TO_LEFT,
-            "Middle to right switch" to AutoMode.MIDDLE_TO_RIGHT,
-            "Test left" to AutoMode.TEST_LEFT,
-            "Test right" to AutoMode.TEST_RIGHT
+            "CROSS BASELINE" to AutoMode.CROSS_BASELINE,
+            "LEFT TO LEFT SWITCH" to AutoMode.LEFT_TO_LEFT_SWITCH,
+            "RIGHT TO RIGHT SWITCH" to AutoMode.RIGHT_TO_RIGHT_SWITCH,
+            "MIDDLE TO LEFT SWITCH" to AutoMode.MIDDLE_TO_LEFT_SWITCH,
+            "MIDDLE TO RIGHT SWITCH" to AutoMode.MIDDLE_TO_RIGHT_SWITCH,
+            "LEFT TO LEFT SCALE" to AutoMode.LEFT_TO_LEFT_SCALE,
+            "RIGHT TO LEFT SCALE" to AutoMode.RIGHT_TO_RIGHT_SCALE,
+
+            "TEST LEFT" to AutoMode.TEST_LEFT,
+            "TEST RIGHT" to AutoMode.TEST_RIGHT
     )
     val autoModeChooserStart = SendableChooser(
-            "Middle" to AutoMode.Start.MIDDLE,
-            "Left" to AutoMode.Start.LEFT,
-            "Right" to AutoMode.Start.RIGHT
+            "MIDDLE" to AutoMode.Start.MIDDLE,
+            "LEFT" to AutoMode.Start.LEFT,
+            "RIGHT" to AutoMode.Start.RIGHT
     )
     val autoModeChooserEnd = SendableChooser(
-            "Baseline" to AutoMode.End.BASELINE,
-            "Switch" to AutoMode.End.SWITCH,
-            "Scale" to AutoMode.End.SCALE
+            "BASELINE" to AutoMode.End.BASELINE,
+            "SWITCH" to AutoMode.End.SWITCH,
+            "SCALE" to AutoMode.End.SCALE
     )
 
     init {
