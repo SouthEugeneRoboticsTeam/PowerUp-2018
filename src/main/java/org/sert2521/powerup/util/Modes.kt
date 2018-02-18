@@ -59,32 +59,32 @@ enum class AutoMode {
 
 object Modes : RobotLifecycle {
     val controlChooser = SendableChooser(
-            "CONTROLLER" to Control.Controller(),
-            "ARCADE" to Control.Arcade(),
-            "TANK" to Control.Tank(),
-            "CURVATURE" to Control.Curvature()
+            "Controller" to Control.Controller(),
+            "Arcade" to Control.Arcade(),
+            "Tank" to Control.Tank(),
+            "Curvature" to Control.Curvature()
     )
     val autoModeChooser = SendableChooser(
-            "CROSS BASELINE" to AutoMode.CROSS_BASELINE,
-            "LEFT TO LEFT SWITCH" to AutoMode.LEFT_TO_LEFT_SWITCH,
-            "RIGHT TO RIGHT SWITCH" to AutoMode.RIGHT_TO_RIGHT_SWITCH,
-            "MIDDLE TO LEFT SWITCH" to AutoMode.MIDDLE_TO_LEFT_SWITCH,
-            "MIDDLE TO RIGHT SWITCH" to AutoMode.MIDDLE_TO_RIGHT_SWITCH,
-            "LEFT TO LEFT SCALE" to AutoMode.LEFT_TO_LEFT_SCALE,
-            "RIGHT TO LEFT SCALE" to AutoMode.RIGHT_TO_RIGHT_SCALE,
+            "Cross Baseline" to AutoMode.CROSS_BASELINE,
+            "Left to Left Switch" to AutoMode.LEFT_TO_LEFT_SWITCH,
+            "Right to Right Switch" to AutoMode.RIGHT_TO_RIGHT_SWITCH,
+            "Middle to Left Switch" to AutoMode.MIDDLE_TO_LEFT_SWITCH,
+            "Middle to Right Switch" to AutoMode.MIDDLE_TO_RIGHT_SWITCH,
+            "Left to Left Switch" to AutoMode.LEFT_TO_LEFT_SCALE,
+            "Right to Left Switch" to AutoMode.RIGHT_TO_RIGHT_SCALE,
 
-            "TEST LEFT" to AutoMode.TEST_LEFT,
-            "TEST RIGHT" to AutoMode.TEST_RIGHT
+            "Test Left" to AutoMode.TEST_LEFT,
+            "Test Right" to AutoMode.TEST_RIGHT
     )
     val autoModeChooserStart = SendableChooser(
-            "MIDDLE" to AutoMode.Start.MIDDLE,
-            "LEFT" to AutoMode.Start.LEFT,
-            "RIGHT" to AutoMode.Start.RIGHT
+            "Middle" to AutoMode.Start.MIDDLE,
+            "Left" to AutoMode.Start.LEFT,
+            "Right" to AutoMode.Start.RIGHT
     )
     val autoModeChooserEnd = SendableChooser(
-            "BASELINE" to AutoMode.End.BASELINE,
-            "SWITCH" to AutoMode.End.SWITCH,
-            "SCALE" to AutoMode.End.SCALE
+            "Baseline" to AutoMode.End.BASELINE,
+            "Switch" to AutoMode.End.SWITCH,
+            "Scale" to AutoMode.End.SCALE
     )
 
     init {
