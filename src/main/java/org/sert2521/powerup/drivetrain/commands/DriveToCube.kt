@@ -8,13 +8,17 @@ import org.sert2521.powerup.drivetrain.commands.DriveToAngle
 
 class DriveToCube : Command() {
     private val table = NetworkTableInstance.getDefault().getTable("Vision")
+    private var previousDegreeValue = 0.0
 
     override fun execute(): Boolean {
         if (!table.getEntry("cube_found").getBoolean(false)) return true
 
         val degrees = table.getEntry("cube_offset_x").getDouble(0.0) * DEGREES_PER_PIXEL
 
-        DriveToAngle(degrees, BASE_SPEED).start()
+        if (degrees != previousDegreeValue) {
+            DriveToAngle(degrees, BASE_SPEED).start()
+            previousDegreeValue = degrees
+        }
 
         return false
     }
