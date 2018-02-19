@@ -75,9 +75,7 @@ object Auto : RobotLifecycle {
                     SendToSwitch() then EjectBlock()
             AutoMode.TEST_LEFT -> TestLeft()
             AutoMode.TEST_RIGHT -> TestRight()
-        }.also {
-            it.start()
-        }
+        }.start()
     }
 }
 
@@ -148,7 +146,6 @@ private class LeftToLeftScale : PathFollowerBase(LeftToLeftScalePath)
 
 private class RightToRightScale : PathFollowerBase(RightToRightScalePath)
 
-// TODO tune
 private class LeftSwitchToRear : ReversePathFollowerBase(LeftSwitchToRearPath)
 
 // TODO tune
