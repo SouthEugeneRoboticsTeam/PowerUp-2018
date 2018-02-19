@@ -6,7 +6,7 @@ import org.sert2521.powerup.drivetrain.Drivetrain
 import org.sert2521.powerup.drivetrain.commands.DriveToAngle
 import org.sert2521.powerup.elevator.commands.SendToScale
 import org.sert2521.powerup.elevator.commands.SendToSwitch
-import org.sert2521.powerup.intake.commands.Eject
+import org.sert2521.powerup.intake.commands.EjectBlock
 import org.sert2521.powerup.util.AutoMode
 import org.sert2521.powerup.util.ENCODER_TICKS_PER_REVOLUTION
 import org.sert2521.powerup.util.MAX_VELOCITY
@@ -47,15 +47,27 @@ object Auto : RobotLifecycle {
         when (autoMode) {
             AutoMode.CROSS_BASELINE -> CrossBaseline()
             AutoMode.LEFT_TO_LEFT_SWITCH -> LeftToLeftSwitch() and SendToSwitch() then
-                    Eject() then LeftSwitchToRear() then DriveToAngle(-90.0)
+                    EjectBlock() then LeftSwitchToRear() then DriveToAngle(-90.0)
             AutoMode.RIGHT_TO_RIGHT_SWITCH -> RightToRightSwitch() and SendToSwitch() then
-                    Eject() then RightSwitchToRear() then DriveToAngle(90.0)
-            AutoMode.MIDDLE_TO_LEFT_SWITCH -> MiddleToLeftSwitch() and SendToSwitch() then Eject()
-            AutoMode.MIDDLE_TO_RIGHT_SWITCH -> MiddleToRightSwitch() and SendToSwitch() then Eject()
-            AutoMode.LEFT_TO_LEFT_SCALE -> LeftToLeftScale() and SendToSwitch() then
-                    SendToScale() then Eject()
-            AutoMode.RIGHT_TO_RIGHT_SCALE -> RightToRightScale() and SendToSwitch() then
-                    SendToScale() then Eject()
+                    EjectBlock() then RightSwitchToRear() then DriveToAngle(90.0)
+            AutoMode.MIDDLE_TO_LEFT_SWITCH -> MiddleToLeftSwitch() and SendToSwitch() then
+                    EjectBlock()
+            AutoMode.MIDDLE_TO_RIGHT_SWITCH -> MiddleToRightSwitch() and SendToSwitch() then
+                    EjectBlock()
+            AutoMode.LEFT_TO_LEFT_SCALE_PICKUP -> LeftToLeftScale() and SendToSwitch() then
+                    SendToScale() then EjectBlock() then
+                    DriveToAngle(135.0) /* TODO then NavigateToCube() then IntakeBlock()*/
+            AutoMode.RIGHT_TO_RIGHT_SCALE_PICKUP -> RightToRightScale() and SendToSwitch() then
+                    SendToScale() then EjectBlock() then
+                    DriveToAngle(-135.0) /* TODO then NavigateToCube() then IntakeBlock()*/
+            AutoMode.LEFT_TO_LEFT_SCALE_SWITCH -> LeftToLeftScale() and SendToSwitch() then
+                    SendToScale() then EjectBlock() then
+                    DriveToAngle(135.0) /* TODO then NavigateToCube() then IntakeBlock() then
+                    SendToSwitch() then EjectBlock()*/
+            AutoMode.RIGHT_TO_RIGHT_SCALE_SWITCH -> RightToRightScale() and SendToSwitch() then
+                    SendToScale() then EjectBlock() then
+                    DriveToAngle(-135.0) /* TODO then NavigateToCube() then IntakeBlock() then
+                    SendToSwitch() then EjectBlock()*/
             AutoMode.TEST_LEFT -> TestLeft()
             AutoMode.TEST_RIGHT -> TestRight()
         }.start()
