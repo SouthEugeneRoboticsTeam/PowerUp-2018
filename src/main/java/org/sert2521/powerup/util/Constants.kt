@@ -37,3 +37,6 @@ const val WHEELBASE_WIDTH = 0.7
 const val MAX_VELOCITY = 0.6
 const val MAX_ACCELERATION = 0.1
 const val MAX_JERK = 60.0
+
+// Camera
+const val DEGREES_PER_PIXEL = 53.4 / 680 // Logitech Webcam C270 FOV in degrees / pixel width
