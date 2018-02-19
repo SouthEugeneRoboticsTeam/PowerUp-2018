@@ -17,7 +17,6 @@ import org.sert2521.powerup.util.WHEEL_DIAMETER
 import org.sert2521.powerup.util.autoMode
 import org.sertain.RobotLifecycle
 import org.sertain.command.Command
-import org.sertain.command.CommandGroup
 import org.sertain.command.and
 import org.sertain.command.then
 import org.sertain.util.PathInitializer
@@ -52,7 +51,7 @@ object Auto : RobotLifecycle {
             AutoMode.CROSS_BASELINE -> CrossBaseline()
             AutoMode.LEFT_TO_LEFT_SWITCH -> LeftSwitchToRear()
             AutoMode.RIGHT_TO_RIGHT_SWITCH -> RightToRightSwitch() and SendToSwitch() then
-                    EjectBlock() then RightSwitchToRear() and SendToBottom()
+                    EjectBlock() then RightSwitchToRear() and SendToBottom() then DriveToCube()
             AutoMode.MIDDLE_TO_LEFT_SWITCH -> MiddleToLeftSwitch() and SendToSwitch() then
                     EjectBlock()
             AutoMode.MIDDLE_TO_RIGHT_SWITCH -> MiddleToRightSwitch() and SendToSwitch() then
@@ -78,18 +77,6 @@ object Auto : RobotLifecycle {
             AutoMode.TEST_RIGHT -> TestRight()
         }.also {
             it.start()
-            ((it as CommandGroup).javaClass.getDeclaredField("entries").apply {
-                isAccessible = true
-            }.get(it) as List<Any>).map {
-                it.javaClass.getDeclaredField("command").apply {
-                    isAccessible = true
-                }.get(it)
-            }.forEach {
-                if (it is CommandGroup) println((it).javaClass.getDeclaredField("entries").apply {
-                    isAccessible = true
-
-                }.get(it)) else println(it)
-            }
         }
     }
 }
