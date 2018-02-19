@@ -9,23 +9,23 @@ val controlMode: Control get() = Modes.controlChooser.selected
 
 val autoMode: AutoMode
     get() = when (MatchData.getOwnedSide(MatchData.GameFeature.SWITCH_NEAR)) {
-        MatchData.OwnedSide.LEFT -> when (Modes.autoModeChooserStart) {
-            AutoMode.Start.MIDDLE -> AutoMode.MIDDLE_TO_LEFT
-            AutoMode.Start.LEFT -> when (Modes.autoModeChooserEnd) {
+        MatchData.OwnedSide.LEFT -> when (Modes.autoModeChooserStart.selected) {
+            AutoMode.Start.MIDDLE -> AutoMode.MIDDLE_TO_LEFT_SWITCH
+            AutoMode.Start.LEFT -> when (Modes.autoModeChooserEnd.selected) {
                 AutoMode.End.BASELINE -> AutoMode.CROSS_BASELINE
-                AutoMode.End.SWITCH -> AutoMode.LEFT_TO_LEFT
-                AutoMode.End.SCALE -> throw UnsupportedOperationException()
-                else -> error("Unknown mode: ${Modes.autoModeChooserEnd}")
+                AutoMode.End.SWITCH -> AutoMode.LEFT_TO_LEFT_SWITCH
+                AutoMode.End.SCALE -> AutoMode.LEFT_TO_LEFT_SCALE
+                else -> error("Unknown mode: ${Modes.autoModeChooserEnd.selected}")
             }
             else -> AutoMode.CROSS_BASELINE
         }
-        MatchData.OwnedSide.RIGHT -> when (Modes.autoModeChooserStart) {
-            AutoMode.Start.MIDDLE -> AutoMode.MIDDLE_TO_RIGHT
-            AutoMode.Start.RIGHT -> when (Modes.autoModeChooserEnd) {
+        MatchData.OwnedSide.RIGHT -> when (Modes.autoModeChooserStart.selected) {
+            AutoMode.Start.MIDDLE -> AutoMode.MIDDLE_TO_RIGHT_SWITCH
+            AutoMode.Start.RIGHT -> when (Modes.autoModeChooserEnd.selected) {
                 AutoMode.End.BASELINE -> AutoMode.CROSS_BASELINE
-                AutoMode.End.SWITCH -> AutoMode.RIGHT_TO_RIGHT
-                AutoMode.End.SCALE -> throw UnsupportedOperationException()
-                else -> error("Unknown mode: ${Modes.autoModeChooserEnd}")
+                AutoMode.End.SWITCH -> AutoMode.RIGHT_TO_RIGHT_SWITCH
+                AutoMode.End.SCALE -> AutoMode.RIGHT_TO_RIGHT_SCALE
+                else -> error("Unknown mode: ${Modes.autoModeChooserEnd.selected}")
             }
             else -> AutoMode.CROSS_BASELINE
         }
@@ -42,7 +42,11 @@ sealed class Control {
 }
 
 enum class AutoMode {
-    CROSS_BASELINE, LEFT_TO_LEFT, RIGHT_TO_RIGHT, MIDDLE_TO_LEFT, MIDDLE_TO_RIGHT;
+    CROSS_BASELINE,
+    LEFT_TO_LEFT_SWITCH, RIGHT_TO_RIGHT_SWITCH,
+    MIDDLE_TO_LEFT_SWITCH, MIDDLE_TO_RIGHT_SWITCH,
+    LEFT_TO_LEFT_SCALE, RIGHT_TO_RIGHT_SCALE,
+    TEST_LEFT, TEST_RIGHT;
 
     enum class Start {
         LEFT, MIDDLE, RIGHT
@@ -55,17 +59,22 @@ enum class AutoMode {
 
 object Modes : RobotLifecycle {
     val controlChooser = SendableChooser(
+            "Controller" to Control.Controller(),
             "Arcade" to Control.Arcade(),
             "Tank" to Control.Tank(),
-            "Curvature" to Control.Curvature(),
-            "Controller" to Control.Controller()
+            "Curvature" to Control.Curvature()
     )
     val autoModeChooser = SendableChooser(
-            "Cross baseline" to AutoMode.CROSS_BASELINE,
-            "Left to left" to AutoMode.LEFT_TO_LEFT,
-            "Middle to left" to AutoMode.MIDDLE_TO_LEFT,
-            "Middle to right" to AutoMode.MIDDLE_TO_RIGHT,
-            "Right to right" to AutoMode.RIGHT_TO_RIGHT
+            "Cross Baseline" to AutoMode.CROSS_BASELINE,
+            "Left to Left Switch" to AutoMode.LEFT_TO_LEFT_SWITCH,
+            "Right to Right Switch" to AutoMode.RIGHT_TO_RIGHT_SWITCH,
+            "Middle to Left Switch" to AutoMode.MIDDLE_TO_LEFT_SWITCH,
+            "Middle to Right Switch" to AutoMode.MIDDLE_TO_RIGHT_SWITCH,
+            "Left to Left Switch" to AutoMode.LEFT_TO_LEFT_SCALE,
+            "Right to Left Switch" to AutoMode.RIGHT_TO_RIGHT_SCALE,
+
+            "Test Left" to AutoMode.TEST_LEFT,
+            "Test Right" to AutoMode.TEST_RIGHT
     )
     val autoModeChooserStart = SendableChooser(
             "Middle" to AutoMode.Start.MIDDLE,
@@ -83,9 +92,9 @@ object Modes : RobotLifecycle {
     }
 
     override fun onCreate() {
-        SmartDashboard.putData("Control mode", controlChooser)
-        SmartDashboard.putData("Auto mode", autoModeChooser)
-        SmartDashboard.putData("Auto mode start position", autoModeChooserStart)
-        SmartDashboard.putData("Auto mode end result", autoModeChooserEnd)
+        SmartDashboard.putData("Control Mode", controlChooser)
+        SmartDashboard.putData("Auto Mode", autoModeChooser)
+        SmartDashboard.putData("Auto Mode Start Position", autoModeChooserStart)
+        SmartDashboard.putData("Auto Mode End Result", autoModeChooserEnd)
     }
 }

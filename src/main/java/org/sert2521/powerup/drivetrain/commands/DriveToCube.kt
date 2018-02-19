@@ -12,13 +12,15 @@ class DriveToCube : Command() {
         if (!table.getEntry("cube_found").getBoolean(false)) return true
 
         val degrees = table.getEntry("cube_offset_x").getDouble(0.0) * DEGREES_PER_PIXEL
+        val turn = degrees * TURN_MODIFIER
 
-        DriveToAngle(degrees, BASE_SPEED).start()
+        Drivetrain.tank(BASE_SPEED - turn, BASE_SPEED + turn)
 
         return false
     }
 
     private companion object {
         val BASE_SPEED = 0.25
+        val TURN_MODIFIER = 0.01
     }
 }

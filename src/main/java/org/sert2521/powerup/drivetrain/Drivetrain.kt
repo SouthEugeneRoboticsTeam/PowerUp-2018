@@ -14,9 +14,10 @@ import org.sert2521.powerup.util.RIGHT_REAR_MOTOR
 import org.sertain.command.Subsystem
 import org.sertain.hardware.Talon
 import org.sertain.hardware.autoBreak
-import org.sertain.hardware.encoderPosition
+import org.sertain.hardware.getEncoderPosition
 import org.sertain.hardware.plus
-import org.sertain.hardware.resetEncoder
+import org.sertain.hardware.setEncoderPosition
+import org.sertain.hardware.setSelectedSensor
 
 /**
  * The robot's primary drive base.
@@ -27,8 +28,8 @@ object Drivetrain : Subsystem() {
     val leftSpeed get() = leftDrive.get()
     val rightSpeed get() = leftDrive.get()
 
-    val leftPosition get() = -leftDrive.encoderPosition
-    val rightPosition get() = rightDrive.encoderPosition
+    val leftPosition get() = -leftDrive.getEncoderPosition()
+    val rightPosition get() = rightDrive.getEncoderPosition()
 
     private val leftDrive =
             Talon(LEFT_FRONT_MOTOR).autoBreak() + Talon(LEFT_REAR_MOTOR).autoBreak()
@@ -38,24 +39,28 @@ object Drivetrain : Subsystem() {
 
     override val defaultCommand = TeleopDrive()
 
+    override fun onCreate() {
+        leftDrive.setSelectedSensor(FeedbackDevice.QuadEncoder)
+        rightDrive.setSelectedSensor(FeedbackDevice.QuadEncoder)
+    }
+
     override fun onStart() {
         EmergencyAbort().start()
-
-        leftDrive.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 1000)
-        rightDrive.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 1000)
-
-        leftDrive.resetEncoder()
-        rightDrive.resetEncoder()
+        reset()
     }
 
     override fun execute() {
-        SmartDashboard.putNumber("Drivetrain left encoder position", leftPosition.toDouble())
-        SmartDashboard.putNumber("Drivetrain right encoder position", rightPosition.toDouble())
+        SmartDashboard.putNumber("Drivetrain Left Position", leftPosition.toDouble())
+        SmartDashboard.putNumber("Drivetrain Right Position", rightPosition.toDouble())
+        SmartDashboard.putNumber("Drivetrain Pitch", ahrs.pitch.toDouble())
+        SmartDashboard.putNumber("Drivetrain Roll", ahrs.roll.toDouble())
+        SmartDashboard.putData("AHRS", ahrs)
     }
 
-    fun resetEncoders() {
-        leftDrive.resetEncoder()
-        rightDrive.resetEncoder()
+    fun reset() {
+        leftDrive.setEncoderPosition(0)
+        rightDrive.setEncoderPosition(0)
+        ahrs.reset()
     }
 
     fun arcade(speed: Double, rotation: Double) {
@@ -82,13 +87,13 @@ object Drivetrain : Subsystem() {
     fun stop() = drive.stopMotor()
 
     private fun logArcade(speed: Double, rotation: Double, quickTurn: Boolean? = null) {
-        SmartDashboard.putNumber("Drivetrain speed", speed)
-        SmartDashboard.putNumber("Drivetrain rotation", rotation)
-        quickTurn?.let { SmartDashboard.putBoolean("Drivetrain quick turn", it) }
+        SmartDashboard.putNumber("Drivetrain Speed", speed)
+        SmartDashboard.putNumber("Drivetrain Rotation", rotation)
+        quickTurn?.let { SmartDashboard.putBoolean("Drivetrain Quick Turn", it) }
     }
 
     private fun logTank(left: Double, right: Double) {
-        SmartDashboard.putNumber("Drivetrain left speed", left)
-        SmartDashboard.putNumber("Drivetrain right speed", right)
+        SmartDashboard.putNumber("Drivetrain Left Speed", left)
+        SmartDashboard.putNumber("Drivetrain Right Speed", right)
     }
 }

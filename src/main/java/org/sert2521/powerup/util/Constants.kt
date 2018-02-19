@@ -23,12 +23,19 @@ const val RIGHT_ELEVATOR_MOTOR = 15
 const val FRONT_CLIMBER_MOTOR = 16
 const val REAR_CLIMBER_MOTOR = 17
 
+// Sensors
+const val BOTTOM_TRIGGER_PORT = 1
+const val MIDDLE_TRIGGER_PORT = 4
+const val TOP_TRIGGER_PORT = 0
+const val SWITCH_TRIGGER_PORT = 5
+const val INTAKE_TRIGGER_PORT = 2
+
 // Auto
 const val ENCODER_TICKS_PER_REVOLUTION = 8192
 const val WHEEL_DIAMETER = 0.15
 const val WHEELBASE_WIDTH = 0.7
-const val MAX_VELOCITY = 0.75
-const val MAX_ACCELERATION = 0.075
+const val MAX_VELOCITY = 0.6
+const val MAX_ACCELERATION = 0.1
 const val MAX_JERK = 60.0
 
 // Camera
