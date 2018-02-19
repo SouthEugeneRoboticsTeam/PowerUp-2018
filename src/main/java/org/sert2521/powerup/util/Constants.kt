@@ -39,6 +39,4 @@ const val MAX_ACCELERATION = 0.1
 const val MAX_JERK = 60.0
 
 // Camera
-const val CAMERA_FOV = 60 // Microsoft LifeCam HD 3000 field of view
-const val CAMERA_WIDTH = 680
-const val DEGREES_PER_PIXEL = CAMERA_FOV / CAMERA_WIDTH
+const val DEGREES_PER_PIXEL = 53.4 / 680 // Logitech Webcam C270 FOV in degrees / pixel width
