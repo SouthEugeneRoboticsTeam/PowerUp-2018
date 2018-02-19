@@ -17,7 +17,6 @@ class DriveToCube : Command() {
             DriveToAngle(degrees, BASE_SPEED).start()
             previousDegrees = degrees
         }
-
         return false
     }
 
