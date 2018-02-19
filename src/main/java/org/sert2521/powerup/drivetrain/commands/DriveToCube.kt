@@ -5,7 +5,6 @@ import org.sertain.command.Command
 import org.sert2521.powerup.util.DEGREES_PER_PIXEL
 
 class DriveToCube : Command() {
-    private val table = NetworkTableInstance.getDefault().getTable("Vision")
     private var previousDegrees = 0.0
 
     override fun execute(): Boolean {
@@ -21,6 +20,7 @@ class DriveToCube : Command() {
     }
 
     private companion object {
-        val BASE_SPEED = 0.25
+        const val BASE_SPEED = 0.25
+        val table = NetworkTableInstance.getDefault().getTable("Vision")
     }
 }
