@@ -19,29 +19,21 @@ abstract class SendToTarget(private val target: Int) : Command(5, TimeUnit.SECON
     }
 
     override fun execute(): Boolean {
-        val gradient = if (wasBelowTarget) UP_GRADIENT else DOWN_GRADIENT
-        val maxPower = 1 - if (wasBelowTarget) MAX_UP_POWER else MAX_DOWN_POWER
-
         // Example: https://www.desmos.com/calculator/l3pczqcg88
         Elevator.set(if (wasBelowTarget) {
-            (gradient.pow(1000 / (target - Elevator.position)) - maxPower + (1 - gradient))
-                    .coerceAtLeast(MIN_UP_POWER)
+            1.0
         } else {
-            (gradient.pow(1000 / Elevator.position) - maxPower).coerceAtMost(MIN_DOWN_POWER)
+            (DOWN_GRADIENT.pow(1000 / Elevator.position) - MAX_DOWN_POWER)
+                    .coerceAtMost(MIN_DOWN_POWER)
         })
 
         return isAtTarget
     }
 
     private companion object {
-        const val UP_GRADIENT = 0.8
         const val DOWN_GRADIENT = 1.2
-
-        const val MAX_UP_POWER = 0.85
         const val MAX_DOWN_POWER = -0.3
-
-        const val MIN_UP_POWER = 0.3
-        const val MIN_DOWN_POWER = -0.1
+        const val MIN_DOWN_POWER = -0.2
     }
 }
 
