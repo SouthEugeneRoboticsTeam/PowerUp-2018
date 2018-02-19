@@ -5,6 +5,7 @@ import jaci.pathfinder.Pathfinder
 import org.sert2521.powerup.drivetrain.Drivetrain
 import org.sert2521.powerup.drivetrain.commands.DriveToAngle
 import org.sert2521.powerup.drivetrain.commands.DriveToCube
+import org.sert2521.powerup.elevator.commands.SendToBottom
 import org.sert2521.powerup.elevator.commands.SendToScale
 import org.sert2521.powerup.elevator.commands.SendToSwitch
 import org.sert2521.powerup.intake.commands.EjectBlock
@@ -16,6 +17,7 @@ import org.sert2521.powerup.util.WHEEL_DIAMETER
 import org.sert2521.powerup.util.autoMode
 import org.sertain.RobotLifecycle
 import org.sertain.command.Command
+import org.sertain.command.CommandGroup
 import org.sertain.command.and
 import org.sertain.command.then
 import org.sertain.util.PathInitializer
@@ -48,10 +50,9 @@ object Auto : RobotLifecycle {
         println("Following: $autoMode")
         when (autoMode) {
             AutoMode.CROSS_BASELINE -> CrossBaseline()
-            AutoMode.LEFT_TO_LEFT_SWITCH -> LeftToLeftSwitch() and SendToSwitch() then
-                    EjectBlock() then LeftSwitchToRear() then DriveToAngle(-90.0)
+            AutoMode.LEFT_TO_LEFT_SWITCH -> LeftSwitchToRear()
             AutoMode.RIGHT_TO_RIGHT_SWITCH -> RightToRightSwitch() and SendToSwitch() then
-                    EjectBlock() then RightSwitchToRear() then DriveToAngle(90.0)
+                    EjectBlock() then RightSwitchToRear() and SendToBottom()
             AutoMode.MIDDLE_TO_LEFT_SWITCH -> MiddleToLeftSwitch() and SendToSwitch() then
                     EjectBlock()
             AutoMode.MIDDLE_TO_RIGHT_SWITCH -> MiddleToRightSwitch() and SendToSwitch() then
@@ -75,7 +76,21 @@ object Auto : RobotLifecycle {
                     SendToSwitch() then EjectBlock()
             AutoMode.TEST_LEFT -> TestLeft()
             AutoMode.TEST_RIGHT -> TestRight()
-        }.start()
+        }.also {
+            it.start()
+            ((it as CommandGroup).javaClass.getDeclaredField("entries").apply {
+                isAccessible = true
+            }.get(it) as List<Any>).map {
+                it.javaClass.getDeclaredField("command").apply {
+                    isAccessible = true
+                }.get(it)
+            }.forEach {
+                if (it is CommandGroup) println((it).javaClass.getDeclaredField("entries").apply {
+                    isAccessible = true
+
+                }.get(it)) else println(it)
+            }
+        }
     }
 }
 

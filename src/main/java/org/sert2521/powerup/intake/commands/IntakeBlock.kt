@@ -5,7 +5,7 @@ import org.sert2521.powerup.util.intakeSpeedScalar
 import org.sertain.command.Command
 import java.util.concurrent.TimeUnit
 
-class IntakeBlock : Command(500, TimeUnit.MILLISECONDS) {
+class IntakeBlock : Command(500) {
     init {
         requires(Intake)
     }
@@ -15,5 +15,5 @@ class IntakeBlock : Command(500, TimeUnit.MILLISECONDS) {
         return false
     }
 
-    override fun onDestroy() = Intake.set(0.0)
+    override fun onDestroy() = Intake.stop()
 }

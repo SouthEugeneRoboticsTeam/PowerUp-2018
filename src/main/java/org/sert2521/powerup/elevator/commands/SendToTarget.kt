@@ -6,7 +6,7 @@ import java.util.concurrent.TimeUnit
 import kotlin.math.pow
 import kotlin.properties.Delegates
 
-abstract class SendToTarget(private val target: Int) : Command(5, TimeUnit.SECONDS) {
+abstract class SendToTarget(private val target: Int) : Command(5000) {
     protected abstract val isAtTarget: Boolean
     private var wasBelowTarget: Boolean by Delegates.notNull()
 
@@ -30,7 +30,7 @@ abstract class SendToTarget(private val target: Int) : Command(5, TimeUnit.SECON
         return isAtTarget
     }
 
-    override fun onDestroy() = Elevator.set(Elevator.MIN_SPEED)
+    override fun onDestroy() = Elevator.stop()
 
     private companion object {
         const val DOWN_GRADIENT = 1.2

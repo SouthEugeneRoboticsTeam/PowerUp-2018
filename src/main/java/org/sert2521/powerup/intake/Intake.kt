@@ -14,12 +14,18 @@ import org.sertain.hardware.invert
  * The robot's Power Cube intake system, consisting of two sets of fly wheels.
  */
 object Intake : Subsystem() {
+    const val DEFAULT_SPEED = 0.3
+
     private val left = Spark(LEFT_INTAKE_MOTOR).invert()
     private val right = Spark(RIGHT_INTAKE_MOTOR).invert()
 
     private val intakeTrigger = DigitalInput(INTAKE_TRIGGER_PORT).invert()
 
     override val defaultCommand = TeleopIntake()
+
+    override fun onStart() {
+        set(DEFAULT_SPEED)
+    }
 
     override fun execute() {
         SmartDashboard.putData("Intake Trigger", intakeTrigger)
@@ -34,5 +40,6 @@ object Intake : Subsystem() {
     fun stop() {
         left.stopMotor()
         right.stopMotor()
+        set(DEFAULT_SPEED)
     }
 }

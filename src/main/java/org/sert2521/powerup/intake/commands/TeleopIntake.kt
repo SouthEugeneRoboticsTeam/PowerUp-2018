@@ -22,7 +22,7 @@ class TeleopIntake : Command() {
             is Control.Arcade, is Control.Tank -> Intake.set(when {
                 rightJoystick.trigger -> intakeSpeedScalar
                 rightJoystick.top -> -intakeSpeedScalar
-                else -> DEFAULT_SPEED
+                else -> Intake.DEFAULT_SPEED
             })
             is Control.Controller -> {
                 val leftSpeed = controller.getTriggerAxis(GenericHID.Hand.kLeft)
@@ -30,7 +30,7 @@ class TeleopIntake : Command() {
 
                 // Support variable intake speeds through self-cancellation
                 val speed = rightSpeed - leftSpeed
-                Intake.set(if (speed == 0.0) DEFAULT_SPEED else speed)
+                Intake.set(if (speed == 0.0) Intake.DEFAULT_SPEED else speed)
             }
         }
 
@@ -38,8 +38,4 @@ class TeleopIntake : Command() {
     }
 
     override fun onDestroy() = Intake.stop()
-
-    private companion object {
-        const val DEFAULT_SPEED = 0.3
-    }
 }
