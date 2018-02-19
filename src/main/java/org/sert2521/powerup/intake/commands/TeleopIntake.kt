@@ -40,6 +40,6 @@ class TeleopIntake : Command() {
     override fun onDestroy() = Intake.stop()
 
     private companion object {
-        const val DEFAULT_SPEED = 0.2
+        const val DEFAULT_SPEED = 0.3
     }
 }
