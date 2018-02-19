@@ -16,8 +16,11 @@ val autoMode: AutoMode
         val switchSide = getOwnedSide(GameFeature.SWITCH_NEAR)
         val scaleSide = getOwnedSide(GameFeature.SCALE)
 
-        if (endChoice == AutoMode.End.BASELINE
-                || switchSide == OwnedSide.UNKNOWN || scaleSide == OwnedSide.UNKNOWN) {
+        if (switchSide == OwnedSide.UNKNOWN || scaleSide == OwnedSide.UNKNOWN) {
+            return Modes.autoModeChooser.selected
+        }
+
+        if (endChoice == AutoMode.End.BASELINE) {
             return AutoMode.CROSS_BASELINE
         }
 
@@ -58,7 +61,7 @@ val autoMode: AutoMode
                 }
                 else -> AutoMode.CROSS_BASELINE // Should be impossible
             }
-            else -> Modes.autoModeChooser.selected
+            else -> error("Impossible condition: $switchSide")
         }
     }
 
