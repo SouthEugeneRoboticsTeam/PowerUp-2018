@@ -1,10 +1,8 @@
 package org.sert2521.powerup.drivetrain.commands
 
 import edu.wpi.first.networktables.NetworkTableInstance
-import org.sert2521.powerup.drivetrain.Drivetrain
 import org.sertain.command.Command
 import org.sert2521.powerup.util.DEGREES_PER_PIXEL
-import org.sert2521.powerup.drivetrain.commands.DriveToAngle
 
 class DriveToCube : Command() {
     private val table = NetworkTableInstance.getDefault().getTable("Vision")
@@ -19,7 +17,7 @@ class DriveToCube : Command() {
             DriveToAngle(degrees, BASE_SPEED).start()
             previousDegreeValue = degrees
         }
-
+        
         return false
     }
 
