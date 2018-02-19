@@ -4,19 +4,25 @@ import org.sert2521.powerup.drivetrain.Drivetrain
 import org.sertain.command.PidCommand
 import kotlin.math.absoluteValue
 
-class DriveToAngle(private val angle: Double, private val baseSpeed: Double = 0.0) :
+open class DriveToAngle(protected var angle: Double, private val baseSpeed: Double = 0.0) :
         PidCommand(P, I, D) {
     private val startAngle by lazy { Drivetrain.ahrs.yaw }
+    protected var adjustedSetpoint
+        get() = setpoint - startAngle
+        set(value) {
+            setpoint = startAngle + value
+        }
 
     init {
         requires(Drivetrain)
     }
 
     override fun onCreate() {
-        setpoint = startAngle + angle
+        adjustedSetpoint = angle
     }
 
     override fun execute(output: Double): Boolean {
+        adjustedSetpoint = angle
         Drivetrain.drive(baseSpeed + output, baseSpeed - output)
         return (Drivetrain.ahrs.yaw - startAngle - angle).absoluteValue < ALLOWABLE_ERROR
     }
