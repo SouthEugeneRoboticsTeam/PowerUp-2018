@@ -30,6 +30,8 @@ abstract class SendToTarget(private val target: Int) : Command(5, TimeUnit.SECON
         return isAtTarget
     }
 
+    override fun onDestroy() = Elevator.set(Elevator.MIN_SPEED)
+
     private companion object {
         const val DOWN_GRADIENT = 1.2
         const val MAX_DOWN_POWER = -0.3
