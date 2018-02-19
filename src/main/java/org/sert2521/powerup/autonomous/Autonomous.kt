@@ -46,14 +46,16 @@ object Auto : RobotLifecycle {
         println("Following: $autoMode")
         when (autoMode) {
             AutoMode.CROSS_BASELINE -> CrossBaseline()
-            AutoMode.LEFT_TO_LEFT_SWITCH -> LeftToLeftSwitch() and SendToSwitch() then Eject() then
-                    LeftSwitchToRear() then DriveToAngle(-90.0)
-            AutoMode.RIGHT_TO_RIGHT_SWITCH -> RightToRightSwitch() and SendToSwitch() then Eject() then
-                RightSwitchToRear() then DriveToAngle(90.0)
+            AutoMode.LEFT_TO_LEFT_SWITCH -> LeftToLeftSwitch() and SendToSwitch() then
+                    Eject() then LeftSwitchToRear() then DriveToAngle(-90.0)
+            AutoMode.RIGHT_TO_RIGHT_SWITCH -> RightToRightSwitch() and SendToSwitch() then
+                    Eject() then RightSwitchToRear() then DriveToAngle(90.0)
             AutoMode.MIDDLE_TO_LEFT_SWITCH -> MiddleToLeftSwitch() and SendToSwitch() then Eject()
             AutoMode.MIDDLE_TO_RIGHT_SWITCH -> MiddleToRightSwitch() and SendToSwitch() then Eject()
-            AutoMode.LEFT_TO_LEFT_SCALE -> LeftToLeftScale() then SendToScale() then Eject()
-            AutoMode.RIGHT_TO_RIGHT_SCALE -> RightToRightScale() then SendToScale() then Eject()
+            AutoMode.LEFT_TO_LEFT_SCALE -> LeftToLeftScale() and SendToSwitch() then
+                    SendToScale() then Eject()
+            AutoMode.RIGHT_TO_RIGHT_SCALE -> RightToRightScale() and SendToSwitch() then
+                    SendToScale() then Eject()
             AutoMode.TEST_LEFT -> TestLeft()
             AutoMode.TEST_RIGHT -> TestRight()
         }.start()
@@ -87,10 +89,6 @@ private abstract class PathFollowerBase(protected val path: PathInitializer) : C
         val turn = TURN_IMPORTANCE * angleDiff
         SmartDashboard.putNumber("Auto Turn", turn)
         calculate(leftPosition, rightPosition, turn).apply { drive(first, second) }
-
-        if (!path.isFinished) {
-            println("Angle: expected=${path.heading} actual=${Drivetrain.ahrs.angle}")
-        }
 
         return path.isFinished
     }

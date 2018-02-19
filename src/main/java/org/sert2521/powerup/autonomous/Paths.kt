@@ -63,7 +63,7 @@ abstract class PathBase : PathInitializer(), RobotLifecycle {
 
     private val pathName: String = javaClass.simpleName
     private val humanReadablePoints
-        get() = points.joinToString(" - ") {
+        get() = points.joinToString(" __ ") {
             listOf(it.x, it.y, Math.toDegrees(it.angle)).joinToString()
         }
 
@@ -93,7 +93,7 @@ abstract class PathBase : PathInitializer(), RobotLifecycle {
         }
     }
 
-    override fun onStart() {
+    override fun executeDisabled() {
         val current = sendableEntry?.getString(null).let {
             if (it.isNullOrBlank()) null else it
         }
@@ -101,7 +101,7 @@ abstract class PathBase : PathInitializer(), RobotLifecycle {
         latestEntry = current
 
         try {
-            this.points = current!!.replace(" ", "").split("-").map {
+            this.points = current!!.replace(" ", "").split("__").map {
                 val flatPoint = it.split(",")
                 check(flatPoint.size == 3) { "Points must contain an x, y, and angle component." }
                 Waypoint(
@@ -174,46 +174,46 @@ object CrossBaselinePath : PathBase() {
 object LeftToLeftSwitchPath : PathBase() {
     override var points = arrayOf(
             0.0 with 3.0 angle 0.0,
-            2.3 with 3.4 angle 0.0,
-            3.5 with 2.0 angle 90.0
+            2.3 with 3.3 angle 0.0,
+            3.5 with 1.65 angle 90.0
     )
 }
 
 object RightToRightSwitchPath : PathBase() {
     override var points = arrayOf(
             0.0 with -3.0 angle 0.0,
-            2.3 with -3.2 angle 0.0,
-            3.5 with -1.6 angle -90.0
+            2.0 with -3.2 angle 0.0,
+            3.3 with -1.7 angle -90.0
     )
 }
 
 object MiddleToLeftSwitchPath : PathBase() {
     override var points = arrayOf(
             0.0 with 0.2 angle 0.0,
-            2.9 with 1.3 angle 0.0
+            3.0 with 1.3 angle -10.0
     )
 }
 
 object MiddleToRightSwitchPath : PathBase() {
     override var points = arrayOf(
-            0.0 with .2 angle 0.0,
-            2.7 with -0.5 angle 20.0
+            0.0 with 0.2 angle 0.0,
+            2.75 with -0.5 angle 10.0
     )
 }
 
 object LeftToLeftScalePath : PathBase() {
     override var points = arrayOf(
             0.0 with 3.0 angle 0.0,
-            6.2 with 3.1 angle 0.0,
-            7.5 with 2.0 angle 90.0
+            4.2 with 3.0 angle 0.0,
+            6.6 with 2.3 angle -20.0
     )
 }
 
 object RightToRightScalePath : PathBase() {
     override var points = arrayOf(
             0.0 with -3.0 angle 0.0,
-            6.2 with -3.1 angle 0.0,
-            7.5 with -2.0 angle -90.0
+            4.2 with -3.0 angle 0.0,
+            6.6 with -2.2 angle 20.0
     )
 }
 
