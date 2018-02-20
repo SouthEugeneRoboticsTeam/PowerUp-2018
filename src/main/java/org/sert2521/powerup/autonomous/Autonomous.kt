@@ -5,6 +5,7 @@ import jaci.pathfinder.Pathfinder
 import org.sert2521.powerup.drivetrain.Drivetrain
 import org.sert2521.powerup.drivetrain.commands.DriveToAngle
 import org.sert2521.powerup.drivetrain.commands.DriveToCube
+import org.sert2521.powerup.drivetrain.commands.FixedDrive
 import org.sert2521.powerup.elevator.commands.SendToBottom
 import org.sert2521.powerup.elevator.commands.SendToScale
 import org.sert2521.powerup.elevator.commands.SendToSwitch
@@ -51,27 +52,26 @@ object Auto : RobotLifecycle {
             AutoMode.CROSS_BASELINE -> CrossBaseline()
             AutoMode.LEFT_TO_LEFT_SWITCH -> LeftSwitchToRear()
             AutoMode.RIGHT_TO_RIGHT_SWITCH -> RightToRightSwitch() and SendToSwitch() then
-                    EjectBlock() then RightSwitchToRear() and SendToBottom() then DriveToCube()
+                    EjectBlock() then RightSwitchToRear() and SendToBottom() then DriveToCube() and
+                    IntakeBlock() then IntakeBlock(500) then SendToSwitch() then EjectBlock()
             AutoMode.MIDDLE_TO_LEFT_SWITCH -> MiddleToLeftSwitch() and SendToSwitch() then
                     EjectBlock()
             AutoMode.MIDDLE_TO_RIGHT_SWITCH -> MiddleToRightSwitch() and SendToSwitch() then
                     EjectBlock()
             AutoMode.LEFT_TO_LEFT_SCALE_PICKUP -> LeftToLeftScale() and SendToSwitch() then
                     SendToScale() then EjectBlock() then
-                    DriveToAngle(135.0) then DriveToCube() then IntakeBlock()
+                    DriveToAngle(135.0) then DriveToCube() and IntakeBlock()
             AutoMode.RIGHT_TO_RIGHT_SCALE_PICKUP -> RightToRightScale() and SendToSwitch() then
                     SendToScale() then EjectBlock() then
-                    DriveToAngle(-135.0) then
-                    ScaleRightToRightSwitch() then DriveToCube() then IntakeBlock()
+                    DriveToAngle(-135.0) then ScaleRightToRightSwitch() then DriveToCube() and
+                    IntakeBlock()
             AutoMode.LEFT_TO_LEFT_SCALE_SWITCH -> LeftToLeftScale() and SendToSwitch() then
-                    SendToScale() then EjectBlock() then
-                    DriveToAngle(135.0) then
-                    ScaleLeftToLeftSwitch() then DriveToCube() then IntakeBlock() then
+                    SendToScale() then EjectBlock() then DriveToAngle(135.0) then
+                    ScaleLeftToLeftSwitch() then DriveToCube() and IntakeBlock() then
                     SendToSwitch() then EjectBlock()
             AutoMode.RIGHT_TO_RIGHT_SCALE_SWITCH -> RightToRightScale() and SendToSwitch() then
-                    SendToScale() then EjectBlock() then
-                    DriveToAngle(-135.0) then
-                    ScaleRightToRightSwitch() then DriveToCube() then IntakeBlock() then
+                    SendToScale() then EjectBlock() then DriveToAngle(-135.0) then
+                    ScaleRightToRightSwitch() then DriveToCube() and IntakeBlock() then
                     SendToSwitch() then EjectBlock()
             AutoMode.TEST_LEFT -> TestLeft()
             AutoMode.TEST_RIGHT -> TestRight()
@@ -146,9 +146,9 @@ private class LeftToLeftScale : PathFollowerBase(LeftToLeftScalePath)
 
 private class RightToRightScale : PathFollowerBase(RightToRightScalePath)
 
+// TODO tune
 private class LeftSwitchToRear : ReversePathFollowerBase(LeftSwitchToRearPath)
 
-// TODO tune
 private class RightSwitchToRear : ReversePathFollowerBase(RightSwitchToRearPath)
 
 // TODO tune

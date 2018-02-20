@@ -21,6 +21,8 @@ object Intake : Subsystem() {
 
     private val intakeTrigger = DigitalInput(INTAKE_TRIGGER_PORT).invert()
 
+    val hasCube get() = intakeTrigger.get()
+
     override val defaultCommand = TeleopIntake()
 
     override fun onStart() {

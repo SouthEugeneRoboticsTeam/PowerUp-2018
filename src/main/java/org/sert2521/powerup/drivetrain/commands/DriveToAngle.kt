@@ -2,38 +2,35 @@ package org.sert2521.powerup.drivetrain.commands
 
 import org.sert2521.powerup.drivetrain.Drivetrain
 import org.sertain.command.PidCommand
+import javax.swing.text.html.HTML.Tag.I
 import kotlin.math.absoluteValue
 
-open class DriveToAngle(protected var angle: Double, private val baseSpeed: Double = 0.0) :
-        PidCommand(P, I, D) {
+open class DriveToAngle(private var angle: Double, private val baseSpeed: Double = 0.0, p: Double = 1.0, i: Double = 0.0, d: Double = 0.0) :
+        PidCommand(p, i, d) {
     private val startAngle by lazy { Drivetrain.ahrs.yaw }
-    protected var adjustedSetpoint
-        get() = setpoint - startAngle
-        set(value) {
-            setpoint = startAngle + value
-        }
 
     init {
         requires(Drivetrain)
     }
 
     override fun onCreate() {
-        adjustedSetpoint = angle
+        setpoint = startAngle + angle
     }
 
     override fun execute(output: Double): Boolean {
-        adjustedSetpoint = angle
+//        println("Actual: ${Drivetrain.ahrs.yaw}")
+//        println("Start Angle: $startAngle")
+//        println("Angle: $angle")
+//        println("Left: ${baseSpeed + output}, Right: ${baseSpeed - output}")
         Drivetrain.drive(baseSpeed + output, baseSpeed - output)
         return (Drivetrain.ahrs.yaw - startAngle - angle).absoluteValue < ALLOWABLE_ERROR
     }
 
     override fun returnPidInput() = Drivetrain.ahrs.yaw.toDouble()
 
-    private companion object {
-        const val P = 0.1
-        const val I = 0.0
-        const val D = 0.0
+    override fun onDestroy() = Drivetrain.stop()
 
-        const val ALLOWABLE_ERROR = 7.5 // In degrees
+    private companion object {
+        const val ALLOWABLE_ERROR = 5.0 // In degrees
     }
 }

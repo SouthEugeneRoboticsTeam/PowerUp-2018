@@ -22,7 +22,7 @@ abstract class SendToTarget(private val target: Int) : Command(5000) {
         Elevator.set(if (wasBelowTarget) {
             1.0
         } else {
-            (DOWN_GRADIENT.pow(1000 / Elevator.position) - MAX_DOWN_POWER)
+            (DOWN_GRADIENT.pow(1000 / Elevator.position.coerceAtLeast(1)) - MAX_DOWN_POWER)
                     .coerceAtMost(MIN_DOWN_POWER)
         })
 

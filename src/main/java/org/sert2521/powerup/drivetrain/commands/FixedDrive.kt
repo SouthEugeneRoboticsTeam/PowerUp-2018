@@ -17,10 +17,10 @@ class FixedDrive : Command {
      * @param speed the speed at which to set both sides of the drivetrain
      * @param continuous whether the command should be run continuously until interrupted
      */
-    constructor(speed: Double, continuous: Boolean = false) : super() {
+    constructor(speed: Double, timeout: Long? = null) : super(timeout) {
         leftSpeed = speed
         rightSpeed = speed
-        this.continuous = continuous
+        this.continuous = timeout == null
     }
 
     /**
@@ -30,10 +30,10 @@ class FixedDrive : Command {
      * @param rightSpeed the speed at which to set the right side of the drivetrain
      * @param continuous whether the command should be run continuously until interrupted
      */
-    constructor(leftSpeed: Double, rightSpeed: Double, continuous: Boolean = false) : super() {
+    constructor(leftSpeed: Double, rightSpeed: Double, timeout: Long? = null) : super(timeout) {
         this.leftSpeed = leftSpeed
         this.rightSpeed = rightSpeed
-        this.continuous = continuous
+        this.continuous = timeout == null
     }
 
     init {
