@@ -48,13 +48,9 @@ object Elevator : Subsystem() {
 
     override val defaultCommand = Elevate()
 
-    override fun onCreate() {
-        elevator.setSelectedSensor(FeedbackDevice.QuadEncoder)
-    }
+    override fun onCreate() = elevator.setSelectedSensor(FeedbackDevice.QuadEncoder)
 
-    override fun onStart() {
-        EncoderResetter().start()
-    }
+    override fun onStart() = EncoderResetter().start()
 
     override fun onTeleopStart() {
         secondaryJoystick.whenActive(1, Elevate()) // Ensure drivers can override auto
