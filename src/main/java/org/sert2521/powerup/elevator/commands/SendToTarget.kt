@@ -2,11 +2,10 @@ package org.sert2521.powerup.elevator.commands
 
 import org.sert2521.powerup.elevator.Elevator
 import org.sertain.command.Command
-import java.util.concurrent.TimeUnit
 import kotlin.math.pow
 import kotlin.properties.Delegates
 
-abstract class SendToTarget(private val target: Int) : Command(5, TimeUnit.SECONDS) {
+abstract class SendToTarget(private val target: Int) : Command(5000) {
     protected abstract val isAtTarget: Boolean
     private var wasBelowTarget: Boolean by Delegates.notNull()
 
@@ -23,19 +22,19 @@ abstract class SendToTarget(private val target: Int) : Command(5, TimeUnit.SECON
         Elevator.set(if (wasBelowTarget) {
             1.0
         } else {
-            (DOWN_GRADIENT.pow(1000 / Elevator.position) - MAX_DOWN_POWER)
+            (DOWN_GRADIENT.pow(1000 / Elevator.position.coerceAtLeast(1)) - MAX_DOWN_POWER)
                     .coerceAtMost(MIN_DOWN_POWER)
         })
 
         return isAtTarget
     }
 
-    override fun onDestroy() = Elevator.set(Elevator.MIN_SPEED)
+    override fun onDestroy() = Elevator.stop()
 
     private companion object {
-        const val DOWN_GRADIENT = 1.2
-        const val MAX_DOWN_POWER = -0.3
-        const val MIN_DOWN_POWER = -0.2
+        const val DOWN_GRADIENT = 1.1
+        const val MAX_DOWN_POWER = -0.6
+        const val MIN_DOWN_POWER = -0.35
     }
 }
 

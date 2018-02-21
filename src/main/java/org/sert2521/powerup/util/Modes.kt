@@ -105,8 +105,8 @@ object Modes : RobotLifecycle {
             "Middle to Left Switch" to AutoMode.MIDDLE_TO_LEFT_SWITCH,
             "Middle to Right Switch" to AutoMode.MIDDLE_TO_RIGHT_SWITCH,
             "Left to Left Scale with Pickup" to AutoMode.LEFT_TO_LEFT_SCALE_PICKUP,
+            "Right to Right Scale with Pickup" to AutoMode.RIGHT_TO_RIGHT_SCALE_PICKUP,
             "Left to Left Scale with Switch" to AutoMode.LEFT_TO_LEFT_SCALE_SWITCH,
-            "Right to Right Scale with Switch" to AutoMode.RIGHT_TO_RIGHT_SCALE_PICKUP,
             "Right to Right Scale with Switch" to AutoMode.RIGHT_TO_RIGHT_SCALE_SWITCH,
 
             "Test Left" to AutoMode.TEST_LEFT,
