@@ -8,7 +8,7 @@ import org.sert2521.powerup.intake.Intake
 import org.sert2521.powerup.util.Modes
 import org.sertain.Robot
 
-class RobotName : Robot() {
+class Poe : Robot() {
     override fun onCreate() {
         Drivetrain
         Intake

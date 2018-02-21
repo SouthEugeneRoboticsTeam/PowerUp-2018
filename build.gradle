@@ -84,7 +84,7 @@ wpi {
 
 jar {
     from configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
-    manifest jaci.openrio.gradle.GradleRIOPlugin.javaManifest('org.sert2521.powerup.RobotName')
+    manifest jaci.openrio.gradle.GradleRIOPlugin.javaManifest('org.sert2521.powerup.Poe')
 }
 
 task ktlint(type: JavaExec) {
