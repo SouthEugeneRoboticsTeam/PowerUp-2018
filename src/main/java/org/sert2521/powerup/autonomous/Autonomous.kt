@@ -164,7 +164,6 @@ private class LeftToLeftScale : PathFollowerBase(LeftToLeftScalePath)
 
 private class RightToRightScale : PathFollowerBase(RightToRightScalePath)
 
-// TODO tune
 private class LeftSwitchToRear : ReversePathFollowerBase(LeftSwitchToRearPath)
 
 private class RightSwitchToRear : ReversePathFollowerBase(RightSwitchToRearPath)
