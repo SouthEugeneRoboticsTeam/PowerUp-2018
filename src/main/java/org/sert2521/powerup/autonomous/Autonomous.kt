@@ -5,7 +5,6 @@ import jaci.pathfinder.Pathfinder
 import org.sert2521.powerup.drivetrain.Drivetrain
 import org.sert2521.powerup.drivetrain.commands.DriveToAngle
 import org.sert2521.powerup.drivetrain.commands.DriveToCube
-import org.sert2521.powerup.drivetrain.commands.FixedDrive
 import org.sert2521.powerup.elevator.commands.SendToBottom
 import org.sert2521.powerup.elevator.commands.SendToScale
 import org.sert2521.powerup.elevator.commands.SendToSwitch
@@ -18,6 +17,7 @@ import org.sert2521.powerup.util.WHEEL_DIAMETER
 import org.sert2521.powerup.util.autoMode
 import org.sertain.RobotLifecycle
 import org.sertain.command.Command
+import org.sertain.command.CommandGroup
 import org.sertain.command.and
 import org.sertain.command.then
 import org.sertain.util.PathInitializer
@@ -46,31 +46,54 @@ object Auto : RobotLifecycle {
         println("Following: $autoMode")
         when (autoMode) {
             AutoMode.CROSS_BASELINE -> CrossBaseline()
-            AutoMode.LEFT_TO_LEFT_SWITCH -> LeftSwitchToRear() and SendToSwitch()
+
+            AutoMode.LEFT_TO_LEFT_SWITCH -> LeftToLeftSwitch() and SendToSwitch() then
+                    EjectBlock() then LeftSwitchToRear() and SendToBottom() then DriveToCube() and
+                    IntakeBlock() then SendToSwitch() then EjectBlock()
+
             AutoMode.RIGHT_TO_RIGHT_SWITCH -> RightToRightSwitch() and SendToSwitch() then
                     EjectBlock() then RightSwitchToRear() and SendToBottom() then DriveToCube() and
-                    IntakeBlock() then IntakeBlock(500) then SendToSwitch() then EjectBlock()
-            AutoMode.MIDDLE_TO_LEFT_SWITCH -> MiddleToLeftSwitch() and SendToSwitch() then
+                    IntakeBlock() then SendToSwitch() then EjectBlock()
+
+            AutoMode.MIDDLE_TO_LEFT_SWITCH -> MiddleToLeftSwitch() then SendToSwitch() then
                     EjectBlock()
-            AutoMode.MIDDLE_TO_RIGHT_SWITCH -> MiddleToRightSwitch() and SendToSwitch() then
+
+            AutoMode.MIDDLE_TO_RIGHT_SWITCH -> MiddleToRightSwitch() then SendToSwitch() then
                     EjectBlock()
-            AutoMode.LEFT_TO_LEFT_SCALE_PICKUP -> LeftToLeftScale() and SendToSwitch() then
-                    SendToScale() then EjectBlock() then
-                    DriveToAngle(100.0) then DriveToCube() and IntakeBlock()
-            AutoMode.RIGHT_TO_RIGHT_SCALE_PICKUP -> RightToRightScale() and SendToSwitch() then
-                    SendToScale() then EjectBlock() then
-                    DriveToAngle(-100.0) and SendToBottom() then DriveToCube() and IntakeBlock()
-            AutoMode.LEFT_TO_LEFT_SCALE_SWITCH -> LeftToLeftScale() and SendToSwitch() then
-                    SendToScale() then EjectBlock() then DriveToAngle(135.0) then
+
+            AutoMode.LEFT_TO_LEFT_SCALE_PICKUP -> LeftToLeftScale() and SendToScale() then
+                    EjectBlock() then DriveToAngle(100.0) and SendToBottom() then
+                    DriveToCube() and IntakeBlock() then SendToSwitch()
+
+            AutoMode.RIGHT_TO_RIGHT_SCALE_PICKUP -> RightToRightScale() and SendToScale() then
+                    EjectBlock() then DriveToAngle(-100.0) and SendToBottom() then
+                    DriveToCube() and IntakeBlock() then SendToSwitch()
+
+            AutoMode.LEFT_TO_LEFT_SCALE_SWITCH -> LeftToLeftScale() and SendToScale() then
+                    EjectBlock() then DriveToAngle(100.0) and SendToBottom() then
                     DriveToCube() and IntakeBlock() then SendToSwitch() then EjectBlock()
-            AutoMode.RIGHT_TO_RIGHT_SCALE_SWITCH -> RightToRightScale() and SendToSwitch() then
-                    SendToScale() then EjectBlock()
-//                    then DriveToAngle(-135.0) then
-//                    ScaleRightToRightSwitch() then DriveToCube() and IntakeBlock() then
-//                    SendToSwitch() then EjectBlock()
+
+            AutoMode.RIGHT_TO_RIGHT_SCALE_SWITCH -> RightToRightScale() and SendToScale() then
+                    EjectBlock() then DriveToAngle(-100.0) and SendToBottom() then
+                    DriveToCube() and IntakeBlock() then SendToSwitch() then EjectBlock()
+
             AutoMode.TEST_LEFT -> TestLeft()
             AutoMode.TEST_RIGHT -> TestRight()
-        }.start()
+        }.also {
+            it.start()
+            ((it as CommandGroup).javaClass.getDeclaredField("entries").apply {
+                isAccessible = true
+            }.get(it) as List<Any>).map {
+                it.javaClass.getDeclaredField("command").apply {
+                    isAccessible = true
+                }.get(it)
+            }.forEach {
+                        if (it is CommandGroup) println((it).javaClass.getDeclaredField("entries").apply {
+                            isAccessible = true
+
+                        }.get(it)) else println(it)
+                    }
+        }
     }
 }
 

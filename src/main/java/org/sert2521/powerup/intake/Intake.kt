@@ -16,12 +16,12 @@ import org.sertain.hardware.invert
 object Intake : Subsystem() {
     const val DEFAULT_SPEED = 0.3
 
+    val hasCube get() = intakeTrigger.get()
+
     private val left = Spark(LEFT_INTAKE_MOTOR)
     private val right = Spark(RIGHT_INTAKE_MOTOR)
 
     private val intakeTrigger = DigitalInput(INTAKE_TRIGGER_PORT).invert()
-
-    val hasCube get() = intakeTrigger.get()
 
     override val defaultCommand = TeleopIntake()
 
@@ -30,7 +30,7 @@ object Intake : Subsystem() {
     }
 
     override fun execute() {
-        SmartDashboard.putData("Intake Trigger", intakeTrigger)
+        SmartDashboard.putBoolean("Has Cube", hasCube)
     }
 
     fun set(speed: Double) {

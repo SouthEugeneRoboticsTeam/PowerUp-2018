@@ -10,12 +10,9 @@ class DriveToCube : DriveToAngle(0.0, BASE_SPEED, p = 0.01) {
     override fun execute(output: Double): Boolean {
         super.execute(output)
 
-        println("Sees cube? ${table.getEntry("cube_found").getBoolean(false)}")
-        println("Offset: ${table.getEntry("cube_offset_x").getDouble(0.0) * DEGREES_PER_PIXEL}")
-//        println("Setpoint: ${Drivetrain.ahrs.angle + table.getEntry("cube_offset_x").getDouble(0.0) * DEGREES_PER_PIXEL}")
-
         if (!table.getEntry("cube_found").getBoolean(false)) return true
         setpoint = Drivetrain.ahrs.angle + table.getEntry("cube_offset_x").getDouble(0.0) * DEGREES_PER_PIXEL
+
         return Intake.hasCube
     }
 

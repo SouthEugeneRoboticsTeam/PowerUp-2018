@@ -5,7 +5,7 @@ import org.sertain.command.Command
 import kotlin.math.pow
 import kotlin.properties.Delegates
 
-abstract class SendToTarget(private val target: Int) : Command(3000) {
+abstract class SendToTarget(private val target: Int) : Command(5000) {
     protected abstract val isAtTarget: Boolean
     private var wasBelowTarget: Boolean by Delegates.notNull()
 
