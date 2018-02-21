@@ -70,9 +70,10 @@ object Auto : RobotLifecycle {
                     ScaleLeftToLeftSwitch() then DriveToCube() and IntakeBlock() then
                     SendToSwitch() then EjectBlock()
             AutoMode.RIGHT_TO_RIGHT_SCALE_SWITCH -> RightToRightScale() and SendToSwitch() then
-                    SendToScale() then EjectBlock() then DriveToAngle(-135.0) then
-                    ScaleRightToRightSwitch() then DriveToCube() and IntakeBlock() then
-                    SendToSwitch() then EjectBlock()
+                    SendToScale() then EjectBlock()
+//                    then DriveToAngle(-135.0) then
+//                    ScaleRightToRightSwitch() then DriveToCube() and IntakeBlock() then
+//                    SendToSwitch() then EjectBlock()
             AutoMode.TEST_LEFT -> TestLeft()
             AutoMode.TEST_RIGHT -> TestRight()
         }.start()

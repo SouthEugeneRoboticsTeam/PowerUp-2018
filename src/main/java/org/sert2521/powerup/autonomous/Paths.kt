@@ -183,7 +183,7 @@ object RightToRightSwitchPath : PathBase() {
     override var points = arrayOf(
             0.0 with -3.0 angle 0.0,
             2.0 with -3.2 angle 0.0,
-            3.3 with -2.2 angle -90.0
+            3.3 with -1.9 angle -90.0
     )
 }
 

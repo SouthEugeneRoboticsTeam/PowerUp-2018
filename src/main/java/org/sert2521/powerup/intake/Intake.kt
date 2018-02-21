@@ -16,8 +16,8 @@ import org.sertain.hardware.invert
 object Intake : Subsystem() {
     const val DEFAULT_SPEED = 0.3
 
-    private val left = Spark(LEFT_INTAKE_MOTOR).invert()
-    private val right = Spark(RIGHT_INTAKE_MOTOR).invert()
+    private val left = Spark(LEFT_INTAKE_MOTOR)
+    private val right = Spark(RIGHT_INTAKE_MOTOR)
 
     private val intakeTrigger = DigitalInput(INTAKE_TRIGGER_PORT).invert()
 
