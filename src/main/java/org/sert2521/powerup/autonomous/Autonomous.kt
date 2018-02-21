@@ -40,17 +40,13 @@ object Auto : RobotLifecycle {
         RightToRightScalePath
         LeftSwitchToRearPath
         RightSwitchToRearPath
-//        ScaleLeftToRearPath
-//        ScaleRightToRearPath
-        ScaleLeftToLeftSwitchPath
-        ScaleRightToRightSwitchPath
     }
 
     override fun onAutoStart() {
         println("Following: $autoMode")
         when (autoMode) {
             AutoMode.CROSS_BASELINE -> CrossBaseline()
-            AutoMode.LEFT_TO_LEFT_SWITCH -> LeftSwitchToRear()
+            AutoMode.LEFT_TO_LEFT_SWITCH -> LeftSwitchToRear() and SendToSwitch()
             AutoMode.RIGHT_TO_RIGHT_SWITCH -> RightToRightSwitch() and SendToSwitch() then
                     EjectBlock() then RightSwitchToRear() and SendToBottom() then DriveToCube() and
                     IntakeBlock() then IntakeBlock(500) then SendToSwitch() then EjectBlock()
@@ -60,15 +56,13 @@ object Auto : RobotLifecycle {
                     EjectBlock()
             AutoMode.LEFT_TO_LEFT_SCALE_PICKUP -> LeftToLeftScale() and SendToSwitch() then
                     SendToScale() then EjectBlock() then
-                    DriveToAngle(135.0) then DriveToCube() and IntakeBlock()
+                    DriveToAngle(100.0) then DriveToCube() and IntakeBlock()
             AutoMode.RIGHT_TO_RIGHT_SCALE_PICKUP -> RightToRightScale() and SendToSwitch() then
                     SendToScale() then EjectBlock() then
-                    DriveToAngle(-135.0) then ScaleRightToRightSwitch() then DriveToCube() and
-                    IntakeBlock()
+                    DriveToAngle(-100.0) and SendToBottom() then DriveToCube() and IntakeBlock()
             AutoMode.LEFT_TO_LEFT_SCALE_SWITCH -> LeftToLeftScale() and SendToSwitch() then
                     SendToScale() then EjectBlock() then DriveToAngle(135.0) then
-                    ScaleLeftToLeftSwitch() then DriveToCube() and IntakeBlock() then
-                    SendToSwitch() then EjectBlock()
+                    DriveToCube() and IntakeBlock() then SendToSwitch() then EjectBlock()
             AutoMode.RIGHT_TO_RIGHT_SCALE_SWITCH -> RightToRightScale() and SendToSwitch() then
                     SendToScale() then EjectBlock()
 //                    then DriveToAngle(-135.0) then
@@ -151,12 +145,6 @@ private class RightToRightScale : PathFollowerBase(RightToRightScalePath)
 private class LeftSwitchToRear : ReversePathFollowerBase(LeftSwitchToRearPath)
 
 private class RightSwitchToRear : ReversePathFollowerBase(RightSwitchToRearPath)
-
-// TODO tune
-private class ScaleLeftToLeftSwitch : PathFollowerBase(ScaleLeftToLeftSwitchPath)
-
-// TODO tune
-private class ScaleRightToRightSwitch : PathFollowerBase(ScaleRightToRightSwitchPath)
 
 private class TestLeft : PathFollowerBase(TestLeftPath)
 
