@@ -8,7 +8,6 @@ import org.sert2521.powerup.util.LEFT_INTAKE_MOTOR
 import org.sert2521.powerup.util.RIGHT_INTAKE_MOTOR
 import org.sertain.command.Subsystem
 import org.sertain.hardware.DigitalInput
-import org.sertain.hardware.invert
 
 /**
  * The robot's Power Cube intake system, consisting of two sets of fly wheels.
@@ -27,9 +26,7 @@ object Intake : Subsystem() {
 
     override val defaultCommand = TeleopIntake()
 
-    override fun onStart() {
-        set(DEFAULT_SPEED)
-    }
+    override fun onStart() = set(DEFAULT_SPEED)
 
     override fun execute() {
         SmartDashboard.putBoolean("Has Cube", hasCube)
