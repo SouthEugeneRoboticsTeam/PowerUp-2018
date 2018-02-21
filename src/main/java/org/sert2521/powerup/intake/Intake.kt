@@ -28,7 +28,7 @@ object Intake : Subsystem() {
     fun set(speed: Double) {
         SmartDashboard.putNumber("Intake Speed", speed)
         left.set(speed)
-        right.set(speed)
+        right.set(speed * .8)
     }
 
     fun stop() {
