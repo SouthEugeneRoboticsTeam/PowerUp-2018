@@ -6,14 +6,17 @@ import org.sert2521.powerup.drivetrain.Drivetrain
 import org.sert2521.powerup.intake.Intake
 import org.sert2521.powerup.util.DEGREES_PER_PIXEL
 
-class DriveToCube : DriveToAngle(0.0, BASE_SPEED, p = 0.01) {
+class DriveToCube : AngleDriver(0.01) {
+    override fun onCreate() = updateSetpoint(0.0)
+
     override fun execute(output: Double): Boolean {
-        super.execute(output)
-
-        if (!table.getEntry("cube_found").getBoolean(false)) return true
-        setpoint = Drivetrain.ahrs.angle + table.getEntry("cube_offset_x").getDouble(0.0) * DEGREES_PER_PIXEL
-
+        Drivetrain.drive(BASE_SPEED + output, BASE_SPEED - output)
+        updateSetpoint(table.getEntry("cube_offset_x").getDouble(0.0) * DEGREES_PER_PIXEL)
         return Intake.hasCube
+    }
+
+    private fun updateSetpoint(offset: Double) {
+        setpoint = Drivetrain.ahrs.yaw + offset
     }
 
     private companion object {
