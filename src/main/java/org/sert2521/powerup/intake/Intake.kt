@@ -14,6 +14,9 @@ import org.sertain.hardware.invert
  * The robot's Power Cube intake system, consisting of two sets of fly wheels.
  */
 object Intake : Subsystem() {
+    /** Software fix for a hardware problem: intaking blocks diagonally doesn't work. */
+    private const val PHASE_SHIFT = .8
+
     private val left = Spark(LEFT_INTAKE_MOTOR).invert()
     private val right = Spark(RIGHT_INTAKE_MOTOR).invert()
 
@@ -28,7 +31,7 @@ object Intake : Subsystem() {
     fun set(speed: Double) {
         SmartDashboard.putNumber("Intake Speed", speed)
         left.set(speed)
-        right.set(speed)
+        right.set(speed * PHASE_SHIFT)
     }
 
     fun stop() {
