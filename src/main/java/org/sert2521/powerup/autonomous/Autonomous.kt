@@ -79,21 +79,7 @@ object Auto : RobotLifecycle {
 
             AutoMode.TEST_LEFT -> TestLeft()
             AutoMode.TEST_RIGHT -> TestRight()
-        }.also {
-            it.start()
-            ((it as CommandGroup).javaClass.getDeclaredField("entries").apply {
-                isAccessible = true
-            }.get(it) as List<Any>).map {
-                it.javaClass.getDeclaredField("command").apply {
-                    isAccessible = true
-                }.get(it)
-            }.forEach {
-                        if (it is CommandGroup) println((it).javaClass.getDeclaredField("entries").apply {
-                            isAccessible = true
-
-                        }.get(it)) else println(it)
-                    }
-        }
+        }.start()
     }
 }
 
