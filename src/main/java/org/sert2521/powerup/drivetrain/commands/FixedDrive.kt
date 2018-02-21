@@ -6,10 +6,7 @@ import org.sertain.command.Command
 /**
  * Drives at a specified fixed speed while cancelling all other [Drivetrain] commands.
  */
-class FixedDrive(left: Double, right: Double) : Command() {
-    private val leftSpeed: Double = left
-    private val rightSpeed: Double = right
-
+class FixedDrive(private val leftSpeed: Double, private val rightSpeed: Double) : Command() {
     init {
         requires(Drivetrain)
     }
