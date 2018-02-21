@@ -17,12 +17,13 @@ import org.sert2521.powerup.util.WHEEL_DIAMETER
 import org.sert2521.powerup.util.autoMode
 import org.sertain.RobotLifecycle
 import org.sertain.command.Command
-import org.sertain.command.CommandGroup
 import org.sertain.command.and
 import org.sertain.command.then
 import org.sertain.util.PathInitializer
 
 object Auto : RobotLifecycle {
+    private const val SCALE_TO_SWITCH_TURN = 100.0
+
     init {
         RobotLifecycle.addListener(this)
     }
@@ -62,19 +63,19 @@ object Auto : RobotLifecycle {
                     EjectBlock()
 
             AutoMode.LEFT_TO_LEFT_SCALE_PICKUP -> LeftToLeftScale() and SendToScale() then
-                    EjectBlock() then DriveToAngle(100.0) and SendToBottom() then
+                    EjectBlock() then DriveToAngle(SCALE_TO_SWITCH_TURN) and SendToBottom() then
                     DriveToCube() and IntakeBlock() then SendToSwitch()
 
             AutoMode.RIGHT_TO_RIGHT_SCALE_PICKUP -> RightToRightScale() and SendToScale() then
-                    EjectBlock() then DriveToAngle(-100.0) and SendToBottom() then
+                    EjectBlock() then DriveToAngle(-SCALE_TO_SWITCH_TURN) and SendToBottom() then
                     DriveToCube() and IntakeBlock() then SendToSwitch()
 
             AutoMode.LEFT_TO_LEFT_SCALE_SWITCH -> LeftToLeftScale() and SendToScale() then
-                    EjectBlock() then DriveToAngle(100.0) and SendToBottom() then
+                    EjectBlock() then DriveToAngle(SCALE_TO_SWITCH_TURN) and SendToBottom() then
                     DriveToCube() and IntakeBlock() then SendToSwitch() then EjectBlock()
 
             AutoMode.RIGHT_TO_RIGHT_SCALE_SWITCH -> RightToRightScale() and SendToScale() then
-                    EjectBlock() then DriveToAngle(-100.0) and SendToBottom() then
+                    EjectBlock() then DriveToAngle(-SCALE_TO_SWITCH_TURN) and SendToBottom() then
                     DriveToCube() and IntakeBlock() then SendToSwitch() then EjectBlock()
 
             AutoMode.TEST_LEFT -> TestLeft()
