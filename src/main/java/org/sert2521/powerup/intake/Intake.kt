@@ -15,11 +15,13 @@ import org.sertain.hardware.invert
  */
 object Intake : Subsystem() {
     const val DEFAULT_SPEED = 0.3
+    /** Software fix for a hardware problem: intaking blocks diagonally doesn't work. */
+    private const val PHASE_SHIFT = .8
 
     val hasCube get() = intakeTrigger.get()
 
-    private val left = Spark(LEFT_INTAKE_MOTOR)
-    private val right = Spark(RIGHT_INTAKE_MOTOR)
+    private val left = Spark(LEFT_INTAKE_MOTOR).invert()
+    private val right = Spark(RIGHT_INTAKE_MOTOR).invert()
 
     private val intakeTrigger = DigitalInput(INTAKE_TRIGGER_PORT).invert()
 
@@ -36,7 +38,7 @@ object Intake : Subsystem() {
     fun set(speed: Double) {
         SmartDashboard.putNumber("Intake Speed", speed)
         left.set(speed)
-        right.set(speed)
+        right.set(speed * PHASE_SHIFT)
     }
 
     fun stop() {
