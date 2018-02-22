@@ -56,10 +56,10 @@ object Auto : RobotLifecycle {
                     EjectBlock() then RightSwitchToRear() and SendToBottom() then DriveToCube() and
                     IntakeBlock() then SendToSwitch() then EjectBlock()
 
-            AutoMode.MIDDLE_TO_LEFT_SWITCH -> MiddleToLeftSwitch() then SendToSwitch() then
+            AutoMode.MIDDLE_TO_LEFT_SWITCH -> MiddleToLeftSwitch() and SendToSwitch() then
                     EjectBlock()
 
-            AutoMode.MIDDLE_TO_RIGHT_SWITCH -> MiddleToRightSwitch() then SendToSwitch() then
+            AutoMode.MIDDLE_TO_RIGHT_SWITCH -> MiddleToRightSwitch() and SendToSwitch() then
                     EjectBlock()
 
             AutoMode.LEFT_TO_LEFT_SCALE_PICKUP -> LeftToLeftScale() and SendToScale() then
