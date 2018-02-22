@@ -1,6 +1,6 @@
 buildscript {
     ext.kotlinVersion = '1.2.21'
-    ext.gradleRioVersion = '2018.01.22'
+    ext.gradleRioVersion = '2018.02.17'
     ext.sertainVersion = '0.0.26'
     ext.ktlintVersion = '0.15.0'
 
@@ -69,17 +69,17 @@ deploy {
 }
 
 wpi {
-    wpilibVersion = '2018.2.2'
+    wpilibVersion = '2018.3.2'
     ntcoreVersion = '4.0.0'
     opencvVersion = '3.2.0'
-    cscoreVersion = '1.1.0'
-    wpiutilVersion = '3.0.0'
+    cscoreVersion = '1.2.0'
+    wpiutilVersion = '3.1.0'
 
     ctreVersion = '5.2.1.1'
     navxVersion = '3.0.346'
 
-    smartDashboardVersion = '2.0.4'
-    shuffleboardVersion = '1.1.1'
+    smartDashboardVersion = '3.0.0'
+    shuffleboardVersion = '1.2.1'
 }
 
 jar {
