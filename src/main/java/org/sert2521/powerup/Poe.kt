@@ -5,8 +5,10 @@ import org.sert2521.powerup.climber.Climber
 import org.sert2521.powerup.drivetrain.Drivetrain
 import org.sert2521.powerup.elevator.Elevator
 import org.sert2521.powerup.intake.Intake
+import org.sert2521.powerup.util.Camera
 import org.sert2521.powerup.util.Modes
 import org.sertain.Robot
+
 
 class Poe : Robot() {
     override fun onCreate() {
@@ -16,5 +18,6 @@ class Poe : Robot() {
         Climber
         Auto
         Modes
+        Camera
     }
 }
