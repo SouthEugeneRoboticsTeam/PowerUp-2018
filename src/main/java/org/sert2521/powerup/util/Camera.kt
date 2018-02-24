@@ -29,6 +29,7 @@ object Camera {
             camera.setWhiteBalanceManual(75)
 
             val cvSink = CameraServer.getInstance().video
+            val outputStream = CameraServer.getInstance().putVideo("Front Robot Camera", 1280, 720)
 
             val source = Mat()
             val out = VideoWriter(file.path, VideoWriter.fourcc('M', 'J', 'P', 'G'), 20.0, Size(640.0, 480.0))
