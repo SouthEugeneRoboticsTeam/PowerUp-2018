@@ -43,7 +43,7 @@ object Camera {
                         else -> "Teleoperated"
                     }
 
-                    val allianceColor = when(DriverStation.getInstance().alliance) {
+                    val allianceColor = when (DriverStation.getInstance().alliance) {
                         DriverStation.Alliance.Red -> Scalar(0.0, 0.0, 255.0)
                         DriverStation.Alliance.Blue -> Scalar(255.0, 0.0, 0.0)
                         else -> Scalar(255.0, 255.0, 255.0)
