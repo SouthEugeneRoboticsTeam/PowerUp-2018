@@ -7,7 +7,7 @@
       "autoPopulatePrefix": "",
       "widgetPane": {
         "gridSize": 128.0,
-        "showGrid": true,
+        "showGrid": false,
         "hgap": 16.0,
         "vgap": 16.0,
         "tiles": {
@@ -43,7 +43,7 @@
             "content": {
               "_type": "Gyro",
               "_source0": "network_table:///SmartDashboard/AHRS",
-              "_title": "SmartDashboard/AHRS",
+              "_title": "AHRS",
               "majorTickSpace": 45.0,
               "startAngle": 180.0,
               "tickMarkRingVisible": true
@@ -71,7 +71,7 @@
       "autoPopulatePrefix": "",
       "widgetPane": {
         "gridSize": 128.0,
-        "showGrid": true,
+        "showGrid": false,
         "hgap": 16.0,
         "vgap": 16.0,
         "tiles": {
@@ -116,7 +116,7 @@
             "content": {
               "_type": "Gyro",
               "_source0": "network_table:///SmartDashboard/AHRS",
-              "_title": "SmartDashboard/AHRS",
+              "_title": "AHRS",
               "majorTickSpace": 45.0,
               "startAngle": 180.0,
               "tickMarkRingVisible": true
@@ -154,7 +154,7 @@
       "autoPopulatePrefix": "",
       "widgetPane": {
         "gridSize": 128.0,
-        "showGrid": true,
+        "showGrid": false,
         "hgap": 16.0,
         "vgap": 16.0,
         "tiles": {
@@ -213,7 +213,7 @@
       "autoPopulatePrefix": "",
       "widgetPane": {
         "gridSize": 128.0,
-        "showGrid": true,
+        "showGrid": false,
         "hgap": 16.0,
         "vgap": 16.0,
         "tiles": {
