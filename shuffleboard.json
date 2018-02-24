@@ -1,5 +1,5 @@
 {
-  "dividerPosition": 0.003157894736842105,
+  "dividerPosition": 0.0,
   "tabPane": [
     {
       "title": "Driver",
@@ -20,19 +20,6 @@
               "_type": "ComboBox Chooser",
               "_source0": "network_table:///SmartDashboard/Control Mode",
               "_title": "Control Mode"
-            }
-          },
-          "0,0": {
-            "size": [
-              3,
-              3
-            ],
-            "content": {
-              "_type": "Boolean Box",
-              "_source0": "network_table:///SmartDashboard/Intake Trigger/Value",
-              "_title": "Block",
-              "colorWhenTrue": "#E6E64DFF",
-              "colorWhenFalse": "#333333FF"
             }
           },
           "3,0": {
@@ -60,6 +47,19 @@
               "_title": "Alliance",
               "colorWhenTrue": "#990000FF",
               "colorWhenFalse": "#001A80FF"
+            }
+          },
+          "0,0": {
+            "size": [
+              3,
+              3
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/Has Cube",
+              "_title": "Has Cube",
+              "colorWhenTrue": "#FFFF00FF",
+              "colorWhenFalse": "#333333FF"
             }
           }
         }
