@@ -1,109 +1,114 @@
 {
-  "dividerPosition": 0.2326315789473684,
+  "dividerPosition": 0.003157894736842105,
   "tabPane": [
     {
-      "title": "Default",
+      "title": "Driver",
       "autoPopulate": false,
       "autoPopulatePrefix": "",
       "widgetPane": {
         "gridSize": 128.0,
+        "showGrid": true,
         "hgap": 16.0,
         "vgap": 16.0,
         "tiles": {
+          "1,5": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "ComboBox Chooser",
+              "_source0": "network_table:///SmartDashboard/Control Mode",
+              "_title": "Control Mode"
+            }
+          },
           "0,0": {
+            "size": [
+              3,
+              3
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/Intake Trigger/Value",
+              "_title": "Block",
+              "colorWhenTrue": "#E6E64DFF",
+              "colorWhenFalse": "#333333FF"
+            }
+          },
+          "3,0": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Gyro",
+              "_source0": "network_table:///SmartDashboard/AHRS",
+              "_title": "SmartDashboard/AHRS",
+              "majorTickSpace": 45.0,
+              "startAngle": 180.0,
+              "tickMarkRingVisible": true
+            }
+          },
+          "0,5": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///FMSInfo/IsRedAlliance",
+              "_title": "Alliance",
+              "colorWhenTrue": "#990000FF",
+              "colorWhenFalse": "#001A80FF"
+            }
+          }
+        }
+      }
+    },
+    {
+      "title": "Configuration",
+      "autoPopulate": false,
+      "autoPopulatePrefix": "",
+      "widgetPane": {
+        "gridSize": 128.0,
+        "showGrid": true,
+        "hgap": 16.0,
+        "vgap": 16.0,
+        "tiles": {
+          "0,1": {
             "size": [
               2,
               1
             ],
             "content": {
               "_type": "ComboBox Chooser",
-              "_source0": "network_table:///SmartDashboard/Control mode",
-              "_title": "SmartDashboard/Control mode"
+              "_source0": "network_table:///SmartDashboard/Auto Mode Start Position",
+              "_title": "Auto Start Location"
+            }
+          },
+          "2,1": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "ComboBox Chooser",
+              "_source0": "network_table:///SmartDashboard/Auto Mode End Result",
+              "_title": "Auto End Location"
+            }
+          },
+          "0,0": {
+            "size": [
+              4,
+              1
+            ],
+            "content": {
+              "_type": "ComboBox Chooser",
+              "_source0": "network_table:///SmartDashboard/Control Mode",
+              "_title": "Control Mode"
             }
           },
           "4,0": {
-            "size": [
-              2,
-              1
-            ],
-            "content": {
-              "_type": "ComboBox Chooser",
-              "_source0": "network_table:///SmartDashboard/Auto mode end result",
-              "_title": "SmartDashboard/Auto mode end result"
-            }
-          },
-          "2,0": {
-            "size": [
-              2,
-              1
-            ],
-            "content": {
-              "_type": "ComboBox Chooser",
-              "_source0": "network_table:///SmartDashboard/Auto mode start position",
-              "_title": "SmartDashboard/Auto mode start position"
-            }
-          },
-          "0,1": {
-            "size": [
-              3,
-              2
-            ],
-            "content": {
-              "_type": "Graph",
-              "_source0": "network_table:///SmartDashboard/Drivetrain left encoder position",
-              "_title": "SmartDashboard/Drivetrain left encoder position",
-              "Visible time": 30.0
-            }
-          },
-          "0,3": {
-            "size": [
-              3,
-              2
-            ],
-            "content": {
-              "_type": "Graph",
-              "_source0": "network_table:///SmartDashboard/Drivetrain left speed",
-              "_title": "SmartDashboard/Drivetrain left speed",
-              "Visible time": 30.0
-            }
-          },
-          "3,3": {
-            "size": [
-              3,
-              2
-            ],
-            "content": {
-              "_type": "Graph",
-              "_source0": "network_table:///SmartDashboard/Drivetrain right speed",
-              "_title": "SmartDashboard/Drivetrain right speed",
-              "Visible time": 30.0
-            }
-          },
-          "3,1": {
-            "size": [
-              3,
-              2
-            ],
-            "content": {
-              "_type": "Graph",
-              "_source0": "network_table:///SmartDashboard/Drivetrain right encoder position",
-              "_title": "SmartDashboard/Drivetrain right encoder position",
-              "Visible time": 30.0
-            }
-          },
-          "6,3": {
-            "size": [
-              3,
-              2
-            ],
-            "content": {
-              "_type": "Graph",
-              "_source0": "network_table:///SmartDashboard/Auto turn",
-              "_title": "SmartDashboard/Auto turn",
-              "Visible time": 30.0
-            }
-          },
-          "6,1": {
             "size": [
               2,
               2
@@ -123,9 +128,214 @@
               1
             ],
             "content": {
-              "_type": "ComboBox Chooser",
-              "_source0": "network_table:///SmartDashboard/Auto Mode",
-              "_title": "SmartDashboard/Auto Mode"
+              "_type": "Text View",
+              "_source0": "network_table:///FMSInfo/GameSpecificMessage",
+              "_title": "Game Specific Message"
+            }
+          },
+          "0,2": {
+            "size": [
+              6,
+              3
+            ],
+            "content": {
+              "_type": "Robot Preferences",
+              "_source0": "network_table:///Preferences",
+              "_title": "Preferences",
+              "searchBoxVisible": true
+            }
+          }
+        }
+      }
+    },
+    {
+      "title": "Development",
+      "autoPopulate": false,
+      "autoPopulatePrefix": "",
+      "widgetPane": {
+        "gridSize": 128.0,
+        "showGrid": true,
+        "hgap": 16.0,
+        "vgap": 16.0,
+        "tiles": {
+          "0,0": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///FMSInfo/GameSpecificMessage",
+              "_title": "Game Specific Message"
+            }
+          },
+          "2,0": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///FMSInfo/IsRedAlliance",
+              "_title": "Alliance",
+              "colorWhenTrue": "#990000FF",
+              "colorWhenFalse": "#001A80FF"
+            }
+          },
+          "0,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Drivetrain Left Position",
+              "_title": "Encoder Left"
+            }
+          },
+          "1,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Drivetrain Right Position",
+              "_title": "Encoder Right"
+            }
+          }
+        }
+      }
+    },
+    {
+      "title": "Paths",
+      "autoPopulate": false,
+      "autoPopulatePrefix": "",
+      "widgetPane": {
+        "gridSize": 128.0,
+        "showGrid": true,
+        "hgap": 16.0,
+        "vgap": 16.0,
+        "tiles": {
+          "4,3": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///LiveWindow/Ungrouped/CrossBaselinePath/selected",
+              "_title": "Cross Baseline"
+            }
+          },
+          "2,1": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///LiveWindow/Ungrouped/LeftSwitchToRearPath/selected",
+              "_title": "Left Switch to Rear"
+            }
+          },
+          "2,0": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///LiveWindow/Ungrouped/LeftToLeftScalePath/selected",
+              "_title": "Left to Left Scale"
+            }
+          },
+          "0,1": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///LiveWindow/Ungrouped/LeftToLeftSwitchPath/selected",
+              "_title": "Left to Left Switch"
+            }
+          },
+          "0,0": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///LiveWindow/Ungrouped/MiddleToLeftSwitchPath/selected",
+              "_title": "Middle to Left Switch"
+            }
+          },
+          "5,0": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///LiveWindow/Ungrouped/MiddleToRightSwitchPath/selected",
+              "_title": "Middle to Right Switch"
+            }
+          },
+          "7,1": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///LiveWindow/Ungrouped/RightSwitchToRearPath/selected",
+              "_title": "Right Switch to Rear"
+            }
+          },
+          "7,0": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///LiveWindow/Ungrouped/RightToRightScalePath/selected",
+              "_title": "Right to Right Scale"
+            }
+          },
+          "5,1": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///LiveWindow/Ungrouped/RightToRightSwitchPath/selected",
+              "_title": "Right to Right Switch"
+            }
+          },
+          "0,3": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///LiveWindow/Ungrouped/TestLeftPath/selected",
+              "_title": "Test Left"
+            }
+          },
+          "2,3": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///LiveWindow/Ungrouped/TestRightPath/selected",
+              "_title": "Test Right"
             }
           }
         }
