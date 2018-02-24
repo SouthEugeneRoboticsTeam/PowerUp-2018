@@ -56,12 +56,8 @@ object Camera {
                             source,
                             DriverStation.getInstance().alliance.toString(),
                             Point(5.0, 53.0),
-                            FONT_HERSHEY_COMPLEX,
-                            1.85,
-                            Scalar(255.0, 255.0, 255.0),
-                            2,
-                            16,
-                            false
+                            FONT_HERSHEY_COMPLEX, 1.85, Scalar(255.0, 255.0, 255.0),
+                            2, 16, false
                     )
 
                     out.write(source)
