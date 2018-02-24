@@ -5,6 +5,7 @@ import org.sert2521.powerup.intake.Intake
 import org.sert2521.powerup.util.Control
 import org.sert2521.powerup.util.controlMode
 import org.sert2521.powerup.util.controller
+import org.sert2521.powerup.util.ejectSpeedScalar
 import org.sert2521.powerup.util.intakeSpeedScalar
 import org.sert2521.powerup.util.rightJoystick
 import org.sertain.command.Command
@@ -21,7 +22,7 @@ class TeleopIntake : Command() {
         when (controlMode) {
             is Control.Arcade, is Control.Tank -> Intake.set(when {
                 rightJoystick.trigger -> intakeSpeedScalar
-                rightJoystick.top -> -intakeSpeedScalar
+                rightJoystick.top -> -ejectSpeedScalar
                 else -> Intake.DEFAULT_SPEED
             })
             is Control.Controller -> {
