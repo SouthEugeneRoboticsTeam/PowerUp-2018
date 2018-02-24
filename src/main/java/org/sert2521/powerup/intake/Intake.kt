@@ -8,6 +8,7 @@ import org.sert2521.powerup.util.LEFT_INTAKE_MOTOR
 import org.sert2521.powerup.util.RIGHT_INTAKE_MOTOR
 import org.sertain.command.Subsystem
 import org.sertain.hardware.DigitalInput
+import kotlin.math.sign
 
 /**
  * The robot's Power Cube intake system, consisting of two sets of fly wheels.
@@ -15,7 +16,7 @@ import org.sertain.hardware.DigitalInput
 object Intake : Subsystem() {
     const val DEFAULT_SPEED = 0.3
     /** Software fix for a hardware problem: intaking blocks diagonally doesn't work. */
-    private const val PHASE_SHIFT = .8
+    private const val PHASE_SHIFT = .75
 
     val hasCube get() = intakeTrigger.get()
 
@@ -35,7 +36,8 @@ object Intake : Subsystem() {
     fun set(speed: Double) {
         SmartDashboard.putNumber("Intake Speed", speed)
         left.set(speed)
-        right.set(speed * PHASE_SHIFT)
+        // Only apply software fix if intaking
+        right.set(speed * if (speed.sign >= 0) PHASE_SHIFT else 1.0)
     }
 
     fun stop() {
