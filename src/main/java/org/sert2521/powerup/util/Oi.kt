@@ -15,5 +15,7 @@ val controller = XboxController(CONTROLLER_PORT)
 val secondaryJoystick = Joystick(SECONDARY_STICK_PORT)
 
 val intakeSpeedScalar get() = Preferences.getInstance().getDouble("intake_speed_scalar", 0.8)
-val ejectSpeedScalar get() = Preferences.getInstance().getDouble("eject_speed_scalar", 0.6)
+val normalEjectSpeedScalar
+    get() = Preferences.getInstance().getDouble("normal_eject_speed_scalar", 0.6)
+val fastEjectSpeedScalar get() = Preferences.getInstance().getDouble("fast_eject_speed_scalar", 1.0)
 val driveSpeedScalar get() = Preferences.getInstance().getDouble("drive_speed_scalar", 0.85)
