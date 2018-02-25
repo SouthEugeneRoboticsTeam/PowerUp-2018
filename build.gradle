@@ -55,7 +55,7 @@ deploy {
     targets {
         target('roborio', jaci.openrio.gradle.frc.RoboRIO) {
             team = 2521
-            addresses << '10.25.21.89' << '10.25.21.90'
+            addresses << '10.25.21.2'
         }
     }
 
