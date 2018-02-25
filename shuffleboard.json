@@ -245,6 +245,30 @@
               "Visible time": 30.0,
               "SmartDashboard/Drivetrain Roll visible": true
             }
+          },
+          "2,5": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///Vision/cube_offset_x",
+              "_title": "Vision Offset"
+            }
+          },
+          "0,5": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///Vision/cube_found",
+              "_title": "Vision Found Cube",
+              "colorWhenTrue": "#7CFC00FF",
+              "colorWhenFalse": "#8B0000FF"
+            }
           }
         }
       }
