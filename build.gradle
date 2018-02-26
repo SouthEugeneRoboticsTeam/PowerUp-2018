@@ -75,7 +75,7 @@ wpi {
     cscoreVersion = '1.2.0'
     wpiutilVersion = '3.1.0'
 
-    ctreVersion = '5.2.1.1'
+    ctreVersion = '5.2.2.0'
     navxVersion = '3.0.346'
 
     smartDashboardVersion = '3.0.0'
