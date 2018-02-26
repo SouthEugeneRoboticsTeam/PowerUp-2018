@@ -23,8 +23,8 @@ class EmergencyAbort : Command() {
             println("EMERGENCY ABORT! ${avg.absoluteValue}")
             // Reduce speed until we aren't dying
             FixedDrive(
-                    leftSpeed - REDUCTION_SPEED * -avg.sign,
-                    rightSpeed - REDUCTION_SPEED * -avg.sign
+                    leftSpeed - REDUCTION_SPEED * avg.sign,
+                    rightSpeed - REDUCTION_SPEED * avg.sign
             ).start()
         }
 
