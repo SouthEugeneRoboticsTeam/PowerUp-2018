@@ -269,6 +269,19 @@
               "colorWhenTrue": "#7CFC00FF",
               "colorWhenFalse": "#8B0000FF"
             }
+          },
+          "6,4": {
+            "size": [
+              3,
+              2
+            ],
+            "content": {
+              "_type": "Graph",
+              "_source0": "network_table:///SmartDashboard/Elevator Position",
+              "_title": "Elevator Position",
+              "Visible time": 30.0,
+              "SmartDashboard/Elevator Position visible": true
+            }
           }
         }
       }

@@ -10,6 +10,7 @@ import org.sert2521.powerup.util.MIDDLE_TRIGGER_PORT
 import org.sert2521.powerup.util.RIGHT_ELEVATOR_MOTOR
 import org.sert2521.powerup.util.SWITCH_TRIGGER_PORT
 import org.sert2521.powerup.util.TOP_TRIGGER_PORT
+import org.sert2521.powerup.util.secondaryJoystick
 import org.sertain.command.Subsystem
 import org.sertain.hardware.DigitalInput
 import org.sertain.hardware.Talon
@@ -19,6 +20,7 @@ import org.sertain.hardware.invert
 import org.sertain.hardware.plus
 import org.sertain.hardware.setEncoderPosition
 import org.sertain.hardware.setSelectedSensor
+import org.sertain.hardware.whenActive
 
 object Elevator : Subsystem() {
     const val DEFAULT_SPEED = 0.125
@@ -46,6 +48,9 @@ object Elevator : Subsystem() {
     override fun onCreate() = elevator.setSelectedSensor(FeedbackDevice.QuadEncoder)
 
     override fun onStart() = EncoderResetter().start()
+
+    override fun onTeleopStart() =
+            secondaryJoystick.whenActive(1, Elevate()) // Ensure drivers can override auto
 
     override fun execute() {
         SmartDashboard.putNumber("Elevator Position", position.toDouble())

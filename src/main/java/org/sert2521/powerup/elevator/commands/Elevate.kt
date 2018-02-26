@@ -38,7 +38,7 @@ class Elevate : Command() {
             PovButton.TOP -> SendToScale()
             PovButton.BOTTOM -> SendToBottom()
             else -> SendToSwitch()
-        }
+        }.start()
     }
 
     override fun onDestroy() = Elevator.stop()
