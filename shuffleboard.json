@@ -61,6 +61,28 @@
               "colorWhenTrue": "#FFFF00FF",
               "colorWhenFalse": "#333333FF"
             }
+          },
+          "6,0": {
+            "size": [
+              3,
+              1
+            ],
+            "content": {
+              "_type": "Basic FMS Info",
+              "_source0": "network_table:///FMSInfo",
+              "_title": "Match Information"
+            }
+          },
+          "6,1": {
+            "size": [
+              3,
+              3
+            ],
+            "content": {
+              "_type": "Powerup Field",
+              "_source0": "network_table:///FMSInfo",
+              "_title": "Field State"
+            }
           }
         }
       }
