@@ -32,7 +32,7 @@ class EmergencyAbort : Command() {
     }
 
     private companion object {
-        const val TIP_THRESHOLD = 16
+        const val TIP_THRESHOLD = 17
         const val REDUCTION_SPEED = 0.01
     }
 }
