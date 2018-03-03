@@ -152,6 +152,17 @@
               "_title": "Preferences",
               "searchBoxVisible": true
             }
+          },
+          "4,1": {
+            "size": [
+              4,
+              1
+            ],
+            "content": {
+              "_type": "ComboBox Chooser",
+              "_source0": "network_table:///SmartDashboard/Auto Mode",
+              "_title": "Auto Mode"
+            }
           }
         }
       }
@@ -318,7 +329,7 @@
         "hgap": 16.0,
         "vgap": 16.0,
         "tiles": {
-          "4,4": {
+          "4,5": {
             "size": [
               2,
               1
@@ -417,7 +428,7 @@
               "_title": "Right to Right Switch"
             }
           },
-          "0,4": {
+          "0,5": {
             "size": [
               2,
               1
@@ -428,7 +439,7 @@
               "_title": "Test Left"
             }
           },
-          "2,4": {
+          "2,5": {
             "size": [
               2,
               1
@@ -437,6 +448,28 @@
               "_type": "Text View",
               "_source0": "network_table:///LiveWindow/Ungrouped/TestRightPath/selected",
               "_title": "Test Right"
+            }
+          },
+          "0,3": {
+            "size": [
+              3,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///LiveWindow/Ungrouped/LeftToRightScalePath/selected",
+              "_title": "Left to Right Scale"
+            }
+          },
+          "6,3": {
+            "size": [
+              3,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///LiveWindow/Ungrouped/RightToLeftScalePath/selected",
+              "_title": "Right to Left Scale"
             }
           }
         }

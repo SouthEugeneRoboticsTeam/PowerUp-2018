@@ -55,7 +55,7 @@ abstract class PathBase : PathInitializer(), RobotLifecycle {
     private var liveFollowers: Pair<EncoderFollower, EncoderFollower>? = null
 
     private val lock = ReentrantReadWriteLock()
-    override val trajectory get() = lock.read { liveTrajectory } ?: defaultTrajectory
+    public override val trajectory get() = lock.read { liveTrajectory } ?: defaultTrajectory
     override val followers get() = lock.read { liveFollowers } ?: defaultFollowers
 
     private var sendableEntry: NetworkTableEntry? = null
@@ -214,6 +214,28 @@ object RightToRightScalePath : PathBase() {
             0.0 with -3.0 angle 0.0,
             4.2 with -3.0 angle 0.0,
             6.6 with -2.6 angle 20.0
+    )
+}
+
+object LeftToRightScalePath : PathBase() {
+    override var points = arrayOf(
+            0.0 with 3.0 angle 0.0,
+            4.5 with 3.0 angle 0.0,
+            5.0 with 2.4 angle -90.0,
+            5.0 with -1.5 angle -90.0,
+            5.2 with -2.0 angle -45.0,
+            6.75 with -2.2 angle 20.0
+    )
+}
+
+object RightToLeftScalePath : PathBase() {
+    override var points = arrayOf(
+            0.0 with -3.0 angle 0.0,
+            4.5 with -3.0 angle 0.0,
+            5.0 with -2.4 angle 90.0,
+            5.0 with 1.5 angle 90.0,
+            5.2 with 2.0 angle 45.0,
+            6.75 with 2.2 angle -20.0
     )
 }
 

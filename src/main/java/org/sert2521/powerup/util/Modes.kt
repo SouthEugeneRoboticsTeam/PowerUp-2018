@@ -4,6 +4,21 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
 import openrio.powerup.MatchData.GameFeature
 import openrio.powerup.MatchData.OwnedSide
 import openrio.powerup.MatchData.getOwnedSide
+import org.sert2521.powerup.util.AutoMode.CROSS_BASELINE
+import org.sert2521.powerup.util.AutoMode.End
+import org.sert2521.powerup.util.AutoMode.LEFT_TO_LEFT_SCALE_PICKUP
+import org.sert2521.powerup.util.AutoMode.LEFT_TO_LEFT_SCALE_SWITCH
+import org.sert2521.powerup.util.AutoMode.LEFT_TO_LEFT_SWITCH
+import org.sert2521.powerup.util.AutoMode.LEFT_TO_RIGHT_SCALE
+import org.sert2521.powerup.util.AutoMode.MIDDLE_TO_LEFT_SWITCH
+import org.sert2521.powerup.util.AutoMode.MIDDLE_TO_RIGHT_SWITCH
+import org.sert2521.powerup.util.AutoMode.RIGHT_TO_LEFT_SCALE
+import org.sert2521.powerup.util.AutoMode.RIGHT_TO_RIGHT_SCALE_PICKUP
+import org.sert2521.powerup.util.AutoMode.RIGHT_TO_RIGHT_SCALE_SWITCH
+import org.sert2521.powerup.util.AutoMode.RIGHT_TO_RIGHT_SWITCH
+import org.sert2521.powerup.util.AutoMode.Start
+import org.sert2521.powerup.util.AutoMode.TEST_LEFT
+import org.sert2521.powerup.util.AutoMode.TEST_RIGHT
 import org.sertain.RobotLifecycle
 import org.sertain.util.SendableChooser
 
@@ -11,55 +26,53 @@ val controlMode: Control get() = Modes.controlChooser.selected
 
 val autoMode: AutoMode
     get() {
-        val startChoice = Modes.autoModeChooserStart.selected
-        val endChoice = Modes.autoModeChooserEnd.selected
-        val switchSide = getOwnedSide(GameFeature.SWITCH_NEAR)
-        val scaleSide = getOwnedSide(GameFeature.SCALE)
+        val startChoice: AutoMode.Start = Modes.autoModeChooserStart.selected
+        val endChoice: AutoMode.End = Modes.autoModeChooserEnd.selected
+        val switchSide: OwnedSide = getOwnedSide(GameFeature.SWITCH_NEAR)
+        val scaleSide: OwnedSide = getOwnedSide(GameFeature.SCALE)
 
         if (switchSide == OwnedSide.UNKNOWN || scaleSide == OwnedSide.UNKNOWN) {
             return Modes.autoModeChooser.selected
         }
 
-        if (endChoice == AutoMode.End.BASELINE) {
-            return AutoMode.CROSS_BASELINE
+        if (endChoice == End.BASELINE) {
+            return CROSS_BASELINE
         }
 
         return when (switchSide) {
             OwnedSide.LEFT -> when (startChoice) {
-                AutoMode.Start.MIDDLE -> AutoMode.MIDDLE_TO_LEFT_SWITCH
-                AutoMode.Start.LEFT -> when (scaleSide) {
+                Start.MIDDLE -> MIDDLE_TO_LEFT_SWITCH
+                Start.LEFT -> when (scaleSide) {
                     OwnedSide.LEFT -> when (endChoice) {
-                        AutoMode.End.SWITCH -> AutoMode.LEFT_TO_LEFT_SWITCH
-                        AutoMode.End.SCALE -> AutoMode.LEFT_TO_LEFT_SCALE_SWITCH
+                        End.SWITCH -> LEFT_TO_LEFT_SWITCH
+                        End.SCALE -> LEFT_TO_LEFT_SCALE_SWITCH
                         else -> error("Unknown mode: $endChoice")
                     }
-                    OwnedSide.RIGHT -> AutoMode.RIGHT_TO_RIGHT_SWITCH
+                    OwnedSide.RIGHT -> RIGHT_TO_RIGHT_SWITCH
                     else -> error("Impossible condition: $scaleSide")
                 }
-                AutoMode.Start.RIGHT -> when (scaleSide) {
-                    OwnedSide.LEFT -> AutoMode.CROSS_BASELINE
-                    OwnedSide.RIGHT -> AutoMode.RIGHT_TO_RIGHT_SCALE_PICKUP
+                Start.RIGHT -> when (scaleSide) {
+                    OwnedSide.LEFT -> RIGHT_TO_LEFT_SCALE
+                    OwnedSide.RIGHT -> RIGHT_TO_RIGHT_SCALE_PICKUP
                     else -> error("Impossible condition: $scaleSide")
                 }
-                else -> AutoMode.CROSS_BASELINE // Should be impossible
             }
             OwnedSide.RIGHT -> when (startChoice) {
-                AutoMode.Start.MIDDLE -> AutoMode.MIDDLE_TO_RIGHT_SWITCH
-                AutoMode.Start.LEFT -> when (scaleSide) {
-                    OwnedSide.LEFT -> AutoMode.LEFT_TO_LEFT_SCALE_PICKUP
-                    OwnedSide.RIGHT -> AutoMode.CROSS_BASELINE
+                Start.MIDDLE -> MIDDLE_TO_RIGHT_SWITCH
+                Start.LEFT -> when (scaleSide) {
+                    OwnedSide.LEFT -> LEFT_TO_LEFT_SCALE_PICKUP
+                    OwnedSide.RIGHT -> LEFT_TO_RIGHT_SCALE
                     else -> error("Impossible condition: $scaleSide")
                 }
-                AutoMode.Start.RIGHT -> when (scaleSide) {
-                    OwnedSide.LEFT -> AutoMode.RIGHT_TO_RIGHT_SWITCH
+                Start.RIGHT -> when (scaleSide) {
+                    OwnedSide.LEFT -> RIGHT_TO_RIGHT_SWITCH
                     OwnedSide.RIGHT -> when (endChoice) {
-                        AutoMode.End.SWITCH -> AutoMode.RIGHT_TO_RIGHT_SWITCH
-                        AutoMode.End.SCALE -> AutoMode.RIGHT_TO_RIGHT_SCALE_SWITCH
+                        End.SWITCH -> RIGHT_TO_RIGHT_SWITCH
+                        End.SCALE -> RIGHT_TO_RIGHT_SCALE_SWITCH
                         else -> error("Unknown mode: $endChoice")
                     }
                     else -> error("Impossible condition: $scaleSide")
                 }
-                else -> AutoMode.CROSS_BASELINE // Should be impossible
             }
             else -> error("Impossible condition: $switchSide")
         }
@@ -78,8 +91,8 @@ enum class AutoMode {
     CROSS_BASELINE,
     LEFT_TO_LEFT_SWITCH, RIGHT_TO_RIGHT_SWITCH,
     MIDDLE_TO_LEFT_SWITCH, MIDDLE_TO_RIGHT_SWITCH,
-    LEFT_TO_LEFT_SCALE_PICKUP, LEFT_TO_LEFT_SCALE_SWITCH,
-    RIGHT_TO_RIGHT_SCALE_PICKUP, RIGHT_TO_RIGHT_SCALE_SWITCH,
+    LEFT_TO_LEFT_SCALE_PICKUP, LEFT_TO_LEFT_SCALE_SWITCH, LEFT_TO_RIGHT_SCALE,
+    RIGHT_TO_RIGHT_SCALE_PICKUP, RIGHT_TO_RIGHT_SCALE_SWITCH, RIGHT_TO_LEFT_SCALE,
     TEST_LEFT, TEST_RIGHT;
 
     enum class Start {
@@ -99,28 +112,30 @@ object Modes : RobotLifecycle {
             "Curvature" to Control.Curvature()
     )
     val autoModeChooser = SendableChooser(
-            "Cross Baseline" to AutoMode.CROSS_BASELINE,
-            "Left to Left Switch" to AutoMode.LEFT_TO_LEFT_SWITCH,
-            "Right to Right Switch" to AutoMode.RIGHT_TO_RIGHT_SWITCH,
-            "Middle to Left Switch" to AutoMode.MIDDLE_TO_LEFT_SWITCH,
-            "Middle to Right Switch" to AutoMode.MIDDLE_TO_RIGHT_SWITCH,
-            "Left to Left Scale with Pickup" to AutoMode.LEFT_TO_LEFT_SCALE_PICKUP,
-            "Right to Right Scale with Pickup" to AutoMode.RIGHT_TO_RIGHT_SCALE_PICKUP,
-            "Left to Left Scale with Switch" to AutoMode.LEFT_TO_LEFT_SCALE_SWITCH,
-            "Right to Right Scale with Switch" to AutoMode.RIGHT_TO_RIGHT_SCALE_SWITCH,
+            "Cross Baseline" to CROSS_BASELINE,
+            "Left to Left Switch" to LEFT_TO_LEFT_SWITCH,
+            "Right to Right Switch" to RIGHT_TO_RIGHT_SWITCH,
+            "Middle to Left Switch" to MIDDLE_TO_LEFT_SWITCH,
+            "Middle to Right Switch" to MIDDLE_TO_RIGHT_SWITCH,
+            "Left to Left Scale with Pickup" to LEFT_TO_LEFT_SCALE_PICKUP,
+            "Right to Right Scale with Pickup" to RIGHT_TO_RIGHT_SCALE_PICKUP,
+            "Left to Left Scale with Switch" to LEFT_TO_LEFT_SCALE_SWITCH,
+            "Right to Right Scale with Switch" to RIGHT_TO_RIGHT_SCALE_SWITCH,
+            "Left to Right Scale" to LEFT_TO_RIGHT_SCALE,
+            "Right to Left Scale" to RIGHT_TO_LEFT_SCALE,
 
-            "Test Left" to AutoMode.TEST_LEFT,
-            "Test Right" to AutoMode.TEST_RIGHT
+            "Test Left" to TEST_LEFT,
+            "Test Right" to TEST_RIGHT
     )
     val autoModeChooserStart = SendableChooser(
-            "Middle" to AutoMode.Start.MIDDLE,
-            "Left" to AutoMode.Start.LEFT,
-            "Right" to AutoMode.Start.RIGHT
+            "Middle" to Start.MIDDLE,
+            "Left" to Start.LEFT,
+            "Right" to Start.RIGHT
     )
     val autoModeChooserEnd = SendableChooser(
-            "Baseline" to AutoMode.End.BASELINE,
-            "Switch" to AutoMode.End.SWITCH,
-            "Scale" to AutoMode.End.SCALE
+            "Baseline" to End.BASELINE,
+            "Switch" to End.SWITCH,
+            "Scale" to End.SCALE
     )
 
     init {
