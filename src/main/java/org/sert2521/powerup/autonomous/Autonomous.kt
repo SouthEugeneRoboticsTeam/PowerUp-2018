@@ -63,20 +63,22 @@ object Auto : RobotLifecycle {
                     EjectBlock()
 
             AutoMode.LEFT_TO_LEFT_SCALE_PICKUP -> LeftToLeftScale() and SendToScale() then
-                    EjectBlock() then TurnToAngle(SCALE_TO_SWITCH_TURN) and SendToBottom() then
-                    DriveToCube() and IntakeBlock() then SendToSwitch()
+                    EjectBlock() then TurnToAngle(SCALE_TO_SWITCH_TURN) and SendToSwitch() then
+                    DriveToCube() and SendToBottom() and IntakeBlock() then SendToSwitch()
 
             AutoMode.RIGHT_TO_RIGHT_SCALE_PICKUP -> RightToRightScale() and SendToScale() then
-                    EjectBlock() then TurnToAngle(-SCALE_TO_SWITCH_TURN) and SendToBottom() then
-                    DriveToCube() and IntakeBlock() then SendToSwitch()
+                    EjectBlock() then TurnToAngle(-SCALE_TO_SWITCH_TURN) and SendToSwitch() then
+                    DriveToCube() and SendToBottom() and IntakeBlock() then SendToSwitch()
 
             AutoMode.LEFT_TO_LEFT_SCALE_SWITCH -> LeftToLeftScale() and SendToScale() then
-                    EjectBlock() then TurnToAngle(SCALE_TO_SWITCH_TURN) and SendToBottom() then
-                    DriveToCube() and IntakeBlock() then SendToSwitch() then EjectBlock()
+                    EjectBlock() then TurnToAngle(SCALE_TO_SWITCH_TURN) and SendToSwitch() then
+                    DriveToCube() and SendToBottom() and IntakeBlock() then
+                    SendToSwitch() then EjectBlock()
 
             AutoMode.RIGHT_TO_RIGHT_SCALE_SWITCH -> RightToRightScale() and SendToScale() then
-                    EjectBlock() then TurnToAngle(-SCALE_TO_SWITCH_TURN) and SendToBottom() then
-                    DriveToCube() and IntakeBlock() then SendToSwitch() then EjectBlock()
+                    EjectBlock() then TurnToAngle(-SCALE_TO_SWITCH_TURN) and SendToSwitch() then
+                    DriveToCube() and SendToBottom() and IntakeBlock() then
+                    SendToSwitch() then EjectBlock()
 
             AutoMode.TEST_LEFT -> TestLeft()
             AutoMode.TEST_RIGHT -> TestRight()
