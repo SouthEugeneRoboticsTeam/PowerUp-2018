@@ -3,7 +3,7 @@ package org.sert2521.powerup.autonomous
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
 import jaci.pathfinder.Pathfinder
 import org.sert2521.powerup.drivetrain.Drivetrain
-import org.sert2521.powerup.drivetrain.commands.DriveToAngle
+import org.sert2521.powerup.drivetrain.commands.TurnToAngle
 import org.sert2521.powerup.drivetrain.commands.DriveToCube
 import org.sert2521.powerup.elevator.commands.SendToBottom
 import org.sert2521.powerup.elevator.commands.SendToScale
@@ -63,19 +63,19 @@ object Auto : RobotLifecycle {
                     EjectBlock()
 
             AutoMode.LEFT_TO_LEFT_SCALE_PICKUP -> LeftToLeftScale() and SendToScale() then
-                    EjectBlock() then DriveToAngle(SCALE_TO_SWITCH_TURN) and SendToBottom() then
+                    EjectBlock() then TurnToAngle(SCALE_TO_SWITCH_TURN) and SendToBottom() then
                     DriveToCube() and IntakeBlock() then SendToSwitch()
 
             AutoMode.RIGHT_TO_RIGHT_SCALE_PICKUP -> RightToRightScale() and SendToScale() then
-                    EjectBlock() then DriveToAngle(-SCALE_TO_SWITCH_TURN) and SendToBottom() then
+                    EjectBlock() then TurnToAngle(-SCALE_TO_SWITCH_TURN) and SendToBottom() then
                     DriveToCube() and IntakeBlock() then SendToSwitch()
 
             AutoMode.LEFT_TO_LEFT_SCALE_SWITCH -> LeftToLeftScale() and SendToScale() then
-                    EjectBlock() then DriveToAngle(SCALE_TO_SWITCH_TURN) and SendToBottom() then
+                    EjectBlock() then TurnToAngle(SCALE_TO_SWITCH_TURN) and SendToBottom() then
                     DriveToCube() and IntakeBlock() then SendToSwitch() then EjectBlock()
 
             AutoMode.RIGHT_TO_RIGHT_SCALE_SWITCH -> RightToRightScale() and SendToScale() then
-                    EjectBlock() then DriveToAngle(-SCALE_TO_SWITCH_TURN) and SendToBottom() then
+                    EjectBlock() then TurnToAngle(-SCALE_TO_SWITCH_TURN) and SendToBottom() then
                     DriveToCube() and IntakeBlock() then SendToSwitch() then EjectBlock()
 
             AutoMode.TEST_LEFT -> TestLeft()

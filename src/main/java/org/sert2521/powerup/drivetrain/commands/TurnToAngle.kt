@@ -3,7 +3,7 @@ package org.sert2521.powerup.drivetrain.commands
 import org.sert2521.powerup.drivetrain.Drivetrain
 import kotlin.math.absoluteValue
 
-class DriveToAngle(private val angle: Double) : AngleDriver(1.0) {
+class TurnToAngle(private val angle: Double) : AngleDriver(1.0) {
     private val startAngle by lazy { Drivetrain.ahrs.yaw }
 
     init {
@@ -15,7 +15,7 @@ class DriveToAngle(private val angle: Double) : AngleDriver(1.0) {
     }
 
     override fun execute(output: Double): Boolean {
-        Drivetrain.drive(output, output)
+        Drivetrain.drive(output, -output)
         return (Drivetrain.ahrs.yaw - startAngle - angle).absoluteValue < ALLOWABLE_ERROR
     }
 
