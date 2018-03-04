@@ -124,6 +124,7 @@ private abstract class PathFollowerBase(protected val path: PathBase) : Command(
 
     override fun onCreate() {
         pathProgress = 0.0
+        Drivetrain.reset() // Needed to ensure second+ paths work
         path.apply {
             reset()
 
