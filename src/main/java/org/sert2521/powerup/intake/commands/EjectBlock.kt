@@ -1,6 +1,7 @@
 package org.sert2521.powerup.intake.commands
 
 import org.sert2521.powerup.intake.Intake
+import org.sert2521.powerup.util.fastEjectSpeedScalar
 import org.sert2521.powerup.util.normalEjectSpeedScalar
 import org.sertain.command.Command
 
@@ -10,7 +11,7 @@ class EjectBlock : Command(500) {
     }
 
     override fun execute(): Boolean {
-        Intake.set(-normalEjectSpeedScalar)
+        Intake.set(-fastEjectSpeedScalar)
         return false
     }
 
