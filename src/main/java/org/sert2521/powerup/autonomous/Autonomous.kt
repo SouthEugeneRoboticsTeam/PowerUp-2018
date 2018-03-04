@@ -99,12 +99,22 @@ object Auto : RobotLifecycle {
                     TurnToAngle(-SCALE_TO_SWITCH_TURN) and SendToSwitch() then
                     findAndDeliverCube
 
-            AutoMode.LEFT_TO_RIGHT_SCALE -> LeftToRightScale() and SendToSwitch() and
+            AutoMode.LEFT_TO_RIGHT_SCALE_PICKUP -> LeftToRightScale() and SendToSwitch() and
+                    SendToScale().waitUntil(isReadyToSendToScale) then
+                    EjectBlock() then TurnToAngle(-SCALE_TO_SWITCH_TURN) and SendToSwitch() then
+                    findCube
+
+            AutoMode.RIGHT_TO_LEFT_SCALE_PICKUP -> RightToLeftScale() and SendToSwitch() and
+                    SendToScale().waitUntil(isReadyToSendToScale) then
+                    EjectBlock() then TurnToAngle(SCALE_TO_SWITCH_TURN) and SendToSwitch() then
+                    findCube
+
+            AutoMode.LEFT_TO_RIGHT_SCALE_SWITCH -> LeftToRightScale() and SendToSwitch() and
                     SendToScale().waitUntil(isReadyToSendToScale) then
                     EjectBlock() then TurnToAngle(-SCALE_TO_SWITCH_TURN) and SendToSwitch() then
                     findAndDeliverCube
 
-            AutoMode.RIGHT_TO_LEFT_SCALE -> RightToLeftScale() and SendToSwitch() and
+            AutoMode.RIGHT_TO_LEFT_SCALE_SWITCH -> RightToLeftScale() and SendToSwitch() and
                     SendToScale().waitUntil(isReadyToSendToScale) then
                     EjectBlock() then TurnToAngle(SCALE_TO_SWITCH_TURN) and SendToSwitch() then
                     findAndDeliverCube
