@@ -197,8 +197,10 @@ object Modes : RobotLifecycle {
             "Right to Right Scale with Pickup" to RIGHT_TO_RIGHT_SCALE_PICKUP,
             "Left to Left Scale with Switch" to LEFT_TO_LEFT_SCALE_SWITCH,
             "Right to Right Scale with Switch" to RIGHT_TO_RIGHT_SCALE_SWITCH,
-            "Left to Right Scale" to LEFT_TO_RIGHT_SCALE_SWITCH,
-            "Right to Left Scale" to RIGHT_TO_LEFT_SCALE_SWITCH,
+            "Left to Right Scale with Pickup" to LEFT_TO_RIGHT_SCALE_PICKUP,
+            "Right to Left Scale with Pickup" to RIGHT_TO_LEFT_SCALE_PICKUP,
+            "Left to Right Scale with Switch" to LEFT_TO_RIGHT_SCALE_SWITCH,
+            "Right to Left Scale with Switch" to RIGHT_TO_LEFT_SCALE_SWITCH,
 
             "Test Left" to TEST_LEFT,
             "Test Right" to TEST_RIGHT
