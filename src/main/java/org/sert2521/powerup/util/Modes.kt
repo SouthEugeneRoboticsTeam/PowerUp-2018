@@ -1,5 +1,6 @@
 package org.sert2521.powerup.util
 
+import edu.wpi.first.wpilibj.DriverStation
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
 import openrio.powerup.MatchData
 import openrio.powerup.MatchData.GameFeature
@@ -12,12 +13,12 @@ import org.sert2521.powerup.util.AutoMode.LEFT_TO_LEFT_SCALE_PICKUP
 import org.sert2521.powerup.util.AutoMode.LEFT_TO_LEFT_SCALE_SWITCH
 import org.sert2521.powerup.util.AutoMode.LEFT_TO_LEFT_SWITCH
 import org.sert2521.powerup.util.AutoMode.LEFT_TO_LEFT_SWITCH_TWO_CUBE
-import org.sert2521.powerup.util.AutoMode.LEFT_TO_RIGHT_SCALE_SWITCH
 import org.sert2521.powerup.util.AutoMode.LEFT_TO_RIGHT_SCALE_PICKUP
+import org.sert2521.powerup.util.AutoMode.LEFT_TO_RIGHT_SCALE_SWITCH
 import org.sert2521.powerup.util.AutoMode.MIDDLE_TO_LEFT_SWITCH
 import org.sert2521.powerup.util.AutoMode.MIDDLE_TO_RIGHT_SWITCH
-import org.sert2521.powerup.util.AutoMode.RIGHT_TO_LEFT_SCALE_SWITCH
 import org.sert2521.powerup.util.AutoMode.RIGHT_TO_LEFT_SCALE_PICKUP
+import org.sert2521.powerup.util.AutoMode.RIGHT_TO_LEFT_SCALE_SWITCH
 import org.sert2521.powerup.util.AutoMode.RIGHT_TO_RIGHT_SCALE_PICKUP
 import org.sert2521.powerup.util.AutoMode.RIGHT_TO_RIGHT_SCALE_SWITCH
 import org.sert2521.powerup.util.AutoMode.RIGHT_TO_RIGHT_SWITCH
@@ -27,6 +28,8 @@ import org.sert2521.powerup.util.AutoMode.TEST_LEFT
 import org.sert2521.powerup.util.AutoMode.TEST_RIGHT
 import org.sertain.RobotLifecycle
 import org.sertain.util.SendableChooser
+import java.io.File
+import java.time.LocalDateTime
 
 val controlMode: Control get() = Modes.controlChooser.selected
 
@@ -180,6 +183,8 @@ enum class AutoMode {
 }
 
 object Modes : RobotLifecycle {
+    private val ROOT = File("/home/lvuser/auto")
+
     val controlChooser = SendableChooser(
             "Controller" to Control.Controller(),
             "Arcade" to Control.Arcade(),
@@ -239,7 +244,36 @@ object Modes : RobotLifecycle {
                 autoPriorityChooser.selected != autoPriorityChooser) updateModeFeedback()
     }
 
-    fun updateModeFeedback() {
+    override fun onAutoStart() {
+        val ds = DriverStation.getInstance()
+        val file = File(ROOT,"${ds.matchType}_${ds.matchNumber}_${LocalDateTime.now()}.txt")
+
+        val startChoice: AutoMode.Start = Modes.autoStartChooser.selected
+        val priorityChoice: AutoMode.End = Modes.autoPriorityChooser.selected
+        val constraintsChoice: AutoMode.Constraints = Modes.autoConstraintsChooser.selected
+
+        file.writeText("""
+            Options
+            ------------
+            START POSITION: ${startChoice.name}
+            PRIORITY: ${priorityChoice.name}
+            CONSTRAINTS: ${constraintsChoice.name}
+
+            Modes (based on options)
+            ------------
+            LLL: ${calculateAutoMode(MatchData.OwnedSide.LEFT, MatchData.OwnedSide.LEFT).name}
+            RRR: ${calculateAutoMode(MatchData.OwnedSide.RIGHT, MatchData.OwnedSide.RIGHT).name}
+            LRL: ${calculateAutoMode(MatchData.OwnedSide.LEFT, MatchData.OwnedSide.RIGHT).name}
+            RLR: ${calculateAutoMode(MatchData.OwnedSide.RIGHT, MatchData.OwnedSide.LEFT).name}
+
+            Match
+            ------------
+            FIELD CODE: ${ds.gameSpecificMessage}
+            ACTUAL MODE: ${autoMode.name}
+            """.trimIndent())
+    }
+
+    private fun updateModeFeedback() {
         SmartDashboard.putString("LLL Mode",
                                  calculateAutoMode(MatchData.OwnedSide.LEFT,
                                                    MatchData.OwnedSide.LEFT).name)
