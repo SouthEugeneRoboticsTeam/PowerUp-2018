@@ -66,10 +66,16 @@ object Auto : RobotLifecycle {
             AutoMode.CROSS_BASELINE -> CrossBaseline()
 
             AutoMode.LEFT_TO_LEFT_SWITCH -> LeftToLeftSwitch() and SendToSwitch() then
+                    EjectBlock()
+
+            AutoMode.LEFT_TO_LEFT_SWITCH_TWO_CUBE -> LeftToLeftSwitch() and SendToSwitch() then
                     EjectBlock() then LeftSwitchToRear() and SendToBottom() then DriveToCube() and
                     IntakeBlock() then SendToSwitch() then EjectBlock()
 
             AutoMode.RIGHT_TO_RIGHT_SWITCH -> RightToRightSwitch() and SendToSwitch() then
+                    EjectBlock()
+
+            AutoMode.RIGHT_TO_RIGHT_SWITCH_TWO_CUBE -> RightToRightSwitch() and SendToSwitch() then
                     EjectBlock() then RightSwitchToRear() and SendToBottom() then DriveToCube() and
                     IntakeBlock() then SendToSwitch() then EjectBlock()
 
@@ -99,15 +105,25 @@ object Auto : RobotLifecycle {
                     TurnToAngle(-SCALE_TO_SWITCH_TURN) and SendToSwitch() then
                     findAndDeliverCube
 
-            AutoMode.LEFT_TO_RIGHT_SCALE -> LeftToRightScale() and SendToSwitch() and
+            AutoMode.LEFT_TO_RIGHT_SCALE_SWITCH -> LeftToRightScale() and SendToSwitch() and
                     SendToScale().waitUntil(isReadyToSendToScale) then
                     EjectBlock() then TurnToAngle(-SCALE_TO_SWITCH_TURN) and SendToSwitch() then
                     findAndDeliverCube
 
-            AutoMode.RIGHT_TO_LEFT_SCALE -> RightToLeftScale() and SendToSwitch() and
+            AutoMode.RIGHT_TO_LEFT_SCALE_SWITCH -> RightToLeftScale() and SendToSwitch() and
                     SendToScale().waitUntil(isReadyToSendToScale) then
                     EjectBlock() then TurnToAngle(SCALE_TO_SWITCH_TURN) and SendToSwitch() then
                     findAndDeliverCube
+
+            AutoMode.LEFT_TO_RIGHT_SCALE_PICKUP -> LeftToRightScale() and SendToSwitch() and
+                    SendToScale().waitUntil(isReadyToSendToScale) then
+                    EjectBlock() then TurnToAngle(-SCALE_TO_SWITCH_TURN) and SendToSwitch() then
+                    findCube
+
+            AutoMode.RIGHT_TO_LEFT_SCALE_PICKUP -> RightToLeftScale() and SendToSwitch() and
+                    SendToScale().waitUntil(isReadyToSendToScale) then
+                    EjectBlock() then TurnToAngle(SCALE_TO_SWITCH_TURN) and SendToSwitch() then
+                    findCube
 
             AutoMode.TEST_LEFT -> TestLeft()
             AutoMode.TEST_RIGHT -> TestRight()

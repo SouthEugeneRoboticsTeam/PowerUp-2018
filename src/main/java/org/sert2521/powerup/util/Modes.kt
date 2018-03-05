@@ -1,35 +1,38 @@
 package org.sert2521.powerup.util
 
-import edu.wpi.first.wpilibj.command.Command
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
 import openrio.powerup.MatchData
 import openrio.powerup.MatchData.GameFeature
 import openrio.powerup.MatchData.OwnedSide
 import openrio.powerup.MatchData.getOwnedSide
 import org.sert2521.powerup.util.AutoMode.CROSS_BASELINE
+import org.sert2521.powerup.util.AutoMode.Constraints
 import org.sert2521.powerup.util.AutoMode.End
 import org.sert2521.powerup.util.AutoMode.LEFT_TO_LEFT_SCALE_PICKUP
 import org.sert2521.powerup.util.AutoMode.LEFT_TO_LEFT_SCALE_SWITCH
 import org.sert2521.powerup.util.AutoMode.LEFT_TO_LEFT_SWITCH
-import org.sert2521.powerup.util.AutoMode.LEFT_TO_RIGHT_SCALE
+import org.sert2521.powerup.util.AutoMode.LEFT_TO_LEFT_SWITCH_TWO_CUBE
+import org.sert2521.powerup.util.AutoMode.LEFT_TO_RIGHT_SCALE_SWITCH
+import org.sert2521.powerup.util.AutoMode.LEFT_TO_RIGHT_SCALE_PICKUP
 import org.sert2521.powerup.util.AutoMode.MIDDLE_TO_LEFT_SWITCH
 import org.sert2521.powerup.util.AutoMode.MIDDLE_TO_RIGHT_SWITCH
-import org.sert2521.powerup.util.AutoMode.RIGHT_TO_LEFT_SCALE
+import org.sert2521.powerup.util.AutoMode.RIGHT_TO_LEFT_SCALE_SWITCH
+import org.sert2521.powerup.util.AutoMode.RIGHT_TO_LEFT_SCALE_PICKUP
 import org.sert2521.powerup.util.AutoMode.RIGHT_TO_RIGHT_SCALE_PICKUP
 import org.sert2521.powerup.util.AutoMode.RIGHT_TO_RIGHT_SCALE_SWITCH
 import org.sert2521.powerup.util.AutoMode.RIGHT_TO_RIGHT_SWITCH
+import org.sert2521.powerup.util.AutoMode.RIGHT_TO_RIGHT_SWITCH_TWO_CUBE
 import org.sert2521.powerup.util.AutoMode.Start
-import org.sert2521.powerup.util.AutoMode.Constraints
 import org.sert2521.powerup.util.AutoMode.TEST_LEFT
 import org.sert2521.powerup.util.AutoMode.TEST_RIGHT
 import org.sertain.RobotLifecycle
-//import org.sertain.command.Command
 import org.sertain.util.SendableChooser
 
 val controlMode: Control get() = Modes.controlChooser.selected
 
 val autoMode: AutoMode
-    get() = calculateAutoMode(getOwnedSide(GameFeature.SWITCH_NEAR), getOwnedSide(GameFeature.SCALE))
+    get() = calculateAutoMode(getOwnedSide(GameFeature.SWITCH_NEAR),
+                              getOwnedSide(GameFeature.SCALE))
 
 fun calculateAutoMode(switchSide: OwnedSide, scaleSide: OwnedSide): AutoMode {
     val startChoice: AutoMode.Start = Modes.autoStartChooser.selected
@@ -51,7 +54,11 @@ fun calculateAutoMode(switchSide: OwnedSide, scaleSide: OwnedSide): AutoMode {
             Start.MIDDLE -> MIDDLE_TO_LEFT_SWITCH
             Start.LEFT -> when (scaleSide) {
                 OwnedSide.LEFT -> when (priorityChoice) {
-                    End.SWITCH -> LEFT_TO_LEFT_SWITCH
+                    End.SWITCH -> if (constraintsChoice == Constraints.NO_FAR_LANE) {
+                        LEFT_TO_LEFT_SWITCH
+                    } else {
+                        LEFT_TO_LEFT_SWITCH_TWO_CUBE
+                    }
                     End.SCALE -> if (constraintsChoice == Constraints.NO_FAR_LANE) {
                         LEFT_TO_LEFT_SWITCH
                     } else {
@@ -59,14 +66,26 @@ fun calculateAutoMode(switchSide: OwnedSide, scaleSide: OwnedSide): AutoMode {
                     }
                     else -> error("Unknown mode: $priorityChoice")
                 }
-                OwnedSide.RIGHT -> RIGHT_TO_RIGHT_SWITCH
+                OwnedSide.RIGHT -> when (priorityChoice) {
+                    End.SWITCH -> if (constraintsChoice == Constraints.NO_FAR_LANE) {
+                        LEFT_TO_LEFT_SWITCH
+                    } else {
+                        LEFT_TO_LEFT_SWITCH_TWO_CUBE
+                    }
+                    End.SCALE -> when (constraintsChoice) {
+                        Constraints.NO_CROSS -> LEFT_TO_LEFT_SWITCH_TWO_CUBE
+                        Constraints.NO_FAR_LANE -> LEFT_TO_LEFT_SWITCH
+                        else -> LEFT_TO_RIGHT_SCALE_PICKUP
+                    }
+                    else -> error("Unknown mode: $priorityChoice")
+                }
                 else -> error("Impossible condition: $scaleSide")
             }
             Start.RIGHT -> when (scaleSide) {
                 OwnedSide.LEFT -> if (constraintsChoice == Constraints.NO_FAR_LANE || constraintsChoice == Constraints.NO_CROSS) {
                     CROSS_BASELINE
                 } else {
-                    RIGHT_TO_LEFT_SCALE
+                    RIGHT_TO_LEFT_SCALE_SWITCH
                 }
                 OwnedSide.RIGHT -> if (constraintsChoice == Constraints.NO_FAR_LANE) {
                     CROSS_BASELINE
@@ -87,18 +106,34 @@ fun calculateAutoMode(switchSide: OwnedSide, scaleSide: OwnedSide): AutoMode {
                 OwnedSide.RIGHT -> if (constraintsChoice == Constraints.NO_FAR_LANE || constraintsChoice == Constraints.NO_CROSS) {
                     CROSS_BASELINE
                 } else {
-                    LEFT_TO_RIGHT_SCALE
+                    LEFT_TO_RIGHT_SCALE_SWITCH
                 }
                 else -> error("Impossible condition: $scaleSide")
             }
             Start.RIGHT -> when (scaleSide) {
-                OwnedSide.LEFT -> RIGHT_TO_RIGHT_SWITCH
-                OwnedSide.RIGHT -> when (priorityChoice) {
-                    End.SWITCH -> RIGHT_TO_RIGHT_SWITCH
-                    End.SCALE -> if (constraintsChoice == Constraints.NO_FAR_LANE) {
-                        CROSS_BASELINE
+                OwnedSide.LEFT -> when (priorityChoice) {
+                    End.SWITCH -> if (constraintsChoice == Constraints.NO_FAR_LANE) {
+                        RIGHT_TO_RIGHT_SWITCH
                     } else {
-                        RIGHT_TO_RIGHT_SCALE_PICKUP
+                        RIGHT_TO_RIGHT_SWITCH_TWO_CUBE
+                    }
+                    End.SCALE -> when (constraintsChoice) {
+                        Constraints.NO_CROSS -> RIGHT_TO_RIGHT_SWITCH_TWO_CUBE
+                        Constraints.NO_FAR_LANE -> RIGHT_TO_RIGHT_SWITCH
+                        else -> RIGHT_TO_LEFT_SCALE_PICKUP
+                    }
+                    else -> error("Unknown mode: $priorityChoice")
+                }
+                OwnedSide.RIGHT -> when (priorityChoice) {
+                    End.SWITCH -> if (constraintsChoice == Constraints.NO_FAR_LANE) {
+                        RIGHT_TO_RIGHT_SWITCH
+                    } else {
+                        RIGHT_TO_RIGHT_SWITCH_TWO_CUBE
+                    }
+                    End.SCALE -> if (constraintsChoice == Constraints.NO_FAR_LANE) {
+                        RIGHT_TO_RIGHT_SWITCH
+                    } else {
+                        RIGHT_TO_RIGHT_SCALE_SWITCH
                     }
                     else -> error("Unknown mode: $priorityChoice")
                 }
@@ -123,8 +158,11 @@ enum class AutoMode {
 
     LEFT_TO_LEFT_SWITCH, RIGHT_TO_RIGHT_SWITCH,
     MIDDLE_TO_LEFT_SWITCH, MIDDLE_TO_RIGHT_SWITCH,
-    LEFT_TO_LEFT_SCALE_PICKUP, LEFT_TO_LEFT_SCALE_SWITCH, LEFT_TO_RIGHT_SCALE,
-    RIGHT_TO_RIGHT_SCALE_PICKUP, RIGHT_TO_RIGHT_SCALE_SWITCH, RIGHT_TO_LEFT_SCALE,
+    LEFT_TO_LEFT_SWITCH_TWO_CUBE, RIGHT_TO_RIGHT_SWITCH_TWO_CUBE,
+    LEFT_TO_LEFT_SCALE_PICKUP, LEFT_TO_LEFT_SCALE_SWITCH,
+    LEFT_TO_RIGHT_SCALE_SWITCH, LEFT_TO_RIGHT_SCALE_PICKUP,
+    RIGHT_TO_RIGHT_SCALE_PICKUP, RIGHT_TO_RIGHT_SCALE_SWITCH,
+    RIGHT_TO_LEFT_SCALE_SWITCH, RIGHT_TO_LEFT_SCALE_PICKUP,
 
     TEST_LEFT, TEST_RIGHT;
 
@@ -151,6 +189,7 @@ object Modes : RobotLifecycle {
     val autoModeChooser = SendableChooser(
             "Cross Baseline" to CROSS_BASELINE,
             "Left to Left Switch" to LEFT_TO_LEFT_SWITCH,
+            "Left to Left Switch Two Cube" to LEFT_TO_LEFT_SWITCH_TWO_CUBE,
             "Right to Right Switch" to RIGHT_TO_RIGHT_SWITCH,
             "Middle to Left Switch" to MIDDLE_TO_LEFT_SWITCH,
             "Middle to Right Switch" to MIDDLE_TO_RIGHT_SWITCH,
@@ -158,8 +197,8 @@ object Modes : RobotLifecycle {
             "Right to Right Scale with Pickup" to RIGHT_TO_RIGHT_SCALE_PICKUP,
             "Left to Left Scale with Switch" to LEFT_TO_LEFT_SCALE_SWITCH,
             "Right to Right Scale with Switch" to RIGHT_TO_RIGHT_SCALE_SWITCH,
-            "Left to Right Scale" to LEFT_TO_RIGHT_SCALE,
-            "Right to Left Scale" to RIGHT_TO_LEFT_SCALE,
+            "Left to Right Scale" to LEFT_TO_RIGHT_SCALE_SWITCH,
+            "Right to Left Scale" to RIGHT_TO_LEFT_SCALE_SWITCH,
 
             "Test Left" to TEST_LEFT,
             "Test Right" to TEST_RIGHT
@@ -193,14 +232,23 @@ object Modes : RobotLifecycle {
     }
 
     override fun executeDisabled() {
-        // TODO: only run if autoModeChooser.selected, autoStartChooser.selected or autoPriorityChooser.selected have updated
-        updateModeFeedback()
+        if (autoModeChooser.selected != autoModeChooser ||
+                autoStartChooser.selected != autoStartChooser ||
+                autoPriorityChooser.selected != autoPriorityChooser) updateModeFeedback()
     }
 
     fun updateModeFeedback() {
-        SmartDashboard.putString("LLL Mode", calculateAutoMode(MatchData.OwnedSide.LEFT, MatchData.OwnedSide.LEFT).name)
-        SmartDashboard.putString("RRR Mode", calculateAutoMode(MatchData.OwnedSide.RIGHT, MatchData.OwnedSide.RIGHT).name)
-        SmartDashboard.putString("LRL Mode", calculateAutoMode(MatchData.OwnedSide.LEFT, MatchData.OwnedSide.RIGHT).name)
-        SmartDashboard.putString("RLR Mode", calculateAutoMode(MatchData.OwnedSide.RIGHT, MatchData.OwnedSide.LEFT).name)
+        SmartDashboard.putString("LLL Mode",
+                                 calculateAutoMode(MatchData.OwnedSide.LEFT,
+                                                   MatchData.OwnedSide.LEFT).name)
+        SmartDashboard.putString("RRR Mode",
+                                 calculateAutoMode(MatchData.OwnedSide.RIGHT,
+                                                   MatchData.OwnedSide.RIGHT).name)
+        SmartDashboard.putString("LRL Mode",
+                                 calculateAutoMode(MatchData.OwnedSide.LEFT,
+                                                   MatchData.OwnedSide.RIGHT).name)
+        SmartDashboard.putString("RLR Mode",
+                                 calculateAutoMode(MatchData.OwnedSide.RIGHT,
+                                                   MatchData.OwnedSide.LEFT).name)
     }
 }
