@@ -246,7 +246,7 @@ object Modes : RobotLifecycle {
 
     override fun onAutoStart() {
         val ds = DriverStation.getInstance()
-        val file = File(ROOT,"${ds.matchType}_${ds.matchNumber}_${LocalDateTime.now()}.txt")
+        val file = File(ROOT, "${ds.matchType}_${ds.matchNumber}_${LocalDateTime.now()}.txt")
 
         val startChoice: AutoMode.Start = Modes.autoStartChooser.selected
         val priorityChoice: AutoMode.End = Modes.autoPriorityChooser.selected
