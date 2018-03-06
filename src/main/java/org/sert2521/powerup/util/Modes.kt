@@ -5,7 +5,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
 import openrio.powerup.MatchData
 import openrio.powerup.MatchData.GameFeature
 import openrio.powerup.MatchData.OwnedSide
-import openrio.powerup.MatchData.getOwnedSide
 import org.sert2521.powerup.util.AutoMode.CROSS_BASELINE
 import org.sert2521.powerup.util.AutoMode.Constraints
 import org.sert2521.powerup.util.AutoMode.End
@@ -34,10 +33,12 @@ import java.time.LocalDateTime
 val controlMode: Control get() = Modes.controlChooser.selected
 
 val autoMode: AutoMode
-    get() = calculateAutoMode(getOwnedSide(GameFeature.SWITCH_NEAR),
-                              getOwnedSide(GameFeature.SCALE))
+    get() = calculateAutoMode(
+            MatchData.getOwnedSide(GameFeature.SWITCH_NEAR),
+            MatchData.getOwnedSide(GameFeature.SCALE)
+    )
 
-fun calculateAutoMode(switchSide: OwnedSide, scaleSide: OwnedSide): AutoMode {
+private fun calculateAutoMode(switchSide: OwnedSide, scaleSide: OwnedSide): AutoMode {
     val startChoice: AutoMode.Start = Modes.autoStartChooser.selected
     val priorityChoice: AutoMode.End = Modes.autoPriorityChooser.selected
     val constraintsChoice: AutoMode.Constraints = Modes.autoConstraintsChooser.selected
@@ -48,13 +49,10 @@ fun calculateAutoMode(switchSide: OwnedSide, scaleSide: OwnedSide): AutoMode {
     }
 
     // Don't worry about any logic if we're crossing the baseline
-    if (priorityChoice == End.BASELINE) {
-        return CROSS_BASELINE
-    }
+    if (priorityChoice == End.BASELINE) return CROSS_BASELINE
 
     return when (switchSide) {
         OwnedSide.LEFT -> when (startChoice) {
-            Start.MIDDLE -> MIDDLE_TO_LEFT_SWITCH
             Start.LEFT -> when (scaleSide) {
                 OwnedSide.LEFT -> when (priorityChoice) {
                     End.SWITCH -> if (constraintsChoice == Constraints.NO_FAR_LANE) {
@@ -67,7 +65,7 @@ fun calculateAutoMode(switchSide: OwnedSide, scaleSide: OwnedSide): AutoMode {
                     } else {
                         LEFT_TO_LEFT_SCALE_SWITCH
                     }
-                    else -> error("Unknown mode: $priorityChoice")
+                    else -> error("Impossible condition: $priorityChoice")
                 }
                 OwnedSide.RIGHT -> when (priorityChoice) {
                     End.SWITCH -> if (constraintsChoice == Constraints.NO_FAR_LANE) {
@@ -76,19 +74,20 @@ fun calculateAutoMode(switchSide: OwnedSide, scaleSide: OwnedSide): AutoMode {
                         LEFT_TO_LEFT_SWITCH_TWO_CUBE
                     }
                     End.SCALE -> when (constraintsChoice) {
-                        Constraints.NO_CROSS -> LEFT_TO_LEFT_SWITCH_TWO_CUBE
+                        Constraints.NONE -> LEFT_TO_RIGHT_SCALE_PICKUP
                         Constraints.NO_FAR_LANE -> LEFT_TO_LEFT_SWITCH
-                        else -> LEFT_TO_RIGHT_SCALE_PICKUP
+                        Constraints.NO_FIELD_TRAVERSE -> LEFT_TO_LEFT_SWITCH_TWO_CUBE
                     }
-                    else -> error("Unknown mode: $priorityChoice")
+                    else -> error("Impossible condition: $priorityChoice")
                 }
                 else -> error("Impossible condition: $scaleSide")
             }
+            Start.MIDDLE -> MIDDLE_TO_LEFT_SWITCH
             Start.RIGHT -> when (scaleSide) {
-                OwnedSide.LEFT -> if (constraintsChoice == Constraints.NO_FAR_LANE || constraintsChoice == Constraints.NO_CROSS) {
-                    CROSS_BASELINE
-                } else {
+                OwnedSide.LEFT -> if (constraintsChoice == Constraints.NONE) {
                     RIGHT_TO_LEFT_SCALE_SWITCH
+                } else {
+                    CROSS_BASELINE
                 }
                 OwnedSide.RIGHT -> if (constraintsChoice == Constraints.NO_FAR_LANE) {
                     CROSS_BASELINE
@@ -99,20 +98,20 @@ fun calculateAutoMode(switchSide: OwnedSide, scaleSide: OwnedSide): AutoMode {
             }
         }
         OwnedSide.RIGHT -> when (startChoice) {
-            Start.MIDDLE -> MIDDLE_TO_RIGHT_SWITCH
             Start.LEFT -> when (scaleSide) {
                 OwnedSide.LEFT -> if (constraintsChoice == Constraints.NO_FAR_LANE) {
                     CROSS_BASELINE
                 } else {
                     LEFT_TO_LEFT_SCALE_PICKUP
                 }
-                OwnedSide.RIGHT -> if (constraintsChoice == Constraints.NO_FAR_LANE || constraintsChoice == Constraints.NO_CROSS) {
-                    CROSS_BASELINE
-                } else {
+                OwnedSide.RIGHT -> if (constraintsChoice == Constraints.NONE) {
                     LEFT_TO_RIGHT_SCALE_SWITCH
+                } else {
+                    CROSS_BASELINE
                 }
                 else -> error("Impossible condition: $scaleSide")
             }
+            Start.MIDDLE -> MIDDLE_TO_RIGHT_SWITCH
             Start.RIGHT -> when (scaleSide) {
                 OwnedSide.LEFT -> when (priorityChoice) {
                     End.SWITCH -> if (constraintsChoice == Constraints.NO_FAR_LANE) {
@@ -121,11 +120,11 @@ fun calculateAutoMode(switchSide: OwnedSide, scaleSide: OwnedSide): AutoMode {
                         RIGHT_TO_RIGHT_SWITCH_TWO_CUBE
                     }
                     End.SCALE -> when (constraintsChoice) {
-                        Constraints.NO_CROSS -> RIGHT_TO_RIGHT_SWITCH_TWO_CUBE
+                        Constraints.NONE -> RIGHT_TO_LEFT_SCALE_PICKUP
                         Constraints.NO_FAR_LANE -> RIGHT_TO_RIGHT_SWITCH
-                        else -> RIGHT_TO_LEFT_SCALE_PICKUP
+                        Constraints.NO_FIELD_TRAVERSE -> RIGHT_TO_RIGHT_SWITCH_TWO_CUBE
                     }
-                    else -> error("Unknown mode: $priorityChoice")
+                    else -> error("Impossible condition: $priorityChoice")
                 }
                 OwnedSide.RIGHT -> when (priorityChoice) {
                     End.SWITCH -> if (constraintsChoice == Constraints.NO_FAR_LANE) {
@@ -138,7 +137,7 @@ fun calculateAutoMode(switchSide: OwnedSide, scaleSide: OwnedSide): AutoMode {
                     } else {
                         RIGHT_TO_RIGHT_SCALE_SWITCH
                     }
-                    else -> error("Unknown mode: $priorityChoice")
+                    else -> error("Impossible condition: $priorityChoice")
                 }
                 else -> error("Impossible condition: $scaleSide")
             }
@@ -178,7 +177,7 @@ enum class AutoMode {
     }
 
     enum class Constraints {
-        NONE, NO_CROSS, NO_FAR_LANE
+        NONE, NO_FIELD_TRAVERSE, NO_FAR_LANE
     }
 }
 
@@ -222,7 +221,7 @@ object Modes : RobotLifecycle {
     )
     val autoConstraintsChooser = SendableChooser(
             "None" to Constraints.NONE,
-            "No Cross" to Constraints.NO_CROSS,
+            "No field traverse" to Constraints.NO_FIELD_TRAVERSE,
             "No Far Lane" to Constraints.NO_FAR_LANE
     )
 
@@ -239,9 +238,7 @@ object Modes : RobotLifecycle {
     }
 
     override fun executeDisabled() {
-        if (autoModeChooser.selected != autoModeChooser ||
-                autoStartChooser.selected != autoStartChooser ||
-                autoPriorityChooser.selected != autoPriorityChooser) updateModeFeedback()
+        updateModeFeedback()
     }
 
     override fun onAutoStart() {
