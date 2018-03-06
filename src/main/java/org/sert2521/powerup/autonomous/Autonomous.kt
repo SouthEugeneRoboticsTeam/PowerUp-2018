@@ -28,9 +28,8 @@ private var pathProgress: Double? = null
 private val shouldEjectBlock = block@{ (pathProgress ?: return@block false) >= 0.85 }
 private val isReadyToSendToScale = block@{ (pathProgress ?: return@block false) >= 0.70 }
 
-private fun CommandBridgeMirror.waitUntil(condition: () -> Boolean) = object : Command() {
-    override fun execute() = condition()
-} then this
+private fun CommandBridgeMirror.waitUntil(condition: () -> Boolean) =
+        InlinedCommandGroup(this, condition)
 
 object Auto : RobotLifecycle {
     private const val SCALE_TO_SWITCH_TURN = 100.0
@@ -221,3 +220,26 @@ private class RightSwitchToRear : ReversePathFollowerBase(RightSwitchToRearPath)
 private class TestLeft : PathFollowerBase(TestLeftPath)
 
 private class TestRight : PathFollowerBase(TestRightPath)
+
+/**
+ * Very ugly hack: command groups try to be smart but aren't. If there are two commands that both
+ * require the same subsystem, the first is overwritten by the second. This class wraps a command
+ * in a subsystem-less command that won't bork command groups.
+ */
+private class InlinedCommandGroup(
+        private val other: CommandBridgeMirror,
+        private val condition: () -> Boolean
+) : Command() {
+    private var hasCompleted = false
+
+    override fun onCreate() = other.onCreate()
+
+    override fun execute() = if (hasCompleted) {
+        other.execute()
+    } else {
+        hasCompleted = condition()
+        false
+    }
+
+    override fun onDestroy() = other.onDestroy()
+}
