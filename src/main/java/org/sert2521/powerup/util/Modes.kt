@@ -239,7 +239,19 @@ object Modes : RobotLifecycle {
     }
 
     override fun executeDisabled() {
-        updateModeFeedback()
+        // TODO remove
+        SmartDashboard.putString("LLL Mode",
+                                 calculateAutoMode(OwnedSide.LEFT,
+                                                   OwnedSide.LEFT).name)
+        SmartDashboard.putString("RRR Mode",
+                                 calculateAutoMode(OwnedSide.RIGHT,
+                                                   OwnedSide.RIGHT).name)
+        SmartDashboard.putString("LRL Mode",
+                                 calculateAutoMode(OwnedSide.LEFT,
+                                                   OwnedSide.RIGHT).name)
+        SmartDashboard.putString("RLR Mode",
+                                 calculateAutoMode(OwnedSide.RIGHT,
+                                                   OwnedSide.LEFT).name)
     }
 
     override fun onAutoStart() {
@@ -271,18 +283,4 @@ object Modes : RobotLifecycle {
             """.trimIndent())
     }
 
-    private fun updateModeFeedback() {
-        SmartDashboard.putString("LLL Mode",
-                                 calculateAutoMode(MatchData.OwnedSide.LEFT,
-                                                   MatchData.OwnedSide.LEFT).name)
-        SmartDashboard.putString("RRR Mode",
-                                 calculateAutoMode(MatchData.OwnedSide.RIGHT,
-                                                   MatchData.OwnedSide.RIGHT).name)
-        SmartDashboard.putString("LRL Mode",
-                                 calculateAutoMode(MatchData.OwnedSide.LEFT,
-                                                   MatchData.OwnedSide.RIGHT).name)
-        SmartDashboard.putString("RLR Mode",
-                                 calculateAutoMode(MatchData.OwnedSide.RIGHT,
-                                                   MatchData.OwnedSide.LEFT).name)
-    }
 }
