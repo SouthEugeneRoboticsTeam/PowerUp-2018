@@ -255,32 +255,32 @@ object Modes : RobotLifecycle {
     }
 
     override fun onAutoStart() {
-        val ds = DriverStation.getInstance()
-        val file = File(ROOT, "${ds.matchType}_${ds.matchNumber}_${LocalDateTime.now()}.txt")
+        val file = DriverStation.getInstance().let {
+            File(ROOT, "${it.matchType}_${it.matchNumber}_${LocalDateTime.now()}.txt")
+        }
 
-        val startChoice: AutoMode.Start = Modes.autoStartChooser.selected
-        val priorityChoice: AutoMode.End = Modes.autoPriorityChooser.selected
-        val constraintsChoice: AutoMode.Constraints = Modes.autoConstraintsChooser.selected
+        try {
+            file.writeText("""
+                |Options
+                |------------
+                |START POSITION: ${autoStartChooser.selected}
+                |PRIORITY: ${autoPriorityChooser.selected}
+                |CONSTRAINTS: ${autoConstraintsChooser.selected}
 
-        file.writeText("""
-            Options
-            ------------
-            START POSITION: ${startChoice.name}
-            PRIORITY: ${priorityChoice.name}
-            CONSTRAINTS: ${constraintsChoice.name}
+                |Modes (based on options)
+                |------------
+                |LLL: ${calculateAutoMode(MatchData.OwnedSide.LEFT, MatchData.OwnedSide.LEFT)}
+                |RRR: ${calculateAutoMode(MatchData.OwnedSide.RIGHT, MatchData.OwnedSide.RIGHT)}
+                |LRL: ${calculateAutoMode(MatchData.OwnedSide.LEFT, MatchData.OwnedSide.RIGHT)}
+                |RLR: ${calculateAutoMode(MatchData.OwnedSide.RIGHT, MatchData.OwnedSide.LEFT)}
 
-            Modes (based on options)
-            ------------
-            LLL: ${calculateAutoMode(MatchData.OwnedSide.LEFT, MatchData.OwnedSide.LEFT).name}
-            RRR: ${calculateAutoMode(MatchData.OwnedSide.RIGHT, MatchData.OwnedSide.RIGHT).name}
-            LRL: ${calculateAutoMode(MatchData.OwnedSide.LEFT, MatchData.OwnedSide.RIGHT).name}
-            RLR: ${calculateAutoMode(MatchData.OwnedSide.RIGHT, MatchData.OwnedSide.LEFT).name}
-
-            Match
-            ------------
-            FIELD CODE: ${ds.gameSpecificMessage}
-            ACTUAL MODE: ${autoMode.name}
-            """.trimIndent())
+                |Match
+                |------------
+                |FIELD CODE: ${DriverStation.getInstance().gameSpecificMessage}
+                |ACTUAL MODE: $autoMode
+                """.trimIndent())
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
-
 }
