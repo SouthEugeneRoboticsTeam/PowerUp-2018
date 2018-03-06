@@ -185,8 +185,8 @@ object Modes : RobotLifecycle {
     private val ROOT = File("/home/lvuser/auto")
 
     val controlChooser = SendableChooser(
-            "Controller" to Control.Controller(),
             "Arcade" to Control.Arcade(),
+            "Controller" to Control.Controller(),
             "Tank" to Control.Tank(),
             "Curvature" to Control.Curvature()
     )
