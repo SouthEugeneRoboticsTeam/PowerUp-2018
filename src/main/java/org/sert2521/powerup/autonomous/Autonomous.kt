@@ -65,11 +65,16 @@ object Auto : RobotLifecycle {
         when (autoMode) {
             AutoMode.CROSS_BASELINE -> CrossBaseline()
 
-            AutoMode.LEFT_TO_LEFT_SWITCH -> LeftToLeftSwitch() and SendToSwitch() then
+            AutoMode.LEFT_TO_LEFT_SWITCH -> LeftToLeftSwitch() and SendToSwitch() then EjectBlock()
+
+            AutoMode.LEFT_TO_LEFT_SWITCH_TWO_CUBE -> LeftToLeftSwitch() and SendToSwitch() then
                     EjectBlock() then LeftSwitchToRear() and SendToBottom() then DriveToCube() and
                     IntakeBlock() then SendToSwitch() then EjectBlock()
 
             AutoMode.RIGHT_TO_RIGHT_SWITCH -> RightToRightSwitch() and SendToSwitch() then
+                    EjectBlock()
+
+            AutoMode.RIGHT_TO_RIGHT_SWITCH_TWO_CUBE -> RightToRightSwitch() and SendToSwitch() then
                     EjectBlock() then RightSwitchToRear() and SendToBottom() then DriveToCube() and
                     IntakeBlock() then SendToSwitch() then EjectBlock()
 
