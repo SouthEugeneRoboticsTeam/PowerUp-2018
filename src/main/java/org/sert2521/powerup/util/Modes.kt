@@ -222,7 +222,7 @@ object Modes : RobotLifecycle {
     )
     val autoConstraintsChooser = SendableChooser(
             "None" to Constraints.NONE,
-            "No field traverse" to Constraints.NO_FIELD_TRAVERSE,
+            "No Field Traverse" to Constraints.NO_FIELD_TRAVERSE,
             "No Far Lane" to Constraints.NO_FAR_LANE
     )
 
