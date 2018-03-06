@@ -240,18 +240,14 @@ object Modes : RobotLifecycle {
 
     override fun executeDisabled() {
         // TODO remove
-        SmartDashboard.putString("LLL Mode",
-                                 calculateAutoMode(OwnedSide.LEFT,
-                                                   OwnedSide.LEFT).name)
-        SmartDashboard.putString("RRR Mode",
-                                 calculateAutoMode(OwnedSide.RIGHT,
-                                                   OwnedSide.RIGHT).name)
-        SmartDashboard.putString("LRL Mode",
-                                 calculateAutoMode(OwnedSide.LEFT,
-                                                   OwnedSide.RIGHT).name)
-        SmartDashboard.putString("RLR Mode",
-                                 calculateAutoMode(OwnedSide.RIGHT,
-                                                   OwnedSide.LEFT).name)
+        SmartDashboard.putString(
+                "LLL Mode", calculateAutoMode(OwnedSide.LEFT, OwnedSide.LEFT).name)
+        SmartDashboard.putString(
+                "RRR Mode", calculateAutoMode(OwnedSide.RIGHT, OwnedSide.RIGHT).name)
+        SmartDashboard.putString(
+                "LRL Mode", calculateAutoMode(OwnedSide.LEFT, OwnedSide.RIGHT).name)
+        SmartDashboard.putString(
+                "RLR Mode", calculateAutoMode(OwnedSide.RIGHT, OwnedSide.LEFT).name)
     }
 
     override fun onAutoStart() {
