@@ -28,7 +28,7 @@ import org.sert2521.powerup.util.AutoMode.TEST_RIGHT
 import org.sertain.RobotLifecycle
 import org.sertain.util.SendableChooser
 import java.io.File
-import java.time.LocalDateTime
+import java.util.Date
 
 val controlMode: Control get() = Modes.controlChooser.selected
 
@@ -252,28 +252,36 @@ object Modes : RobotLifecycle {
 
     override fun onAutoStart() {
         val file = DriverStation.getInstance().let {
-            File(ROOT, "${it.matchType}_${it.matchNumber}_${LocalDateTime.now()}.txt")
+            File(ROOT, "${it.matchType} match #${it.matchNumber} ${Date()}.txt")
         }
 
         try {
+            if (!ROOT.exists() && !ROOT.mkdirs()) {
+                throw FileSystemException(ROOT, reason = "Couldn't create folder")
+            }
+            if (!file.createNewFile()) {
+                throw FileSystemException(file, reason = "Couldn't create file")
+            }
+
             file.writeText("""
-                |Options
-                |------------
-                |START POSITION: ${autoStartChooser.selected}
-                |PRIORITY: ${autoPriorityChooser.selected}
-                |CONSTRAINTS: ${autoConstraintsChooser.selected}
+                Options
+                ------------
+                START POSITION: ${autoStartChooser.selected}
+                PRIORITY: ${autoPriorityChooser.selected}
+                CONSTRAINTS: ${autoConstraintsChooser.selected}
 
-                |Modes (based on options)
-                |------------
-                |LLL: ${calculateAutoMode(MatchData.OwnedSide.LEFT, MatchData.OwnedSide.LEFT)}
-                |RRR: ${calculateAutoMode(MatchData.OwnedSide.RIGHT, MatchData.OwnedSide.RIGHT)}
-                |LRL: ${calculateAutoMode(MatchData.OwnedSide.LEFT, MatchData.OwnedSide.RIGHT)}
-                |RLR: ${calculateAutoMode(MatchData.OwnedSide.RIGHT, MatchData.OwnedSide.LEFT)}
+                Modes (based on options)
+                ------------
+                LLL: ${calculateAutoMode(MatchData.OwnedSide.LEFT, MatchData.OwnedSide.LEFT)}
+                RRR: ${calculateAutoMode(MatchData.OwnedSide.RIGHT, MatchData.OwnedSide.RIGHT)}
+                LRL: ${calculateAutoMode(MatchData.OwnedSide.LEFT, MatchData.OwnedSide.RIGHT)}
+                RLR: ${calculateAutoMode(MatchData.OwnedSide.RIGHT, MatchData.OwnedSide.LEFT)}
 
-                |Match
-                |------------
-                |FIELD CODE: ${DriverStation.getInstance().gameSpecificMessage}
-                |ACTUAL MODE: $autoMode
+                Match
+                ------------
+                FIELD CODE: ${DriverStation.getInstance().gameSpecificMessage}
+                ACTUAL MODE: $autoMode
+
                 """.trimIndent())
         } catch (e: Exception) {
             e.printStackTrace()
