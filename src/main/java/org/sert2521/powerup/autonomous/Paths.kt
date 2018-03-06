@@ -190,7 +190,7 @@ object RightToRightSwitchPath : PathBase() {
 object MiddleToLeftSwitchPath : PathBase() {
     override var points = arrayOf(
             0.0 with 0.2 angle 0.0,
-            3.0 with 1.3 angle -10.0
+            2.9 with 1.3 angle -10.0
     )
 }
 
@@ -221,10 +221,10 @@ object LeftToRightScalePath : PathBase() {
     override var points = arrayOf(
             0.0 with 3.0 angle 0.0,
             4.5 with 3.0 angle 0.0,
-            5.4 with 2.4 angle -90.0,
-            5.4 with -2.0 angle -90.0,
+            5.1 with 2.4 angle -90.0,
+            5.3 with -2.0 angle -90.0,
             5.5 with -2.5 angle -45.0,
-            7.2 with -2.5 angle 20.0
+            6.85 with -2.7 angle 20.0
     )
 }
 

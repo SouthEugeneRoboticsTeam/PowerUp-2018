@@ -216,9 +216,9 @@ object Modes : RobotLifecycle {
             "Right" to Start.RIGHT
     )
     val autoPriorityChooser = SendableChooser(
+            "Baseline" to End.BASELINE,
             "Switch" to End.SWITCH,
-            "Scale" to End.SCALE,
-            "Baseline" to End.BASELINE
+            "Scale" to End.SCALE
     )
     val autoConstraintsChooser = SendableChooser(
             "None" to Constraints.NONE,
