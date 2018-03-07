@@ -262,11 +262,9 @@
               2
             ],
             "content": {
-              "_type": "Graph",
+              "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/Drivetrain Left Position",
-              "_title": "Drivetrain Left Position",
-              "Visible time": 30.0,
-              "SmartDashboard/Drivetrain Left Position visible": true
+              "_title": "Drivetrain Left Position"
             }
           },
           "3,1": {
@@ -275,11 +273,9 @@
               2
             ],
             "content": {
-              "_type": "Graph",
+              "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/Drivetrain Right Position",
-              "_title": "Drivetrain Right Position",
-              "Visible time": 30.0,
-              "SmartDashboard/Drivetrain Right Position visible": true
+              "_title": "Drivetrain Right Position"
             }
           },
           "6,0": {
@@ -288,11 +284,9 @@
               2
             ],
             "content": {
-              "_type": "Graph",
+              "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/Drivetrain Pitch",
-              "_title": "Pitch",
-              "Visible time": 30.0,
-              "SmartDashboard/Drivetrain Pitch visible": true
+              "_title": "Drivetrain Pitch"
             }
           },
           "9,0": {
@@ -301,11 +295,9 @@
               2
             ],
             "content": {
-              "_type": "Graph",
+              "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/Drivetrain Roll",
-              "_title": "Roll",
-              "Visible time": 30.0,
-              "SmartDashboard/Drivetrain Roll visible": true
+              "_title": "Drivetrain Roll"
             }
           },
           "2,5": {
@@ -338,11 +330,9 @@
               2
             ],
             "content": {
-              "_type": "Graph",
+              "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/Elevator Position",
-              "_title": "Elevator Position",
-              "Visible time": 30.0,
-              "SmartDashboard/Elevator Position visible": true
+              "_title": "Elevator Position"
             }
           }
         }
