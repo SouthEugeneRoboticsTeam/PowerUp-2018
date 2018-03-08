@@ -1,6 +1,7 @@
 package org.sert2521.powerup.elevator
 
 import com.ctre.phoenix.motorcontrol.FeedbackDevice
+import edu.wpi.first.wpilibj.PowerDistributionPanel
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
 import org.sert2521.powerup.elevator.commands.Elevate
 import org.sert2521.powerup.elevator.commands.EncoderResetter
@@ -21,6 +22,7 @@ import org.sertain.hardware.plus
 import org.sertain.hardware.setEncoderPosition
 import org.sertain.hardware.setSelectedSensor
 import org.sertain.hardware.whenActive
+import java.util.concurrent.atomic.AtomicBoolean
 
 object Elevator : Subsystem() {
     const val DEFAULT_SPEED = 0.125
@@ -29,10 +31,12 @@ object Elevator : Subsystem() {
     const val SCALE_TARGET = 3400
     const val SAFE_MAX_TARGET = 4000
 
+    private val pdp = PowerDistributionPanel()
     private val elevator = Talon(RIGHT_ELEVATOR_MOTOR).autoBreak() +
             Talon(LEFT_ELEVATOR_MOTOR).autoBreak().invert()
 
     val position get() = -elevator.getEncoderPosition()
+    private val current get() = pdp.getCurrent(2)
 
     val atBottom get() = bottomTrigger.get()
     val atSwitch get() = switchTrigger.get()
@@ -43,11 +47,19 @@ object Elevator : Subsystem() {
     private val topTrigger = DigitalInput(TOP_TRIGGER_PORT).invert()
     private val switchTrigger = DigitalInput(SWITCH_TRIGGER_PORT).invert()
 
+    private var lastPosition: Int = 0
+    private val currents = mutableListOf<Double>()
+    private val isTripped = AtomicBoolean()
+
     override val defaultCommand = Elevate()
 
     override fun onCreate() = elevator.setSelectedSensor(FeedbackDevice.QuadEncoder)
 
-    override fun onStart() = EncoderResetter().start()
+    override fun onStart() {
+        EncoderResetter().start()
+        currents.clear()
+        currents.addAll(generateSequence { 1.0 }.take(20))
+    }
 
     override fun onTeleopStart() =
             secondaryJoystick.whenActive(1, Elevate()) // Ensure drivers can override auto
@@ -58,6 +70,28 @@ object Elevator : Subsystem() {
         SmartDashboard.putData("Middle Trigger", middleTrigger)
         SmartDashboard.putData("Top Trigger", topTrigger)
         SmartDashboard.putData("Switch Trigger", switchTrigger)
+    }
+
+    override fun executeAuto() = executeTeleop()
+
+    override fun executeTeleop() {
+        val current = current
+        // If there are a ton of 0 current values, we can assume that the breaker tripped since the
+        // default elevator speed is _something_.
+        if (current > 0 || currents.sum() > 0) {
+            if (isTripped.compareAndSet(true, false)) {
+                // Subtract a bit of stuff since the elevator most likely fell while the breaker was
+                // tripped.
+                elevator.setEncoderPosition(-(lastPosition - 100))
+            } else {
+                lastPosition = position
+            }
+        } else {
+            isTripped.set(true)
+        }
+
+        currents.removeAt(0)
+        currents.add(current)
     }
 
     fun set(speed: Double) {
