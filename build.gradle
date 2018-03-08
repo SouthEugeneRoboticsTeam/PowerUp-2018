@@ -69,7 +69,7 @@ deploy {
 }
 
 wpi {
-    wpilibVersion = '2018.3.3'
+    wpilibVersion = '2018.4.1'
     ntcoreVersion = '4.0.0'
     opencvVersion = '3.2.0'
     cscoreVersion = '1.2.0'
