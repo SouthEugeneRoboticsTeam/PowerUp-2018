@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
 import jaci.pathfinder.Pathfinder
 import jaci.pathfinder.followers.EncoderFollower
 import org.sert2521.powerup.drivetrain.Drivetrain
+import org.sert2521.powerup.drivetrain.commands.DriveStraight
 import org.sert2521.powerup.drivetrain.commands.DriveToCube
 import org.sert2521.powerup.drivetrain.commands.TurnToAngle
 import org.sert2521.powerup.elevator.commands.SendToBottom
@@ -42,7 +43,6 @@ object Auto : RobotLifecycle {
         TestLeftPath
         TestRightPath
 
-        CrossBaselinePath
         LeftToLeftSwitchPath
         RightToRightSwitchPath
         MiddleToLeftSwitchPath
@@ -62,7 +62,7 @@ object Auto : RobotLifecycle {
         val findAndDeliverCube = findCube then EjectBlock()
 
         when (autoMode) {
-            AutoMode.CROSS_BASELINE -> CrossBaseline()
+            AutoMode.CROSS_BASELINE -> DriveStraight(0.3, 5000)
 
             AutoMode.LEFT_TO_LEFT_SWITCH -> LeftToLeftSwitch() and SendToSwitch() then EjectBlock()
 
@@ -194,8 +194,6 @@ private abstract class ReversePathFollowerBase(path: PathBase) : PathFollowerBas
             turn: Double
     ) = super.calculate(-rightPosition, -leftPosition, -turn)
 }
-
-private class CrossBaseline : PathFollowerBase(CrossBaselinePath)
 
 private class LeftToLeftSwitch : PathFollowerBase(LeftToLeftSwitchPath)
 

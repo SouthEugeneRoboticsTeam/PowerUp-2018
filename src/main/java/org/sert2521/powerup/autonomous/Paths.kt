@@ -164,13 +164,6 @@ abstract class PathBase : PathInitializer(), RobotLifecycle {
     }
 }
 
-object CrossBaselinePath : PathBase() {
-    override var points = arrayOf(
-            0.0 with 0.0 angle 0.0,
-            2.7 with 0.0 angle 0.0
-    )
-}
-
 object LeftToLeftSwitchPath : PathBase() {
     override var points = arrayOf(
             0.0 with 3.0 angle 0.0,
