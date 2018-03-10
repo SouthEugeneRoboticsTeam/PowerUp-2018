@@ -24,9 +24,6 @@ import org.sertain.hardware.setSelectedSensor
 object Drivetrain : Subsystem() {
     val ahrs = AHRS(I2C.Port.kMXP)
 
-    val leftSpeed get() = leftDrive.get()
-    val rightSpeed get() = leftDrive.get()
-
     val leftPosition get() = -leftDrive.getEncoderPosition()
     val rightPosition get() = rightDrive.getEncoderPosition()
 
