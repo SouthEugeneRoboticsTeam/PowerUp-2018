@@ -5,12 +5,12 @@ import org.sertain.command.Command
 import kotlin.math.pow
 import kotlin.properties.Delegates
 
-abstract class SendToTarget(private val target: Int) : Command(5000) {
+abstract class SendToTarget(private val target: Int, requireSubsystem: Boolean) : Command(5000) {
     protected abstract val isAtTarget: Boolean
     private var wasBelowTarget: Boolean by Delegates.notNull()
 
     init {
-        requires(Elevator)
+        if (requireSubsystem) requires(Elevator)
     }
 
     override fun onCreate() {
@@ -38,14 +38,20 @@ abstract class SendToTarget(private val target: Int) : Command(5000) {
     }
 }
 
-class SendToBottom : SendToTarget(Elevator.BOTTOM_TARGET) {
+class SendToBottom(
+        requireSubsystem: Boolean = true
+) : SendToTarget(Elevator.BOTTOM_TARGET, requireSubsystem) {
     override val isAtTarget get() = Elevator.atBottom
 }
 
-class SendToSwitch : SendToTarget(Elevator.SWITCH_TARGET) {
+class SendToSwitch(
+        requireSubsystem: Boolean = true
+) : SendToTarget(Elevator.SWITCH_TARGET, requireSubsystem) {
     override val isAtTarget get() = Elevator.atSwitch
 }
 
-class SendToScale : SendToTarget(Elevator.SCALE_TARGET) {
+class SendToScale(
+        requireSubsystem: Boolean = true
+) : SendToTarget(Elevator.SCALE_TARGET, requireSubsystem) {
     override val isAtTarget get() = Elevator.atTop
 }
