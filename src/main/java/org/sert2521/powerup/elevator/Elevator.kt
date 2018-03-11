@@ -66,6 +66,7 @@ object Elevator : Subsystem() {
 
     override fun execute() {
         SmartDashboard.putNumber("Elevator Position", position.toDouble())
+        SmartDashboard.putBoolean("Elevator breaker tripped", isTripped.get())
         SmartDashboard.putData("Bottom Trigger", bottomTrigger)
         SmartDashboard.putData("Middle Trigger", middleTrigger)
         SmartDashboard.putData("Top Trigger", topTrigger)
