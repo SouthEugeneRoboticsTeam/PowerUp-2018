@@ -3,7 +3,7 @@ package org.sert2521.powerup.drivetrain.commands
 import org.sert2521.powerup.drivetrain.Drivetrain
 import kotlin.math.absoluteValue
 
-class TurnToAngle(private val angle: Double) : AngleDriver(1.0) {
+class TurnToAngle(private val angle: Double) : AngleDriver(0.002) {
     private val startAngle by lazy { Drivetrain.ahrs.yaw }
 
     init {

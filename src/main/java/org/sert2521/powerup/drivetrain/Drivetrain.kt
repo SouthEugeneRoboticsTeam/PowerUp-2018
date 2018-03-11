@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.I2C
 import edu.wpi.first.wpilibj.drive.DifferentialDrive
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
 import org.sert2521.powerup.drivetrain.commands.TeleopDrive
+import org.sert2521.powerup.drivetrain.commands.TurnToAngle
 import org.sert2521.powerup.util.LEFT_FRONT_MOTOR
 import org.sert2521.powerup.util.LEFT_REAR_MOTOR
 import org.sert2521.powerup.util.RIGHT_FRONT_MOTOR
@@ -40,7 +41,10 @@ object Drivetrain : Subsystem() {
         rightDrive.setSelectedSensor(FeedbackDevice.QuadEncoder)
     }
 
-    override fun onStart() = reset()
+    override fun onStart() {
+        reset()
+        TurnToAngle(180.0).start()
+    }
 
     override fun execute() {
         SmartDashboard.putNumber("Drivetrain Left Position", leftPosition.toDouble())
