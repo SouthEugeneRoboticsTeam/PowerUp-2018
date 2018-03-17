@@ -26,7 +26,7 @@ class TeleopIntake : Command() {
             secondaryJoystick.getRawButton(4) -> -ejectSpeedScalar
             else -> when (controlMode) {
                 is Control.Arcade, is Control.Tank -> when {
-                    secondaryJoystick.top && secondaryJoystick.getRawButtonPressed(2) -> -secondaryJoystick.scaledThrottle
+                    secondaryJoystick.top -> -secondaryJoystick.scaledThrottle
                     rightJoystick.trigger -> intakeSpeedScalar
                     rightJoystick.top -> -ejectSpeedScalar
                     else -> Intake.DEFAULT_SPEED
