@@ -12,14 +12,14 @@ class TurnToAngle(private val angle: Double) : Command() {
         requires(Drivetrain)
     }
 
-    private fun errorToSpeed(error: Double) = cbrt(error) / 4
+    private fun errorToSpeed(error: Double) = 20 * cbrt(error)
 
     override fun execute(): Boolean {
-        val leftDelta = (Drivetrain.leftPosition - initialLeftPosition) / FULL_TURN
-        val rightDelta = (initialRightPosition - Drivetrain.rightPosition) / FULL_TURN
+        val leftDelta = Drivetrain.leftPosition - initialLeftPosition
+        val rightDelta = initialRightPosition - Drivetrain.rightPosition
 
-        val leftError = angle - leftDelta
-        val rightError = angle - rightDelta
+        val leftError = (angle / 360) * FULL_TURN - leftDelta
+        val rightError = (angle / 360) * FULL_TURN - rightDelta
 
         Drivetrain.drive(errorToSpeed(leftError), -errorToSpeed(rightError))
 
@@ -27,7 +27,7 @@ class TurnToAngle(private val angle: Double) : Command() {
     }
 
     private companion object {
-        const val ALLOWABLE_ERROR = 5.0 // In degrees
+        const val ALLOWABLE_ERROR = 500 // Encoder ticks
         const val FULL_TURN = 43116 // Encoder ticks
     }
 }
