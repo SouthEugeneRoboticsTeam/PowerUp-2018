@@ -1,7 +1,11 @@
 package org.sert2521.powerup.drivetrain.commands
 
 import org.sert2521.powerup.drivetrain.Drivetrain
+import org.sert2521.powerup.util.ENCODER_TICKS_PER_REVOLUTION
+import org.sert2521.powerup.util.WHEELBASE_WIDTH
+import org.sert2521.powerup.util.WHEEL_DIAMETER
 import org.sertain.command.Command
+import java.lang.Math.PI
 import java.lang.Math.cbrt
 
 class TurnToAngle(private val angle: Double) : Command() {
@@ -28,6 +32,6 @@ class TurnToAngle(private val angle: Double) : Command() {
 
     private companion object {
         const val ALLOWABLE_ERROR = 500 // Encoder ticks
-        const val FULL_TURN = 43116 // Encoder ticks
+        const val FULL_TURN = PI * WHEELBASE_WIDTH / PI * WHEEL_DIAMETER * ENCODER_TICKS_PER_REVOLUTION
     }
 }
