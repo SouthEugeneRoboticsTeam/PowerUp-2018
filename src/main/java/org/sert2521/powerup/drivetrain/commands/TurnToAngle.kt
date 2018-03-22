@@ -2,7 +2,7 @@ package org.sert2521.powerup.drivetrain.commands
 
 import org.sert2521.powerup.drivetrain.Drivetrain
 import org.sertain.command.Command
-import kotlin.math.sqrt
+import java.lang.Math.cbrt
 
 class TurnToAngle(private val angle: Double) : Command() {
     private val initialLeftPosition = Drivetrain.leftPosition
@@ -12,7 +12,7 @@ class TurnToAngle(private val angle: Double) : Command() {
         requires(Drivetrain)
     }
 
-    private fun errorToSpeed(error: Double) = sqrt(error - 2)
+    private fun errorToSpeed(error: Double) = cbrt(error) / 4
 
     override fun execute(): Boolean {
         val leftDelta = (Drivetrain.leftPosition - initialLeftPosition) / FULL_TURN
