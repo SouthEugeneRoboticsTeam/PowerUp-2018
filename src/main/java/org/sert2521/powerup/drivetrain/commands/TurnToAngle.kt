@@ -1,25 +1,33 @@
 package org.sert2521.powerup.drivetrain.commands
 
 import org.sert2521.powerup.drivetrain.Drivetrain
-import kotlin.math.absoluteValue
+import org.sertain.command.Command
+import kotlin.math.sqrt
 
-class TurnToAngle(private val angle: Double) : AngleDriver(1.0) {
-    private val startAngle by lazy { Drivetrain.ahrs.yaw }
+class TurnToAngle(private val angle: Double) : Command() {
+    private val initialLeftPosition = Drivetrain.leftPosition
+    private val initialRightPosition = Drivetrain.rightPosition
 
     init {
         requires(Drivetrain)
     }
 
-    override fun onCreate() {
-        setpoint = startAngle + angle
-    }
+    private fun errorToSpeed(error: Double) = sqrt(error - 2)
 
-    override fun execute(output: Double): Boolean {
-        Drivetrain.drive(output, -output)
-        return (Drivetrain.ahrs.yaw - startAngle - angle).absoluteValue < ALLOWABLE_ERROR
+    override fun execute(): Boolean {
+        val leftDelta = (Drivetrain.leftPosition - initialLeftPosition) / FULL_TURN
+        val rightDelta = (initialRightPosition - Drivetrain.rightPosition) / FULL_TURN
+
+        val leftError = angle - leftDelta
+        val rightError = angle - rightDelta
+
+        Drivetrain.drive(errorToSpeed(leftError), -errorToSpeed(rightError))
+
+        return leftError < ALLOWABLE_ERROR && rightError < ALLOWABLE_ERROR
     }
 
     private companion object {
         const val ALLOWABLE_ERROR = 5.0 // In degrees
+        const val FULL_TURN = 43116 // Encoder ticks
     }
 }
