@@ -12,6 +12,10 @@ class TurnToAngle(private val angle: Double) : Command() {
     private val initialLeftPosition = Drivetrain.leftPosition
     private val initialRightPosition = Drivetrain.rightPosition
 
+    init {
+        requires(Drivetrain)
+    }
+
     private fun errorToSpeed(error: Double) = 20 * cbrt(error)
 
     override fun execute(): Boolean {
