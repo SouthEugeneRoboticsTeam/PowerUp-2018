@@ -7,7 +7,7 @@ import org.sert2521.powerup.elevator.Elevator
 import org.sert2521.powerup.intake.Intake
 import org.sert2521.powerup.util.DEGREES_PER_PIXEL
 
-class DriveToCube : AngleDriver(0.01) {
+class DriveToCube : AngleDriver(0.01, 0.0, 0.022) {
     override fun onCreate() = updateSetpoint(0.0)
 
     override fun execute(output: Double): Boolean {

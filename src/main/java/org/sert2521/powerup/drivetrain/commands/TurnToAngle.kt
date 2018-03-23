@@ -6,10 +6,6 @@ import kotlin.math.absoluteValue
 class TurnToAngle(private val angle: Double) : AngleDriver(1.0) {
     private val startAngle by lazy { Drivetrain.ahrs.yaw }
 
-    init {
-        requires(Drivetrain)
-    }
-
     override fun onCreate() {
         setpoint = startAngle + angle
     }
