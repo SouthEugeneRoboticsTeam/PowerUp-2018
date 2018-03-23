@@ -46,8 +46,9 @@ object Drivetrain : Subsystem() {
         rightDrive.setSelectedSensor(FeedbackDevice.QuadEncoder)
     }
 
-    override fun onStart() {
-        reset()
+    override fun onStart() = reset()
+
+    override fun onTeleopStart() {
         rightJoystick.whenActive(12, SendToBottom() and IntakeBlock() and DriveToCube())
     }
 
