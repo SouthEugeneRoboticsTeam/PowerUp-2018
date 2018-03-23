@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
 import org.sert2521.powerup.drivetrain.commands.DriveToCube
 import org.sert2521.powerup.drivetrain.commands.TeleopDrive
 import org.sert2521.powerup.elevator.commands.SendToBottom
+import org.sert2521.powerup.intake.commands.IntakeBlock
 import org.sert2521.powerup.util.LEFT_FRONT_MOTOR
 import org.sert2521.powerup.util.LEFT_REAR_MOTOR
 import org.sert2521.powerup.util.RIGHT_FRONT_MOTOR
@@ -47,7 +48,7 @@ object Drivetrain : Subsystem() {
 
     override fun onStart() {
         reset()
-        rightJoystick.whenActive(12, SendToBottom() and DriveToCube())
+        rightJoystick.whenActive(12, SendToBottom() and IntakeBlock() and DriveToCube())
     }
 
     override fun execute() {
