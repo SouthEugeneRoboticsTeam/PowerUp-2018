@@ -5,18 +5,24 @@ import com.kauailabs.navx.frc.AHRS
 import edu.wpi.first.wpilibj.I2C
 import edu.wpi.first.wpilibj.drive.DifferentialDrive
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
+import org.sert2521.powerup.drivetrain.commands.DriveToCube
 import org.sert2521.powerup.drivetrain.commands.TeleopDrive
+import org.sert2521.powerup.elevator.commands.SendToBottom
+import org.sert2521.powerup.intake.commands.IntakeBlock
 import org.sert2521.powerup.util.LEFT_FRONT_MOTOR
 import org.sert2521.powerup.util.LEFT_REAR_MOTOR
 import org.sert2521.powerup.util.RIGHT_FRONT_MOTOR
 import org.sert2521.powerup.util.RIGHT_REAR_MOTOR
+import org.sert2521.powerup.util.rightJoystick
 import org.sertain.command.Subsystem
+import org.sertain.command.and
 import org.sertain.hardware.Talon
 import org.sertain.hardware.autoBreak
 import org.sertain.hardware.getEncoderPosition
 import org.sertain.hardware.plus
 import org.sertain.hardware.setEncoderPosition
 import org.sertain.hardware.setSelectedSensor
+import org.sertain.hardware.whenActive
 
 /**
  * The robot's primary drive base.
@@ -41,6 +47,10 @@ object Drivetrain : Subsystem() {
     }
 
     override fun onStart() = reset()
+
+    override fun onTeleopStart() {
+        rightJoystick.whenActive(12, SendToBottom() and IntakeBlock() and DriveToCube())
+    }
 
     override fun execute() {
         SmartDashboard.putNumber("Drivetrain Left Position", leftPosition.toDouble())
