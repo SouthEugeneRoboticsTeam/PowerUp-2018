@@ -6,7 +6,7 @@ import org.sert2521.powerup.util.WHEELBASE_WIDTH
 import org.sert2521.powerup.util.WHEEL_DIAMETER
 import org.sertain.command.Command
 
-class TurnToAngle(private val angle: Double) : Command() {
+class TurnToAngle(angle: Double) : Command() {
     // TODO: lateinit
     private val initialLeftPosition = Drivetrain.leftPosition
     private val initialRightPosition = Drivetrain.rightPosition
