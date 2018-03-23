@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
 import org.sert2521.powerup.drivetrain.commands.DriveToCube
 import org.sert2521.powerup.drivetrain.commands.TeleopDrive
+import org.sert2521.powerup.drivetrain.commands.TurnToAngle
 import org.sert2521.powerup.elevator.commands.SendToBottom
 import org.sert2521.powerup.intake.commands.IntakeBlock
 import org.sert2521.powerup.util.LEFT_FRONT_MOTOR
@@ -58,6 +59,11 @@ object Drivetrain : Subsystem() {
         SmartDashboard.putNumber("Drivetrain Pitch", ahrs.pitch.toDouble())
         SmartDashboard.putNumber("Drivetrain Roll", ahrs.roll.toDouble())
         SmartDashboard.putData("AHRS", ahrs)
+
+        if (rightJoystick.getRawButton(8)) {
+            println("Got raw button 8")
+            TurnToAngle(100.0).start()
+        }
     }
 
     fun reset() {
