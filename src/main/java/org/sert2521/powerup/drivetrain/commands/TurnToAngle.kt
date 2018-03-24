@@ -11,7 +11,7 @@ class TurnToAngle(angle: Double) : Command() {
     private val startLeft by lazy { Drivetrain.leftPosition }
     private val startRight by lazy { Drivetrain.rightPosition }
 
-    private val turnAmount = angle / 360 * FULL_TURN
+    private val turnAmount = angle / 360 * FULL_TURN // In encoder ticks
 
     init {
         requires(Drivetrain)
