@@ -6,21 +6,15 @@ import org.sert2521.powerup.util.WHEELBASE_WIDTH
 import org.sert2521.powerup.util.WHEEL_DIAMETER
 import org.sertain.command.Command
 import kotlin.math.absoluteValue
-import kotlin.properties.Delegates
 
 class TurnToAngle(angle: Double) : Command() {
-    private var startLeft: Int by Delegates.notNull()
-    private var startRight: Int by Delegates.notNull()
+    private val startLeft by lazy { Drivetrain.leftPosition }
+    private val startRight by lazy { Drivetrain.rightPosition }
 
     private val turnAmount = angle / 360 * FULL_TURN
 
     init {
         requires(Drivetrain)
-    }
-
-    override fun onCreate() {
-        startLeft = Drivetrain.leftPosition
-        startRight = Drivetrain.rightPosition
     }
 
     override fun execute(): Boolean {
