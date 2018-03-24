@@ -62,7 +62,7 @@ object Drivetrain : Subsystem() {
 
         if (rightJoystick.getRawButton(8)) {
             println("Got raw button 8")
-            TurnToAngle(100.0).start()
+            TurnToAngle(180.0).start()
         }
     }
 

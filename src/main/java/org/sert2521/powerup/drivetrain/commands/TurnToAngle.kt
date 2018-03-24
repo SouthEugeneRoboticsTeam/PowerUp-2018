@@ -5,37 +5,41 @@ import org.sert2521.powerup.util.ENCODER_TICKS_PER_REVOLUTION
 import org.sert2521.powerup.util.WHEELBASE_WIDTH
 import org.sert2521.powerup.util.WHEEL_DIAMETER
 import org.sertain.command.Command
+import kotlin.math.absoluteValue
+import kotlin.properties.Delegates
 
 class TurnToAngle(angle: Double) : Command() {
-    // TODO: lateinit
-    private val initialLeftPosition = Drivetrain.leftPosition
-    private val initialRightPosition = Drivetrain.rightPosition
+    private var startLeft: Int by Delegates.notNull()
+    private var startRight: Int by Delegates.notNull()
 
     private val turnAmount = (angle / 360) * FULL_TURN
 
     init {
         requires(Drivetrain)
-        println("Hello there")
+    }
+
+    override fun onCreate() {
+        startLeft = Drivetrain.leftPosition
+        startRight = Drivetrain.rightPosition
     }
 
     override fun execute(): Boolean {
-        val leftDelta = Drivetrain.leftPosition - initialLeftPosition
-        val rightDelta = initialRightPosition - Drivetrain.rightPosition
+        val leftDelta = Drivetrain.leftPosition - startLeft
+        val rightDelta = startRight - Drivetrain.rightPosition
 
         val leftError = turnAmount - leftDelta
         val rightError = turnAmount - rightDelta
 
-        println("$leftError, $rightError")
+        Drivetrain.drive(SPEED_FACTOR * leftError, -SPEED_FACTOR * rightError)
 
-        // TODO: Make this value into a P
-        // (this is Andrew's sexy version of PID, do not change, working good)
-        Drivetrain.drive(0.45 * (leftError * 0.00014), -0.45 * (rightError * 0.00014))
-
-        return leftError < ALLOWABLE_ERROR || rightError < ALLOWABLE_ERROR
+        return leftError.absoluteValue < ALLOWABLE_ERROR
+                || rightError.absoluteValue < ALLOWABLE_ERROR
     }
 
     private companion object {
         const val ALLOWABLE_ERROR = 100 // Encoder ticks
         const val FULL_TURN = WHEELBASE_WIDTH / WHEEL_DIAMETER * ENCODER_TICKS_PER_REVOLUTION
+
+        const val SPEED_FACTOR = 0.45 * 0.00014
     }
 }
