@@ -12,7 +12,7 @@ class TurnToAngle(angle: Double) : Command() {
     private var startLeft: Int by Delegates.notNull()
     private var startRight: Int by Delegates.notNull()
 
-    private val turnAmount = (angle / 360) * FULL_TURN
+    private val turnAmount = angle / 360 * FULL_TURN
 
     init {
         requires(Drivetrain)
