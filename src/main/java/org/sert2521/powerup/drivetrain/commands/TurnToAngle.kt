@@ -38,7 +38,7 @@ class TurnToAngle(angle: Double) : Command() {
     }
 
     private companion object {
-        const val ALLOWABLE_ERROR = 100 // Encoder ticks
+        const val ALLOWABLE_ERROR = 200 // Encoder ticks
         const val FULL_TURN = WHEELBASE_WIDTH / WHEEL_DIAMETER * ENCODER_TICKS_PER_REVOLUTION
 
         const val SPEED = 0.4
