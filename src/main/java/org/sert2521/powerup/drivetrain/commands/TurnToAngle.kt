@@ -18,13 +18,13 @@ class TurnToAngle(angle: Double) : Command() {
     }
 
     override fun execute(): Boolean {
+        Drivetrain.drive(SPEED, -SPEED)
+
         val leftDelta = Drivetrain.leftPosition - startLeft
         val rightDelta = startRight - Drivetrain.rightPosition
 
         val leftError = turnAmount - leftDelta
         val rightError = turnAmount - rightDelta
-
-        Drivetrain.drive(SPEED_FACTOR * leftError, -SPEED_FACTOR * rightError)
 
         return leftError.absoluteValue < ALLOWABLE_ERROR
                 || rightError.absoluteValue < ALLOWABLE_ERROR
@@ -34,6 +34,6 @@ class TurnToAngle(angle: Double) : Command() {
         const val ALLOWABLE_ERROR = 100 // Encoder ticks
         const val FULL_TURN = WHEELBASE_WIDTH / WHEEL_DIAMETER * ENCODER_TICKS_PER_REVOLUTION
 
-        const val SPEED_FACTOR = 0.45 * 0.00014
+        const val SPEED = 0.4
     }
 }
