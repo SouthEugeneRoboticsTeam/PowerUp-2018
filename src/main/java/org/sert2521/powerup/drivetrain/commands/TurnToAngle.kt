@@ -22,7 +22,6 @@ class TurnToAngle(angle: Double) : Command() {
     override fun onCreate() {
         startLeft = Drivetrain.leftPosition
         startRight = Drivetrain.rightPosition
-        println("Created with ")
     }
 
     override fun execute(): Boolean {
