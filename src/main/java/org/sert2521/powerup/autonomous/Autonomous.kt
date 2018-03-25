@@ -34,7 +34,7 @@ private fun CommandBridgeMirror.waitUntil(condition: () -> Boolean) = object : C
 } then this
 
 object Auto : RobotLifecycle {
-    private const val SCALE_TO_SWITCH_TURN = 120.0
+    private const val SCALE_TO_SWITCH_TURN = 160.0
 
     init {
         RobotLifecycle.addListener(this)
@@ -59,6 +59,7 @@ object Auto : RobotLifecycle {
     override fun onAutoStart() {
         println("Following: $autoMode")
 
+        val foo = TurnToAngle(-SCALE_TO_SWITCH_TURN) then DriveToCube()
         when (autoMode) {
             AutoMode.CROSS_BASELINE -> DriveStraight(0.3, 5000)
 
@@ -88,7 +89,7 @@ object Auto : RobotLifecycle {
 
             AutoMode.RIGHT_TO_RIGHT_SCALE_PICKUP -> RightToRightScale() and SendToScale() and
                     EjectBlock().waitUntil(shouldEjectBlock) then
-                    (TurnToAngle(-SCALE_TO_SWITCH_TURN) then DriveToCube()) and
+                    foo and
                     (SendToBottom() and IntakeBlock() then SendToSwitch())
 
             AutoMode.LEFT_TO_LEFT_SCALE_SWITCH -> LeftToLeftScale() and SendToScale() and
@@ -98,12 +99,12 @@ object Auto : RobotLifecycle {
 
             AutoMode.RIGHT_TO_RIGHT_SCALE_SWITCH -> RightToRightScale() and SendToScale() and
                     EjectBlock().waitUntil(shouldEjectBlock) then
-                    (TurnToAngle(-SCALE_TO_SWITCH_TURN) then DriveToCube()) and
-                    (SendToBottom() and IntakeBlock() then SendToSwitch() then EjectBlock())
+                    foo and
+                    SendToBottom() and IntakeBlock() then SendToSwitch() then EjectBlock()
 
             AutoMode.LEFT_TO_RIGHT_SCALE_PICKUP -> LeftToRightScale() and SendToSwitch() and
                     SendToScale(false).waitUntil(isReadyToSendToScale) then
-                    EjectBlock() then (TurnToAngle(-SCALE_TO_SWITCH_TURN) then DriveToCube()) and
+                    EjectBlock() then foo and
                     (SendToBottom() and IntakeBlock() then SendToSwitch())
 
             AutoMode.RIGHT_TO_LEFT_SCALE_PICKUP -> RightToLeftScale() and SendToSwitch() and
@@ -113,7 +114,7 @@ object Auto : RobotLifecycle {
 
             AutoMode.LEFT_TO_RIGHT_SCALE_SWITCH -> LeftToRightScale() and SendToSwitch() and
                     SendToScale(false).waitUntil(isReadyToSendToScale) then
-                    EjectBlock() then (TurnToAngle(-SCALE_TO_SWITCH_TURN) then DriveToCube()) and
+                    EjectBlock() then foo and
                     (SendToBottom() and IntakeBlock() then SendToSwitch() then EjectBlock())
 
             AutoMode.RIGHT_TO_LEFT_SCALE_SWITCH -> RightToLeftScale() and SendToSwitch() and
