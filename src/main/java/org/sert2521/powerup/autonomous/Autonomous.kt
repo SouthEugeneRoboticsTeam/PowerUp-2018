@@ -34,7 +34,7 @@ private fun CommandBridgeMirror.waitUntil(condition: () -> Boolean) = object : C
 } then this
 
 object Auto : RobotLifecycle {
-    private const val SCALE_TO_SWITCH_TURN = 120.0
+    private const val SCALE_TO_SWITCH_TURN = 150.0
 
     init {
         RobotLifecycle.addListener(this)
@@ -58,8 +58,6 @@ object Auto : RobotLifecycle {
 
     override fun onAutoStart() {
         println("Following: $autoMode")
-
-        val turnThenDrive = TurnToAngle(SCALE_TO_SWITCH_TURN) then DriveToCube()
 
         when (autoMode) {
             AutoMode.CROSS_BASELINE -> DriveStraight(0.3, 5000)
@@ -85,41 +83,43 @@ object Auto : RobotLifecycle {
 
             AutoMode.LEFT_TO_LEFT_SCALE_PICKUP -> LeftToLeftScale() and SendToScale() and
                     EjectBlock().waitUntil(shouldEjectBlock) then
-                    turnThenDrive and SendToBottom() and IntakeBlock() then SendToSwitch()
+                    (TurnToAngle(SCALE_TO_SWITCH_TURN) then DriveToCube()) and
+                    (SendToBottom() and IntakeBlock() then SendToSwitch())
 
             AutoMode.RIGHT_TO_RIGHT_SCALE_PICKUP -> RightToRightScale() and SendToScale() and
                     EjectBlock().waitUntil(shouldEjectBlock) then
-                    turnThenDrive and SendToBottom() and IntakeBlock() then SendToSwitch()
+                    (TurnToAngle(-SCALE_TO_SWITCH_TURN) then DriveToCube()) and
+                    (SendToBottom() and IntakeBlock() then SendToSwitch())
 
             AutoMode.LEFT_TO_LEFT_SCALE_SWITCH -> LeftToLeftScale() and SendToScale() and
                     EjectBlock().waitUntil(shouldEjectBlock) then
-                    turnThenDrive and SendToBottom() and IntakeBlock() then
-                    SendToSwitch() then EjectBlock()
+                    (TurnToAngle(SCALE_TO_SWITCH_TURN) then DriveToCube()) and
+                    (SendToBottom() and IntakeBlock() then SendToSwitch() then EjectBlock())
 
             AutoMode.RIGHT_TO_RIGHT_SCALE_SWITCH -> RightToRightScale() and SendToScale() and
                     EjectBlock().waitUntil(shouldEjectBlock) then
-                    turnThenDrive and SendToBottom() and IntakeBlock() then
-                    SendToSwitch() then EjectBlock()
+                    (TurnToAngle(-SCALE_TO_SWITCH_TURN) then DriveToCube()) and
+                    (SendToBottom() and IntakeBlock() then SendToSwitch() then EjectBlock())
 
             AutoMode.LEFT_TO_RIGHT_SCALE_PICKUP -> LeftToRightScale() and SendToSwitch() and
                     SendToScale(false).waitUntil(isReadyToSendToScale) then
-                    EjectBlock() then turnThenDrive and SendToBottom() and IntakeBlock() then
-                    SendToSwitch()
+                    EjectBlock() then (TurnToAngle(-SCALE_TO_SWITCH_TURN) then DriveToCube()) and
+                    (SendToBottom() and IntakeBlock() then SendToSwitch())
 
             AutoMode.RIGHT_TO_LEFT_SCALE_PICKUP -> RightToLeftScale() and SendToSwitch() and
                     SendToScale(false).waitUntil(isReadyToSendToScale) then
-                    EjectBlock() then turnThenDrive and SendToBottom() and IntakeBlock() then
-                    SendToSwitch()
+                    EjectBlock() then (TurnToAngle(SCALE_TO_SWITCH_TURN) then DriveToCube()) and
+                    (SendToBottom() and IntakeBlock() then SendToSwitch())
 
             AutoMode.LEFT_TO_RIGHT_SCALE_SWITCH -> LeftToRightScale() and SendToSwitch() and
                     SendToScale(false).waitUntil(isReadyToSendToScale) then
-                    EjectBlock() then turnThenDrive and SendToBottom() and IntakeBlock() then
-                    SendToSwitch() then EjectBlock()
+                    EjectBlock() then (TurnToAngle(-SCALE_TO_SWITCH_TURN) then DriveToCube()) and
+                    (SendToBottom() and IntakeBlock() then SendToSwitch() then EjectBlock())
 
             AutoMode.RIGHT_TO_LEFT_SCALE_SWITCH -> RightToLeftScale() and SendToSwitch() and
                     SendToScale(false).waitUntil(isReadyToSendToScale) then
-                    EjectBlock() then turnThenDrive and SendToBottom() and IntakeBlock() then
-                    SendToSwitch() then EjectBlock()
+                    EjectBlock() then (TurnToAngle(SCALE_TO_SWITCH_TURN) then DriveToCube()) and
+                    (SendToBottom() and IntakeBlock() then SendToSwitch() then EjectBlock())
 
             AutoMode.TEST_LEFT -> TestLeft()
             AutoMode.TEST_RIGHT -> TestRight()

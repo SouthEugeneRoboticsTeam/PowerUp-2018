@@ -6,10 +6,12 @@ import org.sert2521.powerup.util.WHEELBASE_WIDTH
 import org.sert2521.powerup.util.WHEEL_DIAMETER
 import org.sertain.command.Command
 import kotlin.math.absoluteValue
+import kotlin.math.sign
+import kotlin.properties.Delegates
 
 class TurnToAngle(angle: Double) : Command() {
-    private val startLeft by lazy { Drivetrain.leftPosition }
-    private val startRight by lazy { Drivetrain.rightPosition }
+    private var startLeft: Int by Delegates.notNull()
+    private var startRight: Int by Delegates.notNull()
 
     private val turnAmount = angle / 360 * FULL_TURN // In encoder ticks
 
@@ -17,8 +19,13 @@ class TurnToAngle(angle: Double) : Command() {
         requires(Drivetrain)
     }
 
+    override fun onCreate() {
+        startLeft = Drivetrain.leftPosition
+        startRight = Drivetrain.rightPosition
+    }
+
     override fun execute(): Boolean {
-        Drivetrain.drive(SPEED, -SPEED)
+        Drivetrain.drive(turnAmount.sign * SPEED, -turnAmount.sign * SPEED)
 
         val leftDelta = Drivetrain.leftPosition - startLeft
         val rightDelta = startRight - Drivetrain.rightPosition
@@ -31,7 +38,7 @@ class TurnToAngle(angle: Double) : Command() {
     }
 
     private companion object {
-        const val ALLOWABLE_ERROR = 100 // Encoder ticks
+        const val ALLOWABLE_ERROR = 200 // Encoder ticks
         const val FULL_TURN = WHEELBASE_WIDTH / WHEEL_DIAMETER * ENCODER_TICKS_PER_REVOLUTION
 
         const val SPEED = 0.4

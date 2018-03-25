@@ -83,6 +83,18 @@
               "_source0": "network_table:///FMSInfo",
               "_title": "Field State"
             }
+          },
+          "0,3": {
+            "size": [
+              3,
+              2
+            ],
+            "content": {
+              "_type": "B Vision Widget",
+              "_source0": "network_table:///Vision/cube_offset_x",
+              "_title": "Vision Targetter",
+              "maxOffset": 640
+            }
           }
         }
       }
