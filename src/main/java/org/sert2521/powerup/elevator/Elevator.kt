@@ -35,7 +35,7 @@ object Elevator : Subsystem() {
     private val elevator = Talon(RIGHT_ELEVATOR_MOTOR).autoBreak() +
             Talon(LEFT_ELEVATOR_MOTOR).autoBreak().invert()
 
-    val position get() = -elevator.getEncoderPosition()
+    val position get() = if (isTripped.get()) lastPosition else -elevator.getEncoderPosition()
     private val current get() = pdp.getCurrent(2)
 
     val atBottom get() = bottomTrigger.get()
