@@ -23,11 +23,14 @@ import org.sertain.hardware.plus
 import org.sertain.hardware.setEncoderPosition
 import org.sertain.hardware.setSelectedSensor
 import org.sertain.hardware.whenActive
+import kotlin.math.absoluteValue
 
 /**
  * The robot's primary drive base.
  */
 object Drivetrain : Subsystem() {
+    private const val MIN_JOYSTICK_TRANSLATION = 0.05
+
     val ahrs = AHRS(I2C.Port.kMXP)
 
     val leftPosition get() = -leftDrive.getEncoderPosition()
@@ -39,6 +42,8 @@ object Drivetrain : Subsystem() {
             Talon(RIGHT_FRONT_MOTOR).autoBreak() + Talon(RIGHT_REAR_MOTOR).autoBreak()
     private val drive = DifferentialDrive(leftDrive, rightDrive)
 
+    private val findCube = SendToBottom() and IntakeBlock() and DriveToCube()
+
     override val defaultCommand = TeleopDrive()
 
     override fun onCreate() {
@@ -49,7 +54,7 @@ object Drivetrain : Subsystem() {
     override fun onStart() = reset()
 
     override fun onTeleopStart() {
-        rightJoystick.whenActive(12, SendToBottom() and IntakeBlock() and DriveToCube())
+        rightJoystick.whenActive(12, findCube)
     }
 
     override fun execute() {
@@ -58,6 +63,12 @@ object Drivetrain : Subsystem() {
         SmartDashboard.putNumber("Drivetrain Pitch", ahrs.pitch.toDouble())
         SmartDashboard.putNumber("Drivetrain Roll", ahrs.roll.toDouble())
         SmartDashboard.putData("AHRS", ahrs)
+    }
+
+    override fun executeTeleop() {
+        if (rightJoystick.run { x.absoluteValue + y.absoluteValue } > MIN_JOYSTICK_TRANSLATION) {
+            findCube.cancel()
+        }
     }
 
     fun reset() {
