@@ -4,43 +4,27 @@ import org.sert2521.powerup.drivetrain.Drivetrain
 import org.sert2521.powerup.util.ENCODER_TICKS_PER_REVOLUTION
 import org.sert2521.powerup.util.WHEELBASE_WIDTH
 import org.sert2521.powerup.util.WHEEL_DIAMETER
-import org.sertain.command.Command
-import kotlin.math.absoluteValue
-import kotlin.math.sign
-import kotlin.properties.Delegates
+import org.sertain.command.PidCommand
 
-class TurnToAngle(angle: Double) : Command() {
-    private var startLeft: Int by Delegates.notNull()
-    private var startRight: Int by Delegates.notNull()
-
-    private val turnAmount = angle / 360 * FULL_TURN // In encoder ticks
+class TurnToAngle(private val angle: Double) : PidCommand(1.0) {
 
     init {
         requires(Drivetrain)
     }
 
     override fun onCreate() {
-        startLeft = Drivetrain.leftPosition
-        startRight = Drivetrain.rightPosition
+        setpoint = Drivetrain.leftPosition + (angle / 360 * FULL_TURN)
     }
 
-    override fun execute(): Boolean {
-        Drivetrain.drive(turnAmount.sign * SPEED, -turnAmount.sign * SPEED)
-
-        val leftDelta = Drivetrain.leftPosition - startLeft
-        val rightDelta = startRight - Drivetrain.rightPosition
-
-        val leftError = turnAmount - leftDelta
-        val rightError = turnAmount - rightDelta
-
-        return leftError.absoluteValue < ALLOWABLE_ERROR
-                || rightError.absoluteValue < ALLOWABLE_ERROR
+    override fun execute(output: Double): Boolean {
+        Drivetrain.drive(output, -output)
+        return setpoint - Drivetrain.leftPosition < ALLOWABLE_ERROR
     }
+
+    override fun returnPidInput() = Drivetrain.leftPosition.toDouble()
 
     private companion object {
-        const val ALLOWABLE_ERROR = 200 // Encoder ticks
+        const val ALLOWABLE_ERROR = 100.00
         const val FULL_TURN = WHEELBASE_WIDTH / WHEEL_DIAMETER * ENCODER_TICKS_PER_REVOLUTION
-
-        const val SPEED = 0.4
     }
 }
