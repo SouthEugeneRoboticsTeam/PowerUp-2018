@@ -262,7 +262,7 @@ object Modes : RobotLifecycle {
                 throw FileSystemException(file, reason = "Couldn't create file")
             }
 
-            file.writeText("""
+            val log = """
                 Options
                 ------------
                 START POSITION: ${autoStartChooser.selected}
@@ -281,7 +281,9 @@ object Modes : RobotLifecycle {
                 FIELD CODE: ${DriverStation.getInstance().gameSpecificMessage}
                 ACTUAL MODE: $autoMode
 
-                """.trimIndent())
+                """.trimIndent()
+            println(log)
+            file.writeText(log)
         } catch (e: Exception) {
             e.printStackTrace()
         }
