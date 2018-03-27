@@ -7,7 +7,6 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
 import org.sert2521.powerup.drivetrain.commands.DriveToCube
 import org.sert2521.powerup.drivetrain.commands.TeleopDrive
-import org.sert2521.powerup.drivetrain.commands.TurnToAngle
 import org.sert2521.powerup.elevator.commands.SendToBottom
 import org.sert2521.powerup.intake.commands.IntakeBlock
 import org.sert2521.powerup.util.LEFT_FRONT_MOTOR
@@ -51,7 +50,6 @@ object Drivetrain : Subsystem() {
 
     override fun onTeleopStart() {
         rightJoystick.whenActive(12, SendToBottom() and IntakeBlock() and DriveToCube())
-        rightJoystick.whenActive(8, TurnToAngle(360.0))
     }
 
     override fun execute() {

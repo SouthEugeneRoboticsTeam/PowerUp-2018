@@ -34,7 +34,7 @@ private fun CommandBridgeMirror.waitUntil(condition: () -> Boolean) = object : C
 } then this
 
 object Auto : RobotLifecycle {
-    private const val SCALE_TO_SWITCH_TURN = 150.0
+    private const val SCALE_TO_SWITCH_TURN = 190.0
 
     init {
         RobotLifecycle.addListener(this)
