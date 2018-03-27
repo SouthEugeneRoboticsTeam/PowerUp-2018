@@ -37,7 +37,6 @@ dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
 
     compile "org.sert2521.sertain:core:$sertainVersion"
-    compile 'com.github.SouthEugeneRoboticsTeam:vision-plugin:ead1dfcdd4'
 
     compile wpilib()
     compile navx()
