@@ -20,6 +20,7 @@ import org.sertain.hardware.Talon
 import org.sertain.hardware.autoBreak
 import org.sertain.hardware.getEncoderPosition
 import org.sertain.hardware.plus
+import org.sertain.hardware.setBreak
 import org.sertain.hardware.setEncoderPosition
 import org.sertain.hardware.setSelectedSensor
 import org.sertain.hardware.whenActive
@@ -32,16 +33,20 @@ object Drivetrain : Subsystem() {
     private const val MIN_JOYSTICK_TRANSLATION = 0.05
 
     val ahrs = AHRS(I2C.Port.kMXP)
+    val angles: List<Double> get() = _angles
     val isNavxBroken get() = angles.all { it == angles.first() }
-    private val angles = mutableListOf<Double>()
+    private val _angles = mutableListOf<Double>()
 
     val leftPosition get() = -leftDrive.getEncoderPosition()
     val rightPosition get() = rightDrive.getEncoderPosition()
 
-    private val leftDrive =
-            Talon(LEFT_FRONT_MOTOR).autoBreak() + Talon(LEFT_REAR_MOTOR).autoBreak()
-    private val rightDrive =
-            Talon(RIGHT_FRONT_MOTOR).autoBreak() + Talon(RIGHT_REAR_MOTOR).autoBreak()
+    private val leftFront = Talon(LEFT_FRONT_MOTOR).autoBreak()
+    private val leftRear = Talon(LEFT_REAR_MOTOR).autoBreak()
+    private val rightFront = Talon(RIGHT_FRONT_MOTOR).autoBreak()
+    private val rightRear = Talon(RIGHT_REAR_MOTOR).autoBreak()
+
+    private val leftDrive = leftFront + leftRear
+    private val rightDrive = rightFront + rightRear
     private val drive = DifferentialDrive(leftDrive, rightDrive)
 
     private val findCube = SendToBottom() and IntakeBlock() and DriveToCube()
@@ -56,8 +61,8 @@ object Drivetrain : Subsystem() {
     override fun onStart() {
         reset()
 
-        angles.clear()
-        angles.addAll(generateSequence(0.0) { it + 1 }.take(50))
+        _angles.clear()
+        _angles.addAll(generateSequence(0.0) { it + 1 }.take(100)) // 2 seconds
     }
 
     override fun onTeleopStart() {
@@ -85,8 +90,14 @@ object Drivetrain : Subsystem() {
     }
 
     private fun updateStoredAngles() {
-        angles.removeAt(0)
-        angles.add(ahrs.angle)
+        _angles.removeAt(0)
+        _angles.add(ahrs.angle)
+    }
+
+    fun temporarilyCoast() {
+        listOf(leftFront, leftRear, rightFront, rightRear).forEach {
+            it.setBreak(false)
+        }
     }
 
     fun reset() {
