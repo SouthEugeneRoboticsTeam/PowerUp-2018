@@ -1,5 +1,6 @@
 package org.sert2521.powerup
 
+import edu.wpi.first.wpilibj.CameraServer
 import org.sert2521.powerup.autonomous.Auto
 import org.sert2521.powerup.climber.Climber
 import org.sert2521.powerup.drivetrain.Drivetrain
@@ -16,5 +17,7 @@ class Poe : Robot() {
         Climber
         Auto
         Modes
+
+        CameraServer.getInstance().startAutomaticCapture()
     }
 }
