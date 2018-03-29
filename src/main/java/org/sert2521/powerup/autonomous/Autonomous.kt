@@ -6,7 +6,7 @@ import jaci.pathfinder.followers.EncoderFollower
 import org.sert2521.powerup.drivetrain.Drivetrain
 import org.sert2521.powerup.drivetrain.commands.DriveStraight
 import org.sert2521.powerup.drivetrain.commands.DriveToCube
-import org.sert2521.powerup.drivetrain.commands.TurnToAngle
+import org.sert2521.powerup.drivetrain.commands.Turn
 import org.sert2521.powerup.elevator.commands.SendToBottom
 import org.sert2521.powerup.elevator.commands.SendToScale
 import org.sert2521.powerup.elevator.commands.SendToSwitch
@@ -83,42 +83,42 @@ object Auto : RobotLifecycle {
 
             AutoMode.LEFT_TO_LEFT_SCALE_PICKUP -> LeftToLeftScale() and SendToScale() and
                     EjectBlock().waitUntil(shouldEjectBlock) then
-                    (TurnToAngle(SCALE_TO_SWITCH_TURN) then DriveToCube()) and
+                    (Turn(SCALE_TO_SWITCH_TURN) then DriveToCube()) and
                     (SendToBottom() and IntakeBlock() then SendToSwitch())
 
             AutoMode.RIGHT_TO_RIGHT_SCALE_PICKUP -> RightToRightScale() and SendToScale() and
                     EjectBlock().waitUntil(shouldEjectBlock) then
-                    (TurnToAngle(-SCALE_TO_SWITCH_TURN) then DriveToCube()) and
+                    (Turn(-SCALE_TO_SWITCH_TURN) then DriveToCube()) and
                     (SendToBottom() and IntakeBlock() then SendToSwitch())
 
             AutoMode.LEFT_TO_LEFT_SCALE_SWITCH -> LeftToLeftScale() and SendToScale() and
                     EjectBlock().waitUntil(shouldEjectBlock) then
-                    (TurnToAngle(SCALE_TO_SWITCH_TURN) then DriveToCube()) and
+                    (Turn(SCALE_TO_SWITCH_TURN) then DriveToCube()) and
                     (SendToBottom() and IntakeBlock() then SendToSwitch() then EjectBlock())
 
             AutoMode.RIGHT_TO_RIGHT_SCALE_SWITCH -> RightToRightScale() and SendToScale() and
                     EjectBlock().waitUntil(shouldEjectBlock) then
-                    (TurnToAngle(-SCALE_TO_SWITCH_TURN) then DriveToCube()) and
+                    (Turn(-SCALE_TO_SWITCH_TURN) then DriveToCube()) and
                     (SendToBottom() and IntakeBlock() then SendToSwitch() then EjectBlock())
 
             AutoMode.LEFT_TO_RIGHT_SCALE_PICKUP -> LeftToRightScale() and SendToSwitch() and
                     SendToScale(false).waitUntil(isReadyToSendToScale) then
-                    EjectBlock() then (TurnToAngle(-SCALE_TO_SWITCH_TURN) then DriveToCube()) and
+                    EjectBlock() then (Turn(-SCALE_TO_SWITCH_TURN) then DriveToCube()) and
                     (SendToBottom() and IntakeBlock() then SendToSwitch())
 
             AutoMode.RIGHT_TO_LEFT_SCALE_PICKUP -> RightToLeftScale() and SendToSwitch() and
                     SendToScale(false).waitUntil(isReadyToSendToScale) then
-                    EjectBlock() then (TurnToAngle(SCALE_TO_SWITCH_TURN) then DriveToCube()) and
+                    EjectBlock() then (Turn(SCALE_TO_SWITCH_TURN) then DriveToCube()) and
                     (SendToBottom() and IntakeBlock() then SendToSwitch())
 
             AutoMode.LEFT_TO_RIGHT_SCALE_SWITCH -> LeftToRightScale() and SendToSwitch() and
                     SendToScale(false).waitUntil(isReadyToSendToScale) then
-                    EjectBlock() then (TurnToAngle(-SCALE_TO_SWITCH_TURN) then DriveToCube()) and
+                    EjectBlock() then (Turn(-SCALE_TO_SWITCH_TURN) then DriveToCube()) and
                     (SendToBottom() and IntakeBlock() then SendToSwitch() then EjectBlock())
 
             AutoMode.RIGHT_TO_LEFT_SCALE_SWITCH -> RightToLeftScale() and SendToSwitch() and
                     SendToScale(false).waitUntil(isReadyToSendToScale) then
-                    EjectBlock() then (TurnToAngle(SCALE_TO_SWITCH_TURN) then DriveToCube()) and
+                    EjectBlock() then (Turn(SCALE_TO_SWITCH_TURN) then DriveToCube()) and
                     (SendToBottom() and IntakeBlock() then SendToSwitch() then EjectBlock())
 
             AutoMode.TEST_LEFT -> TestLeft()

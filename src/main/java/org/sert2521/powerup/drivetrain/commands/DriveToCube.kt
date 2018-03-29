@@ -8,6 +8,10 @@ import org.sert2521.powerup.intake.Intake
 import org.sert2521.powerup.util.DEGREES_PER_PIXEL
 
 class DriveToCube : AngleDriver(0.01, 0.0, 0.022) {
+    init {
+        requires(Drivetrain)
+    }
+
     override fun onCreate() = updateSetpoint(0.0)
 
     override fun execute(output: Double): Boolean {
@@ -17,7 +21,7 @@ class DriveToCube : AngleDriver(0.01, 0.0, 0.022) {
     }
 
     private fun updateSetpoint(offset: Double) {
-        setpoint = Drivetrain.ahrs.yaw + offset
+        setpoint = Drivetrain.ahrs.angle + offset
     }
 
     private companion object {
