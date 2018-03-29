@@ -4,12 +4,39 @@ import org.sert2521.powerup.drivetrain.Drivetrain
 import org.sert2521.powerup.util.ENCODER_TICKS_PER_REVOLUTION
 import org.sert2521.powerup.util.WHEELBASE_WIDTH
 import org.sert2521.powerup.util.WHEEL_DIAMETER
+import org.sertain.command.Command
 import org.sertain.command.PidCommand
 import kotlin.math.absoluteValue
 import kotlin.math.sign
 import kotlin.properties.Delegates
 
-class TurnToAngle(private val angle: Double) : PidCommand(p = 0.0000725, d = 0.00007) {
+@Suppress("FunctionName") // Fake class initializer
+fun Turn(angle: Double) = object : Command() {
+    override fun execute(): Boolean {
+        (if (Drivetrain.isNavxBroken) EncoderTurn(angle) else NavxTurn(angle)).start()
+        return true
+    }
+}
+
+private class NavxTurn(private val angle: Double) : AngleDriver(1.0) {
+    private var startAngle: Float by Delegates.notNull()
+
+    override fun onCreate() {
+        startAngle = Drivetrain.ahrs.yaw
+        setpoint = startAngle + angle
+    }
+
+    override fun execute(output: Double): Boolean {
+        Drivetrain.drive(output, -output)
+        return (Drivetrain.ahrs.yaw - startAngle - angle).absoluteValue < ALLOWABLE_ERROR
+    }
+
+    private companion object {
+        const val ALLOWABLE_ERROR = 5.0 // In degrees
+    }
+}
+
+private class EncoderTurn(private val angle: Double) : PidCommand(p = 0.0000725, d = 0.00007) {
     private var leftStart: Int by Delegates.notNull()
     private var rightStart: Int by Delegates.notNull()
 
@@ -17,7 +44,6 @@ class TurnToAngle(private val angle: Double) : PidCommand(p = 0.0000725, d = 0.0
         get() = angle.sign * Drivetrain.run {
             (leftStart - leftPosition).absoluteValue + (rightStart - rightPosition).absoluteValue
         } / 2
-
     private val error get() = setpoint - position
 
     init {
@@ -28,21 +54,10 @@ class TurnToAngle(private val angle: Double) : PidCommand(p = 0.0000725, d = 0.0
         leftStart = Drivetrain.leftPosition
         rightStart = Drivetrain.rightPosition
 
-        setpoint = angle / 360 * FULL_TURN
+        setpoint = (angle + angle.sign * 30) / 360 * FULL_TURN
     }
 
     override fun execute(output: Double): Boolean {
-        println(
-                """
-                leftStart: $leftStart
-                rightStart: $rightStart
-                position: $position
-                error: $error
-                setpoint: $setpoint
-                output: $output
-                """
-        )
-
         val hack = if (output > 0) {
             output.coerceAtLeast(MIN_SPEED)
         } else {
@@ -54,6 +69,8 @@ class TurnToAngle(private val angle: Double) : PidCommand(p = 0.0000725, d = 0.0
     }
 
     override fun returnPidInput() = position
+
+    override fun onDestroy() = Drivetrain.stop()
 
     private companion object {
         const val ALLOWABLE_ERROR = 400.0

@@ -5,10 +5,9 @@ import com.kauailabs.navx.frc.AHRS
 import edu.wpi.first.wpilibj.I2C
 import edu.wpi.first.wpilibj.drive.DifferentialDrive
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
-import org.sert2521.powerup.autonomous.Auto
 import org.sert2521.powerup.drivetrain.commands.DriveToCube
 import org.sert2521.powerup.drivetrain.commands.TeleopDrive
-import org.sert2521.powerup.drivetrain.commands.TurnToAngle
+import org.sert2521.powerup.drivetrain.commands.Turn
 import org.sert2521.powerup.elevator.commands.SendToBottom
 import org.sert2521.powerup.intake.commands.IntakeBlock
 import org.sert2521.powerup.util.LEFT_FRONT_MOTOR
@@ -19,7 +18,6 @@ import org.sert2521.powerup.util.rightJoystick
 import org.sert2521.powerup.util.secondaryJoystick
 import org.sertain.command.Subsystem
 import org.sertain.command.and
-import org.sertain.command.then
 import org.sertain.hardware.Talon
 import org.sertain.hardware.autoBreak
 import org.sertain.hardware.getEncoderPosition
@@ -36,6 +34,8 @@ object Drivetrain : Subsystem() {
     private const val MIN_JOYSTICK_TRANSLATION = 0.05
 
     val ahrs = AHRS(I2C.Port.kMXP)
+    val isNavxBroken get() = angles.all { it == angles.first() }
+    private val angles = mutableListOf<Float>()
 
     val leftPosition get() = -leftDrive.getEncoderPosition()
     val rightPosition get() = rightDrive.getEncoderPosition()
@@ -55,11 +55,16 @@ object Drivetrain : Subsystem() {
         rightDrive.setSelectedSensor(FeedbackDevice.QuadEncoder)
     }
 
-    override fun onStart() = reset()
+    override fun onStart() {
+        reset()
+
+        angles.clear()
+        angles.addAll(generateSequence(0f) { it + 1 }.take(100))
+    }
 
     override fun onTeleopStart() {
         rightJoystick.whenActive(12, findCube)
-        secondaryJoystick.whenActive(8, (TurnToAngle(110.0)) and (SendToBottom() and IntakeBlock()))
+        secondaryJoystick.whenActive(8, (Turn(110.0)) and (SendToBottom() and IntakeBlock()))
     }
 
     override fun execute() {
@@ -68,6 +73,9 @@ object Drivetrain : Subsystem() {
         SmartDashboard.putNumber("Drivetrain Pitch", ahrs.pitch.toDouble())
         SmartDashboard.putNumber("Drivetrain Roll", ahrs.roll.toDouble())
         SmartDashboard.putData("AHRS", ahrs)
+
+        angles.removeAt(0)
+        angles.add(ahrs.yaw)
     }
 
     override fun executeTeleop() {
