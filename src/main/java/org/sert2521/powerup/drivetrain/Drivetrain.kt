@@ -35,7 +35,7 @@ object Drivetrain : Subsystem() {
 
     val ahrs = AHRS(I2C.Port.kMXP)
     val isNavxBroken get() = angles.all { it == angles.first() }
-    private val angles = mutableListOf<Float>()
+    private val angles = mutableListOf<Double>()
 
     val leftPosition get() = -leftDrive.getEncoderPosition()
     val rightPosition get() = rightDrive.getEncoderPosition()
@@ -59,12 +59,11 @@ object Drivetrain : Subsystem() {
         reset()
 
         angles.clear()
-        angles.addAll(generateSequence(0f) { it + 1 }.take(100))
+        angles.addAll(generateSequence(0.0) { it + 1 }.take(50))
     }
 
     override fun onTeleopStart() {
         rightJoystick.whenActive(12, findCube)
-        secondaryJoystick.whenActive(8, (Turn(110.0)) and (SendToBottom() and IntakeBlock()))
     }
 
     override fun execute() {
@@ -73,15 +72,23 @@ object Drivetrain : Subsystem() {
         SmartDashboard.putNumber("Drivetrain Pitch", ahrs.pitch.toDouble())
         SmartDashboard.putNumber("Drivetrain Roll", ahrs.roll.toDouble())
         SmartDashboard.putData("AHRS", ahrs)
+    }
 
-        angles.removeAt(0)
-        angles.add(ahrs.yaw)
+    override fun executeAuto() {
+        updateStoredAngles()
     }
 
     override fun executeTeleop() {
         if (rightJoystick.run { x.absoluteValue + y.absoluteValue } > MIN_JOYSTICK_TRANSLATION) {
             findCube.cancel()
         }
+
+        updateStoredAngles()
+    }
+
+    private fun updateStoredAngles() {
+        angles.removeAt(0)
+        angles.add(ahrs.angle)
     }
 
     fun reset() {

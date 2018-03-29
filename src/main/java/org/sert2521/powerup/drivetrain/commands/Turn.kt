@@ -10,25 +10,37 @@ import kotlin.math.absoluteValue
 import kotlin.math.sign
 import kotlin.properties.Delegates
 
-@Suppress("FunctionName") // Fake class initializer
-fun Turn(angle: Double) = object : Command() {
-    override fun execute(): Boolean {
-        (if (Drivetrain.isNavxBroken) EncoderTurn(angle) else NavxTurn(angle)).start()
-        return true
-    }
+private const val MIN_SPEED = 0.25
+
+private fun floorOutput(output: Double) = if (output > 0) {
+    output.coerceAtLeast(MIN_SPEED)
+} else {
+    output.coerceAtMost(-MIN_SPEED)
 }
 
-private class NavxTurn(private val angle: Double) : AngleDriver(1.0) {
-    private var startAngle: Float by Delegates.notNull()
+class Turn(angle: Double) : Command() {
+    private val turnCommand by lazy {
+        val navxBroken = Drivetrain.isNavxBroken
+        println("Navx is broken: $navxBroken")
+        (if (navxBroken) EncoderTurn(angle) else NavxTurn(angle)).apply { start() }
+    }
+
+    override fun execute() = turnCommand.isCompleted
+}
+
+private class NavxTurn(private val angle: Double) : AngleDriver(p = 0.005, d = 0.01) {
+    private var startAngle: Double by Delegates.notNull()
 
     override fun onCreate() {
-        startAngle = Drivetrain.ahrs.yaw
+        startAngle = Drivetrain.ahrs.angle
         setpoint = startAngle + angle
     }
 
     override fun execute(output: Double): Boolean {
-        Drivetrain.drive(output, -output)
-        return (Drivetrain.ahrs.yaw - startAngle - angle).absoluteValue < ALLOWABLE_ERROR
+        val floored = floorOutput(output)
+        Drivetrain.drive(floored, -floored)
+
+        return (Drivetrain.ahrs.angle - startAngle - angle).absoluteValue < ALLOWABLE_ERROR
     }
 
     private companion object {
@@ -46,10 +58,6 @@ private class EncoderTurn(private val angle: Double) : PidCommand(p = 0.0000725,
         } / 2
     private val error get() = setpoint - position
 
-    init {
-        requires(Drivetrain)
-    }
-
     override fun onCreate() {
         leftStart = Drivetrain.leftPosition
         rightStart = Drivetrain.rightPosition
@@ -58,12 +66,8 @@ private class EncoderTurn(private val angle: Double) : PidCommand(p = 0.0000725,
     }
 
     override fun execute(output: Double): Boolean {
-        val hack = if (output > 0) {
-            output.coerceAtLeast(MIN_SPEED)
-        } else {
-            output.coerceAtMost(-MIN_SPEED)
-        }
-        Drivetrain.drive(hack, -hack)
+        val floored = floorOutput(output)
+        Drivetrain.drive(floored, -floored)
 
         return error.absoluteValue < ALLOWABLE_ERROR
     }
@@ -75,7 +79,5 @@ private class EncoderTurn(private val angle: Double) : PidCommand(p = 0.0000725,
     private companion object {
         const val ALLOWABLE_ERROR = 400.0
         const val FULL_TURN = WHEELBASE_WIDTH / WHEEL_DIAMETER * ENCODER_TICKS_PER_REVOLUTION
-
-        const val MIN_SPEED = 0.2
     }
 }
