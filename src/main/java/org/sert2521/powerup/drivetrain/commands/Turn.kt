@@ -62,7 +62,7 @@ private class EncoderTurn(private val angle: Double) : PidCommand(p = 0.0000725,
         leftStart = Drivetrain.leftPosition
         rightStart = Drivetrain.rightPosition
 
-        setpoint = (angle + angle.sign * 30) / 360 * FULL_TURN
+        setpoint = (angle + angle.sign * 25) / 360 * FULL_TURN
     }
 
     override fun execute(output: Double): Boolean {
