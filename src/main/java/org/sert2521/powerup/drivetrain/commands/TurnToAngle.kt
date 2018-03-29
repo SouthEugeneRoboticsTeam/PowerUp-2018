@@ -32,7 +32,24 @@ class TurnToAngle(private val angle: Double) : PidCommand(p = 0.0000725, d = 0.0
     }
 
     override fun execute(output: Double): Boolean {
-        Drivetrain.drive(output, -output)
+        println(
+                """
+                leftStart: $leftStart
+                rightStart: $rightStart
+                position: $position
+                error: $error
+                setpoint: $setpoint
+                output: $output
+                """
+        )
+
+        val hack = if (output > 0) {
+            output.coerceAtLeast(MIN_SPEED)
+        } else {
+            output.coerceAtMost(-MIN_SPEED)
+        }
+        Drivetrain.drive(hack, -hack)
+
         return error.absoluteValue < ALLOWABLE_ERROR
     }
 
@@ -41,5 +58,7 @@ class TurnToAngle(private val angle: Double) : PidCommand(p = 0.0000725, d = 0.0
     private companion object {
         const val ALLOWABLE_ERROR = 400.0
         const val FULL_TURN = WHEELBASE_WIDTH / WHEEL_DIAMETER * ENCODER_TICKS_PER_REVOLUTION
+
+        const val MIN_SPEED = 0.2
     }
 }

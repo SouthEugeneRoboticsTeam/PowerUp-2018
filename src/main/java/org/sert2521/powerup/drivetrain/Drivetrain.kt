@@ -5,8 +5,10 @@ import com.kauailabs.navx.frc.AHRS
 import edu.wpi.first.wpilibj.I2C
 import edu.wpi.first.wpilibj.drive.DifferentialDrive
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
+import org.sert2521.powerup.autonomous.Auto
 import org.sert2521.powerup.drivetrain.commands.DriveToCube
 import org.sert2521.powerup.drivetrain.commands.TeleopDrive
+import org.sert2521.powerup.drivetrain.commands.TurnToAngle
 import org.sert2521.powerup.elevator.commands.SendToBottom
 import org.sert2521.powerup.intake.commands.IntakeBlock
 import org.sert2521.powerup.util.LEFT_FRONT_MOTOR
@@ -14,8 +16,10 @@ import org.sert2521.powerup.util.LEFT_REAR_MOTOR
 import org.sert2521.powerup.util.RIGHT_FRONT_MOTOR
 import org.sert2521.powerup.util.RIGHT_REAR_MOTOR
 import org.sert2521.powerup.util.rightJoystick
+import org.sert2521.powerup.util.secondaryJoystick
 import org.sertain.command.Subsystem
 import org.sertain.command.and
+import org.sertain.command.then
 import org.sertain.hardware.Talon
 import org.sertain.hardware.autoBreak
 import org.sertain.hardware.getEncoderPosition
@@ -55,6 +59,7 @@ object Drivetrain : Subsystem() {
 
     override fun onTeleopStart() {
         rightJoystick.whenActive(12, findCube)
+        secondaryJoystick.whenActive(8, (TurnToAngle(110.0)) and (SendToBottom() and IntakeBlock()))
     }
 
     override fun execute() {
