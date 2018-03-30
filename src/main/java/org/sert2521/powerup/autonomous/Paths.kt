@@ -227,8 +227,8 @@ object RightToLeftScalePath : PathBase() {
             4.5 with -3.0 angle 0.0,
             5.1 with -2.4 angle 90.0,
             5.1 with 1.5 angle 90.0,
-            5.3 with 2.0 angle 45.0,
-            6.85 with 1.8 angle -20.0
+            5.3 with 2.2 angle 45.0,
+            6.85 with 2.0 angle -20.0
     )
 }
 
