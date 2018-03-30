@@ -72,11 +72,8 @@ abstract class PathBase : PathInitializer(), RobotLifecycle {
     }
 
     override fun onCreate() {
-        executor.execute {
-            println("Generating path for $pathName...")
+        generatePath {
             followers // Force initialization
-            logGeneratedPoints()
-            println("Path generation complete for $pathName.")
         }
 
         object : SendableBase() {
@@ -111,15 +108,11 @@ abstract class PathBase : PathInitializer(), RobotLifecycle {
                 )
             }.toTypedArray()
 
-            executor.execute {
-                println("Generating path for $pathName...")
-                println("Using points: $humanReadablePoints")
+            generatePath {
                 lock.write {
                     liveTrajectory = newTrajectory()
                     liveFollowers = newFollower()
                 }
-                logGeneratedPoints()
-                println("Path generation complete for $pathName.")
             }
         } catch (e: Exception) {
             e.printStackTrace()
@@ -127,6 +120,16 @@ abstract class PathBase : PathInitializer(), RobotLifecycle {
                 liveTrajectory = null
                 liveFollowers = null
             }
+        }
+    }
+
+    private fun generatePath(initializer: () -> Unit) {
+        executor.execute {
+            println("Generating path for $pathName...")
+            println("Using points: $humanReadablePoints")
+            initializer()
+            logGeneratedPoints()
+            println("Path generation complete for $pathName.")
         }
     }
 
