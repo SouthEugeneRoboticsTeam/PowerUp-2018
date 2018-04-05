@@ -1,5 +1,7 @@
 package org.sert2521.powerup.util
 
+import edu.wpi.first.networktables.NetworkTable
+import edu.wpi.first.networktables.NetworkTableInstance
 import edu.wpi.first.wpilibj.DriverStation
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
 import openrio.powerup.MatchData
@@ -262,6 +264,8 @@ object Modes : RobotLifecycle {
                 throw FileSystemException(file, reason = "Couldn't create file")
             }
 
+            val table: NetworkTable = NetworkTableInstance.getDefault().getTable("Vision")
+
             val log = """
                 Options
                 ------------
@@ -281,6 +285,11 @@ object Modes : RobotLifecycle {
                 FIELD CODE: ${DriverStation.getInstance().gameSpecificMessage}
                 ACTUAL MODE: $autoMode
 
+                Jetson
+                ------------
+                SEES CUBE: ${table.getEntry("cube_found").getBoolean(false)}
+                CUBE OFFSET X: ${table.getEntry("cube_offset_x").getDouble(0.0)}
+                CUBE OFFSET Y: ${table.getEntry("cube_offset_y").getDouble(0.0)}
                 """.trimIndent()
             println(log)
             file.writeText(log)
