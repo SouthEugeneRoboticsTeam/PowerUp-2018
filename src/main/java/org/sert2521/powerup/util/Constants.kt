@@ -8,6 +8,8 @@ const val SECONDARY_STICK_PORT = 2
 
 const val CONTROLLER_PORT = 3
 
+const val LIGHTPAD_PORT = 4
+
 // Talon IDs
 const val LEFT_FRONT_MOTOR = 10
 const val LEFT_REAR_MOTOR = 11

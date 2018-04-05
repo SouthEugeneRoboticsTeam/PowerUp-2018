@@ -14,6 +14,9 @@ val controller by lazy { XboxController(CONTROLLER_PORT) }
 // Gunner joystick.
 val secondaryJoystick by lazy { Joystick(SECONDARY_STICK_PORT) }
 
+// Light controls.
+val lightpad = Joystick(LIGHTPAD_PORT)
+
 val intakeSpeedScalar get() = Preferences.getInstance().getDouble("intake_speed_scalar", 0.8)
 val normalEjectSpeedScalar
     get() = Preferences.getInstance().getDouble("normal_eject_speed_scalar", 0.6)
