@@ -35,7 +35,7 @@ object Elevator : Subsystem() {
     private val elevator = Talon(RIGHT_ELEVATOR_MOTOR).autoBreak() +
             Talon(LEFT_ELEVATOR_MOTOR).autoBreak().invert()
 
-    val position get() = if (isTripped.get()) lastPosition else -elevator.getEncoderPosition()
+    val position get() = if (isTripped.get()) SCALE_TARGET else -elevator.getEncoderPosition()
     private val current get() = pdp.getCurrent(2)
 
     val atBottom get() = bottomTrigger.get()
@@ -47,7 +47,6 @@ object Elevator : Subsystem() {
     private val topTrigger = DigitalInput(TOP_TRIGGER_PORT).invert()
     private val switchTrigger = DigitalInput(SWITCH_TRIGGER_PORT).invert()
 
-    private var lastPosition: Int = 0
     private val currents = mutableListOf<Double>()
     private val isTripped = AtomicBoolean()
 
@@ -81,11 +80,7 @@ object Elevator : Subsystem() {
         // default elevator speed is _something_.
         if (current > 0 || currents.sum() > 0) {
             if (isTripped.compareAndSet(true, false)) {
-                // Subtract a bit of stuff since the elevator most likely fell while the breaker was
-                // tripped.
-                elevator.setEncoderPosition(-(lastPosition - 100))
-            } else {
-                lastPosition = position
+                elevator.setEncoderPosition(-SCALE_TARGET)
             }
         } else {
             isTripped.set(true)
