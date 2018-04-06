@@ -287,6 +287,7 @@ object Modes : RobotLifecycle {
 
                 Jetson
                 ------------
+                WORKING: ${table.containsKey("cube_found")}
                 SEES CUBE: ${table.getEntry("cube_found").getBoolean(false)}
                 CUBE OFFSET X: ${table.getEntry("cube_offset_x").getDouble(0.0)}
                 CUBE OFFSET Y: ${table.getEntry("cube_offset_y").getDouble(0.0)}
