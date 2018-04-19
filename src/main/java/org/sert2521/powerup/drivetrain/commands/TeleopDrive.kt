@@ -20,6 +20,8 @@ class TeleopDrive : Command() {
         requires(Drivetrain)
     }
 
+    private val speedScalar get() = if (rightJoystick.getRawButton(10)) 1.0 else driveSpeedScalar
+
     override fun execute(): Boolean {
         val safe: Double.() -> Double = {
             this * (GRADIENT.pow(
@@ -29,18 +31,18 @@ class TeleopDrive : Command() {
 
         when (controlMode) {
             is Control.Arcade ->
-                Drivetrain.arcade(driveSpeedScalar * -rightJoystick.y.safe(), rightJoystick.x)
+                Drivetrain.arcade(speedScalar * -rightJoystick.y.safe(), rightJoystick.x)
             is Control.Curvature -> Drivetrain.curvature(
-                    driveSpeedScalar * -rightJoystick.y.safe(),
+                    speedScalar * -rightJoystick.y.safe(),
                     rightJoystick.x,
                     rightJoystick.top
             )
             is Control.Tank -> Drivetrain.tank(
-                    driveSpeedScalar * leftJoystick.y.safe(),
-                    driveSpeedScalar * rightJoystick.y.safe()
+                    speedScalar * leftJoystick.y.safe(),
+                    speedScalar * rightJoystick.y.safe()
             )
             is Control.Controller -> Drivetrain.arcade(
-                    driveSpeedScalar * -controller.getY(GenericHID.Hand.kLeft).safe(),
+                    speedScalar * -controller.getY(GenericHID.Hand.kLeft).safe(),
                     controller.getX(GenericHID.Hand.kRight)
             )
         }
