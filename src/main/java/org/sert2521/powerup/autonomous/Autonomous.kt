@@ -24,6 +24,7 @@ import org.sertain.command.and
 import org.sertain.command.then
 import java.lang.reflect.Field
 
+private var latestPath: CommandBridgeMirror? = null
 private var pathProgress: Double? = null
 
 private val shouldEjectBlock = block@{ (pathProgress ?: return@block false) >= 0.85 }
@@ -35,6 +36,7 @@ private fun CommandBridgeMirror.waitUntil(condition: () -> Boolean) = object : C
 
 object Auto : RobotLifecycle {
     private const val SCALE_TO_SWITCH_TURN = 130.0
+    private const val MAX_TURN_BEFORE_ABORT = 200.0
 
     init {
         RobotLifecycle.addListener(this)
@@ -59,7 +61,7 @@ object Auto : RobotLifecycle {
     override fun onAutoStart() {
         println("Following: $autoMode")
 
-        when (autoMode) {
+        val path = when (autoMode) {
             AutoMode.CROSS_BASELINE -> DriveStraight(0.3, 5000)
 
             AutoMode.LEFT_TO_LEFT_SWITCH -> LeftToLeftSwitch() and SendToSwitch() then EjectBlock()
@@ -123,7 +125,25 @@ object Auto : RobotLifecycle {
 
             AutoMode.TEST_LEFT -> TestLeft()
             AutoMode.TEST_RIGHT -> TestRight()
-        }.start()
+        }
+        latestPath = path
+        path.start()
+    }
+
+    override fun executeAuto() {
+        val (min, max) = Drivetrain.angles.run { min() to max() }
+        if (min == null || max == null) return
+
+        val path = latestPath
+        if (max - min > MAX_TURN_BEFORE_ABORT && path != null) {
+            println("ABORTING AUTO!!!")
+
+            Drivetrain.temporarilyCoast()
+            path.cancel()
+            SendToBottom().start()
+
+            latestPath = null
+        }
     }
 }
 
