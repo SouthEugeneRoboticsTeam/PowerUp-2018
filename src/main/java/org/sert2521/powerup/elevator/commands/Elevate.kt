@@ -14,7 +14,7 @@ class Elevate : Command() {
 
     override fun execute(): Boolean {
         updateManualElevatorPower()
-        updateAutoElevatorPower()
+//        updateAutoElevatorPower()
         return false
     }
 
@@ -29,7 +29,7 @@ class Elevate : Command() {
         })
     }
 
-    private fun updateAutoElevatorPower() {
+    /*private fun updateAutoElevatorPower() {
         val currentPov = secondaryJoystick.povButton
 
         if (currentPov == PovButton.CENTER) return
@@ -39,11 +39,11 @@ class Elevate : Command() {
             PovButton.BOTTOM -> SendToBottom()
             else -> SendToSwitch()
         }.start()
-    }
+    }*/
 
     override fun onDestroy() = Elevator.stop()
 
     private companion object {
-        const val DOWN_SPEED_SCALAR = 0.6
+        const val DOWN_SPEED_SCALAR = 0.3
     }
 }

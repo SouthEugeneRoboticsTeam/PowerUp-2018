@@ -5,7 +5,7 @@ import com.kauailabs.navx.frc.AHRS
 import edu.wpi.first.wpilibj.I2C
 import edu.wpi.first.wpilibj.drive.DifferentialDrive
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
-import org.sert2521.powerup.drivetrain.commands.DriveToCube
+//import org.sert2521.powerup.drivetrain.commands.DriveToCube
 import org.sert2521.powerup.drivetrain.commands.TeleopDrive
 import org.sert2521.powerup.elevator.commands.SendToBottom
 import org.sert2521.powerup.intake.commands.IntakeBlock
@@ -44,7 +44,7 @@ object Drivetrain : Subsystem() {
             Talon(RIGHT_FRONT_MOTOR).autoBreak() + Talon(RIGHT_REAR_MOTOR).autoBreak()
     private val drive = DifferentialDrive(leftDrive, rightDrive)
 
-    private val findCube = SendToBottom() and IntakeBlock() and DriveToCube()
+//    private val findCube = SendToBottom() and IntakeBlock() and DriveToCube()
 
     override val defaultCommand = TeleopDrive()
 
@@ -60,9 +60,9 @@ object Drivetrain : Subsystem() {
         angles.addAll(generateSequence(0.0) { it + 1 }.take(50))
     }
 
-    override fun onTeleopStart() {
+    /*override fun onTeleopStart() {
         rightJoystick.whenActive(12, findCube)
-    }
+    }*/
 
     override fun execute() {
         SmartDashboard.putNumber("Drivetrain Left Position", leftPosition.toDouble())
@@ -76,13 +76,13 @@ object Drivetrain : Subsystem() {
         updateStoredAngles()
     }
 
-    override fun executeTeleop() {
+    /*override fun executeTeleop() {
         if (rightJoystick.run { x.absoluteValue + y.absoluteValue } > MIN_JOYSTICK_TRANSLATION) {
             findCube.cancel()
         }
 
         updateStoredAngles()
-    }
+    }*/
 
     private fun updateStoredAngles() {
         angles.removeAt(0)

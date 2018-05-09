@@ -1,3 +1,4 @@
+/*
 package org.sert2521.powerup.climber.commands
 
 import org.sert2521.powerup.climber.Climber
@@ -25,3 +26,4 @@ class Climb : Command() {
 
     override fun onDestroy() = Climber.stop()
 }
+*/

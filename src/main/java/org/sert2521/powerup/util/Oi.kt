@@ -18,4 +18,4 @@ val intakeSpeedScalar get() = Preferences.getInstance().getDouble("intake_speed_
 val normalEjectSpeedScalar
     get() = Preferences.getInstance().getDouble("normal_eject_speed_scalar", 0.6)
 val fastEjectSpeedScalar get() = Preferences.getInstance().getDouble("fast_eject_speed_scalar", 1.0)
-val driveSpeedScalar get() = Preferences.getInstance().getDouble("drive_speed_scalar", 0.85)
+val driveSpeedScalar get() = Preferences.getInstance().getDouble("drive_speed_scalar", 0.7)

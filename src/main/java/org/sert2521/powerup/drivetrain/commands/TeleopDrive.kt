@@ -20,7 +20,7 @@ class TeleopDrive : Command() {
         requires(Drivetrain)
     }
 
-    private val speedScalar get() = if (rightJoystick.getRawButton(10)) 1.0 else driveSpeedScalar
+    private val speedScalar get() = driveSpeedScalar
 
     override fun execute(): Boolean {
         val safe: Double.() -> Double = {

@@ -25,7 +25,7 @@ import org.sertain.hardware.whenActive
 import java.util.concurrent.atomic.AtomicBoolean
 
 object Elevator : Subsystem() {
-    const val DEFAULT_SPEED = 0.125
+    const val DEFAULT_SPEED = 0.075
     const val BOTTOM_TARGET = 0
     const val SWITCH_TARGET = 1000
     const val SCALE_TARGET = 3400

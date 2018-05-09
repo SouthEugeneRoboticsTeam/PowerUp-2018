@@ -1,3 +1,4 @@
+/*
 package org.sert2521.powerup.climber
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
@@ -23,3 +24,4 @@ object Climber : Subsystem() {
 
     fun stop() = climber.stopMotor()
 }
+*/
