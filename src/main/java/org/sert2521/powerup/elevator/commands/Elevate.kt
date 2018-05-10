@@ -23,7 +23,7 @@ class Elevate : Command() {
         val isNotLeavingExtremities =
                 (!Elevator.atTop || y < 0.0) && (!Elevator.atBottom || y > 0.0)
         Elevator.set(if (secondaryJoystick.trigger && isNotLeavingExtremities) {
-            if (y.sign < 0) DOWN_SPEED_SCALAR * y else y
+            if (y.sign < 0) DOWN_SPEED_SCALAR * y else y / 2
         } else {
             Elevator.DEFAULT_SPEED
         })
