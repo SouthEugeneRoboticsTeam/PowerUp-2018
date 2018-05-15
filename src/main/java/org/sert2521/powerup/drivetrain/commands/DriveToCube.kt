@@ -14,10 +14,17 @@ class DriveToCube : AngleDriver(0.01, 0.0, 0.022) {
     override fun onCreate() = updateSetpoint(0.0)
 
     override fun execute(output: Double): Boolean {
-        println(VisionData.xOffset)
-        Drivetrain.drive(BASE_SPEED + output, BASE_SPEED - output)
-        updateSetpoint(VisionData.xOffset * DEGREES_PER_PIXEL)
-        return Intake.hasCube && Elevator.atBottom
+        println("Found Cube: ${VisionData.foundCube}, " +
+                        "X Offset: ${VisionData.xOffset}, " +
+                        "Y Offset: ${VisionData.yOffset}")
+
+        if (VisionData.foundCube) {
+            Drivetrain.drive(BASE_SPEED + output, BASE_SPEED - output)
+            updateSetpoint(VisionData.xOffset!! * DEGREES_PER_PIXEL)
+            return Intake.hasCube && Elevator.atBottom
+        }
+
+        return true
     }
 
     private fun updateSetpoint(offset: Double) {

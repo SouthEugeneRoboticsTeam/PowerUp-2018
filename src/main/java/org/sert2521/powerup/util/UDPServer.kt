@@ -19,10 +19,12 @@ object UDPServer : Thread() {
 
         if (!msg.contains("alive")) {
             gson.fromJson(msg, VisionData.javaClass).also {
-                VisionData.foundCube = it.foundCube
-                VisionData.xOffset = it.xOffset
-                VisionData.yOffset = it.yOffset
-                VisionData.time = it.time
+                VisionData.apply {
+                    foundCube = it.foundCube
+                    time = it.time
+                    xOffset = it.xOffset
+                    yOffset = it.yOffset
+                }
             }
 
             println("Message from ${packet.address.hostAddress}: $msg")
