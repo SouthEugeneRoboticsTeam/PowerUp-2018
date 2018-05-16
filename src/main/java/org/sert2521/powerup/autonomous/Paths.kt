@@ -1,4 +1,3 @@
-/*
 package org.sert2521.powerup.autonomous
 
 import edu.wpi.first.networktables.NetworkTableEntry
@@ -265,4 +264,3 @@ object TestRightPath : PathBase() {
             2.0 with -2.0 angle -90.0
     )
 }
-*/
