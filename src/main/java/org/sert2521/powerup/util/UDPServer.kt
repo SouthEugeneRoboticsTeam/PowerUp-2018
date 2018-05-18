@@ -10,7 +10,12 @@ object UDPServer : Thread() {
     private val socket = DatagramSocket(UDP_PORT)
     private val gson = Gson()
 
+    init {
+        println("INITTING!!!")
+    }
+
     override fun run() {
+        println("running")
         val buf = ByteArray(PACKET_SIZE)
         val packet = DatagramPacket(buf, buf.size)
 
