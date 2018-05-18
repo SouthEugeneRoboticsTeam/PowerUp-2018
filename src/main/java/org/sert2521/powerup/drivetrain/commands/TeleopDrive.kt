@@ -24,10 +24,18 @@ class TeleopDrive : Command() {
 
     override fun execute(): Boolean {
         val safe: Double.() -> Double = {
-            this * (GRADIENT.pow(
+            val speed = this * (GRADIENT.pow(
                     Elevator.SCALE_TARGET / (Elevator.SAFE_MAX_TARGET - Elevator.position)
             ) + MIN_SPEED)
+            if (speed < GRADIENT) {
+                if (speed > MIN_SPEED) {
+                    MIN_SPEED
+                } else speed
+            } else {
+                MIN_SPEED
+            }
         }
+
 
         when (controlMode) {
             is Control.Arcade ->
@@ -53,7 +61,7 @@ class TeleopDrive : Command() {
     override fun onDestroy() = Drivetrain.stop()
 
     private companion object {
-        const val GRADIENT = 0.8
+        const val GRADIENT = 0.80
         const val MIN_SPEED = 0.17
     }
 }
