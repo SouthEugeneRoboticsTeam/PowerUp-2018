@@ -1,11 +1,10 @@
 package org.sert2521.powerup.drivetrain.commands
 
-import edu.wpi.first.networktables.NetworkTable
-import edu.wpi.first.networktables.NetworkTableInstance
 import org.sert2521.powerup.drivetrain.Drivetrain
 import org.sert2521.powerup.elevator.Elevator
 import org.sert2521.powerup.intake.Intake
 import org.sert2521.powerup.util.DEGREES_PER_PIXEL
+import org.sert2521.powerup.util.VisionData
 
 class DriveToCube : AngleDriver(0.01, 0.0, 0.022) {
     init {
@@ -15,9 +14,17 @@ class DriveToCube : AngleDriver(0.01, 0.0, 0.022) {
     override fun onCreate() = updateSetpoint(0.0)
 
     override fun execute(output: Double): Boolean {
-        Drivetrain.drive(BASE_SPEED + output, BASE_SPEED - output)
-        updateSetpoint(table.getEntry("cube_offset_x").getDouble(0.0) * DEGREES_PER_PIXEL)
-        return Intake.hasCube && Elevator.atBottom
+        println("Found Cube: ${VisionData.foundCube}, " +
+                        "X Offset: ${VisionData.xOffset}, " +
+                        "Y Offset: ${VisionData.yOffset}")
+
+        if (VisionData.foundCube) {
+            Drivetrain.drive(BASE_SPEED + output, BASE_SPEED - output)
+            updateSetpoint(VisionData.xOffset!! * DEGREES_PER_PIXEL)
+            return Intake.hasCube && Elevator.atBottom
+        }
+
+        return true
     }
 
     private fun updateSetpoint(offset: Double) {
@@ -26,6 +33,5 @@ class DriveToCube : AngleDriver(0.01, 0.0, 0.022) {
 
     private companion object {
         const val BASE_SPEED = 0.3
-        val table: NetworkTable = NetworkTableInstance.getDefault().getTable("Vision")
     }
 }
