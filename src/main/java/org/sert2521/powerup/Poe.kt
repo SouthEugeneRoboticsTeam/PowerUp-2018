@@ -18,7 +18,6 @@ class Poe : Robot() {
         Climber
         Auto
         Modes
-
         UDPServer.start()
         CameraServer.getInstance().startAutomaticCapture()
     }
