@@ -3,7 +3,7 @@ buildscript {
     ext.gradleRioVersion = '2018.03.06'
     ext.sertainVersion = '1.2.0'
     ext.ktlintVersion = '0.19.0'
-    ext.gsonVersion = '2.7'
+    ext.gsonVersion = '2.8.5'
 
     repositories {
         jcenter()
