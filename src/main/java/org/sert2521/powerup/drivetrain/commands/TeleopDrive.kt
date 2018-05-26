@@ -35,7 +35,7 @@ class TeleopDrive : Command() {
 
         when (controlMode) {
             is Control.Arcade ->
-                Drivetrain.arcade(speedScalar * -rightJoystick.y.safe(), rightJoystick.x)
+                Drivetrain.arcade(speedScalar * -rightJoystick.y.safe(), speedScalar * rightJoystick.x)
             is Control.Curvature -> Drivetrain.curvature(
                     speedScalar * -rightJoystick.y.safe(),
                     rightJoystick.x,
