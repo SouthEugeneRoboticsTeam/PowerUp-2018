@@ -1,5 +1,6 @@
 package org.sert2521.powerup.elevator.commands
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
 import org.sert2521.powerup.elevator.Elevator
 import org.sert2521.powerup.util.secondaryJoystick
 import org.sertain.command.Command
@@ -12,6 +13,10 @@ class Elevate : Command() {
         requires(Elevator)
     }
 
+    override fun start() {
+        SmartDashboard.putNumber("Elevator multiplier", 1.0)
+    }
+
     override fun execute(): Boolean {
         updateManualElevatorPower()
         updateAutoElevatorPower()
@@ -19,7 +24,8 @@ class Elevate : Command() {
     }
 
     private fun updateManualElevatorPower() {
-        val y = secondaryJoystick.y
+        val speedMultiplier = SmartDashboard.getNumber("Elevator multiplier", 1.0)
+        val y = secondaryJoystick.y * speedMultiplier
         val isNotLeavingExtremities =
                 (!Elevator.atTop || y < 0.0) && (!Elevator.atBottom || y > 0.0)
         Elevator.set(if (secondaryJoystick.trigger && isNotLeavingExtremities) {

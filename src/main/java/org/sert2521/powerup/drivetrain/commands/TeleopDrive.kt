@@ -1,6 +1,7 @@
 package org.sert2521.powerup.drivetrain.commands
 
 import edu.wpi.first.wpilibj.GenericHID
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
 import org.sert2521.powerup.drivetrain.Drivetrain
 import org.sert2521.powerup.elevator.Elevator
 import org.sert2521.powerup.util.Control
@@ -24,16 +25,11 @@ class TeleopDrive : Command() {
 
     override fun execute(): Boolean {
         val safe: Double.() -> Double = {
+            SmartDashboard.putNumber("Drive Speed", GRADIENT)
             val speed = this * (GRADIENT.pow(
                     Elevator.SCALE_TARGET / (Elevator.SAFE_MAX_TARGET - Elevator.position)
             ) + MIN_SPEED)
-            if (speed < GRADIENT) {
-                if (speed > MIN_SPEED) {
-                    MIN_SPEED
-                } else speed
-            } else {
-                MIN_SPEED
-            }
+            if (Elevator.position >= 3999) MIN_SPEED else speed
         }
 
 
