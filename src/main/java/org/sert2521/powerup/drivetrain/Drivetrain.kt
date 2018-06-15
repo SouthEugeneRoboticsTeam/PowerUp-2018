@@ -61,7 +61,8 @@ object Drivetrain : Subsystem() {
     }
 
     override fun onTeleopStart() {
-        rightJoystick.whenActive(12, findCube)
+        rightJoystick.whenActive(7, DriveToCube())
+        rightJoystick.whenActive(12, SendToBottom() and IntakeBlock() and DriveToCube())
     }
 
     override fun execute() {
