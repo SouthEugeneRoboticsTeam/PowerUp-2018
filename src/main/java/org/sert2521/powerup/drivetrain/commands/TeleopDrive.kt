@@ -32,7 +32,6 @@ class TeleopDrive : Command() {
             if (Elevator.position >= 3999) MIN_SPEED else speed
         }
 
-
         when (controlMode) {
             is Control.Arcade ->
                 Drivetrain.arcade(speedScalar * -rightJoystick.y.safe(), speedScalar * rightJoystick.x)

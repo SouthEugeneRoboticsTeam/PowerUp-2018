@@ -15,8 +15,8 @@ class Poe : Robot() {
         Drivetrain
         Intake
         Elevator
-        Climber
-        Auto
+//        Climber
+//        Auto
         Modes
 
         UDPServer.start()

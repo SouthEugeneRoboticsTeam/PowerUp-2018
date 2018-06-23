@@ -40,11 +40,11 @@ class Elevate : Command() {
 
         if (currentPov == PovButton.CENTER) return
 
-        when (currentPov) {
+/*        when (currentPov) {
             PovButton.TOP -> SendToScale()
             PovButton.BOTTOM -> SendToBottom()
             else -> SendToSwitch()
-        }.start()
+        }.start()*/
     }
 
     override fun onDestroy() = Elevator.stop()
