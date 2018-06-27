@@ -26,10 +26,8 @@ class TeleopDrive : Command() {
     override fun execute(): Boolean {
         val safe: Double.() -> Double = {
             SmartDashboard.putNumber("Drive Speed", GRADIENT)
-            val speed = this * (GRADIENT.pow(
-                    Elevator.SCALE_TARGET / (Elevator.SAFE_MAX_TARGET - Elevator.position)
-            ) + MIN_SPEED)
-            if (Elevator.position >= 3999) MIN_SPEED else speed
+            val speed = this * (-(5.5 * 10.0.pow(-8) * (Elevator.position - 25)).pow(2) + 1)
+            if (Elevator.position >= 4289) MIN_SPEED else speed
         }
 
         when (controlMode) {
