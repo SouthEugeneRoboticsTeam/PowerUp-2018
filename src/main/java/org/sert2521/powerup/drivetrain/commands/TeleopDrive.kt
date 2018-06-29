@@ -27,6 +27,7 @@ class TeleopDrive : Command() {
             val speed = this * (GRADIENT.pow(
                     Elevator.SCALE_TARGET / (Elevator.SAFE_MAX_TARGET - Elevator.position)
             ) + MIN_SPEED)
+
             if (speed < GRADIENT) {
                 if (speed > MIN_SPEED) {
                     MIN_SPEED
@@ -35,7 +36,6 @@ class TeleopDrive : Command() {
                 MIN_SPEED
             }
         }
-
 
         when (controlMode) {
             is Control.Arcade ->
