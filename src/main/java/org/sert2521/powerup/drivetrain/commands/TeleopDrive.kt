@@ -24,17 +24,8 @@ class TeleopDrive : Command() {
 
     override fun execute(): Boolean {
         val safe: Double.() -> Double = {
-            val speed = this * (GRADIENT.pow(
-                    Elevator.SCALE_TARGET / (Elevator.SAFE_MAX_TARGET - Elevator.position)
-            ) + MIN_SPEED)
-
-            if (speed < GRADIENT) {
-                if (speed > MIN_SPEED) {
-                    MIN_SPEED
-                } else speed
-            } else {
-                MIN_SPEED
-            }
+            val speed = this * GRADIENT * (-(5.5 * 10.0.pow(-8) * (Elevator.position - 25)).pow(2) + 1)
+            if (Elevator.position >= 4289) MIN_SPEED else speed
         }
 
         when (controlMode) {
