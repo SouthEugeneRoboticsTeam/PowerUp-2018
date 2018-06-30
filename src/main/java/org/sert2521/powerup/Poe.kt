@@ -7,7 +7,7 @@ import org.sert2521.powerup.drivetrain.Drivetrain
 import org.sert2521.powerup.elevator.Elevator
 import org.sert2521.powerup.intake.Intake
 import org.sert2521.powerup.util.Modes
-import org.sert2521.powerup.util.UDPServer
+//import org.sert2521.powerup.util.UDPServer
 import org.sertain.Robot
 
 class Poe : Robot() {
@@ -19,7 +19,7 @@ class Poe : Robot() {
 //        Auto
         Modes
 
-        UDPServer.start()
+      //  UDPServer.start()
         CameraServer.getInstance().startAutomaticCapture()
     }
 }

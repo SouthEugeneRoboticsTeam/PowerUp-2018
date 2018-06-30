@@ -26,13 +26,13 @@ class TeleopDrive : Command() {
     override fun execute(): Boolean {
         val safe: Double.() -> Double = {
             SmartDashboard.putNumber("Drive Speed", GRADIENT)
-            val speed = this * (-(5.5 * 10.0.pow(-8) * (Elevator.position - 25)).pow(2) + 1)
+            val speed = this * 0.6 * (-(5.5 * 10.0.pow(-8) * (Elevator.position - 25)).pow(2) + 1)
             if (Elevator.position >= 4289) MIN_SPEED else speed
         }
 
         when (controlMode) {
             is Control.Arcade ->
-                Drivetrain.arcade(speedScalar * -rightJoystick.y.safe(), speedScalar * rightJoystick.x)
+                Drivetrain.arcade(speedScalar * -rightJoystick.y.safe(), speedScalar * rightJoystick.x * 0.75)
             is Control.Curvature -> Drivetrain.curvature(
                     speedScalar * -rightJoystick.y.safe(),
                     rightJoystick.x,

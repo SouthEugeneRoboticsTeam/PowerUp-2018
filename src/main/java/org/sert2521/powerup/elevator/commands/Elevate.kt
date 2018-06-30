@@ -31,7 +31,7 @@ class Elevate : Command() {
         Elevator.set(if (secondaryJoystick.trigger && isNotLeavingExtremities) {
             if (y.sign < 0) DOWN_SPEED_SCALAR * y else y
         } else {
-            Elevator.DEFAULT_SPEED
+            if (!Elevator.atBottom) Elevator.DEFAULT_SPEED else 0.0
         })
     }
 
@@ -50,6 +50,6 @@ class Elevate : Command() {
     override fun onDestroy() = Elevator.stop()
 
     private companion object {
-        const val DOWN_SPEED_SCALAR = 0.6
+        const val DOWN_SPEED_SCALAR = 0.25
     }
 }

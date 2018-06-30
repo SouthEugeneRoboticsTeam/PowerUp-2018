@@ -15,7 +15,7 @@ import org.sert2521.powerup.intake.commands.IntakeBlock
 import org.sert2521.powerup.util.AutoMode
 import org.sert2521.powerup.util.ENCODER_TICKS_PER_REVOLUTION
 import org.sert2521.powerup.util.MAX_VELOCITY
-import org.sert2521.powerup.util.UDPServer
+//import org.sert2521.powerup.util.UDPServer
 import org.sert2521.powerup.util.WHEEL_DIAMETER
 import org.sert2521.powerup.util.autoMode
 import org.sertain.RobotLifecycle
@@ -56,7 +56,7 @@ object Auto : RobotLifecycle {
         LeftSwitchToRearPath
         RightSwitchToRearPath
 
-        UDPServer
+        //UDPServer
     }
 
     override fun onAutoStart() {
