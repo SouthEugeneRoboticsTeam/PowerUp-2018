@@ -25,7 +25,7 @@ class Elevate : Command() {
         Elevator.set(if (secondaryJoystick.trigger && isNotLeavingExtremities) {
             if (y.sign < 0) DOWN_SPEED_SCALAR * y else y
         } else {
-            Elevator.DEFAULT_SPEED
+            if (!Elevator.atBottom) Elevator.DEFAULT_SPEED else 0.0
         })
     }
 
