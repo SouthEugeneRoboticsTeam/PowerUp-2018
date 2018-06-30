@@ -24,24 +24,28 @@ class TeleopDrive : Command() {
 
     override fun execute(): Boolean {
         val safe: Double.() -> Double = {
-            val speed = this * GRADIENT * (-(5.5 * 10.0.pow(-8) * (Elevator.position - 25)).pow(2) + 1)
+            val speed = this * (-(5.5 * 10.0.pow(-8) * (Elevator.position + 2200)).pow(2) + 1)
             if (Elevator.position >= 4289) MIN_SPEED else speed
+        }
+
+        val acceleration: Double.() -> Double = {
+            Math.pow(rightJoystick.y, 2.0) - 1
         }
 
         when (controlMode) {
             is Control.Arcade ->
-                Drivetrain.arcade(speedScalar * -rightJoystick.y.safe(), rightJoystick.x)
+                Drivetrain.arcade(speedScalar * -rightJoystick.y.safe().acceleration(), rightJoystick.x)
             is Control.Curvature -> Drivetrain.curvature(
-                    speedScalar * -rightJoystick.y.safe(),
+                    speedScalar * -rightJoystick.y.safe().acceleration(),
                     rightJoystick.x,
                     rightJoystick.top
             )
             is Control.Tank -> Drivetrain.tank(
-                    speedScalar * leftJoystick.y.safe(),
-                    speedScalar * rightJoystick.y.safe()
+                    speedScalar * leftJoystick.y.safe().acceleration(),
+                    speedScalar * rightJoystick.y.safe().acceleration()
             )
             is Control.Controller -> Drivetrain.arcade(
-                    speedScalar * -controller.getY(GenericHID.Hand.kLeft).safe(),
+                    speedScalar * -controller.getY(GenericHID.Hand.kLeft).safe().acceleration(),
                     controller.getX(GenericHID.Hand.kRight)
             )
         }
