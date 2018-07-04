@@ -29,23 +29,23 @@ class TeleopDrive : Command() {
         }
 
         val acceleration: Double.() -> Double = {
-            Math.pow(rightJoystick.y, 2.0) - 1
+            .5 * rightJoystick.y.pow(3) + 0.5 * rightJoystick.y
         }
 
         when (controlMode) {
             is Control.Arcade ->
                 Drivetrain.arcade(speedScalar * -rightJoystick.y.safe().acceleration(), rightJoystick.x)
             is Control.Curvature -> Drivetrain.curvature(
-                    speedScalar * -rightJoystick.y.safe().acceleration(),
+                    speedScalar * -rightJoystick.y.safe(),
                     rightJoystick.x,
                     rightJoystick.top
             )
             is Control.Tank -> Drivetrain.tank(
-                    speedScalar * leftJoystick.y.safe().acceleration(),
-                    speedScalar * rightJoystick.y.safe().acceleration()
+                    speedScalar * leftJoystick.y.safe(),
+                    speedScalar * rightJoystick.y.safe()
             )
             is Control.Controller -> Drivetrain.arcade(
-                    speedScalar * -controller.getY(GenericHID.Hand.kLeft).safe().acceleration(),
+                    speedScalar * -controller.getY(GenericHID.Hand.kLeft).safe(),
                     controller.getX(GenericHID.Hand.kRight)
             )
         }
