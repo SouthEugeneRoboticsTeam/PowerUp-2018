@@ -19,15 +19,16 @@ class Elevate : Command() {
 
     private fun updateManualElevatorPower() {
         val y = secondaryJoystick.y
-        if (Elevator.atTop) {
-            if (y < 0 && secondaryJoystick.trigger) Elevator.set(y)
+        when {
+            Elevator.atTop -> if (y < 0 && secondaryJoystick.trigger) Elevator.set(y)
             else Elevator.set(Elevator.DEFAULT_SPEED)
-        } else if (Elevator.atBottom) {
-            if (y > 0 && secondaryJoystick.trigger) Elevator.set(y)
-            else 0.0
-        } else if (y > Elevator.DEFAULT_SPEED && secondaryJoystick.trigger) Elevator.set(y) else
-            if (y < 0 && secondaryJoystick.trigger) Elevator.set(y * DOWN_SPEED_SCALAR)
-            else Elevator.set(Elevator.DEFAULT_SPEED)
+            Elevator.atBottom -> if (y > 0 && secondaryJoystick.trigger) Elevator.set(y)
+            Elevator.inBetween -> when {
+                y > Elevator.DEFAULT_SPEED && secondaryJoystick.trigger -> Elevator.set(y)
+                y < 0 && secondaryJoystick.trigger -> Elevator.set(y * DOWN_SPEED_SCALAR)
+                else -> Elevator.set(Elevator.DEFAULT_SPEED)
+            }
+        }
     }
 
     private fun updateAutoElevatorPower() {

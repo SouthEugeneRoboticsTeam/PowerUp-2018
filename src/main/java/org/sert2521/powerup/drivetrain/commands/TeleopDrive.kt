@@ -29,7 +29,7 @@ class TeleopDrive : Command() {
         }
 
         val acceleration: Double.() -> Double = {
-            .5 * rightJoystick.y.pow(3) + 0.5 * rightJoystick.y
+            .5 * rightJoystick.y.pow(3) + .5 * rightJoystick.y
         }
 
         when (controlMode) {
@@ -56,7 +56,6 @@ class TeleopDrive : Command() {
     override fun onDestroy() = Drivetrain.stop()
 
     private companion object {
-        const val GRADIENT = 0.80
         const val MIN_SPEED = 0.17
     }
 }

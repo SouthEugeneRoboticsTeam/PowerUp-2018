@@ -1,6 +1,5 @@
 package org.sert2521.powerup.elevator.commands
 
-import org.sert2521.powerup.drivetrain.Drivetrain
 import org.sert2521.powerup.elevator.Elevator
 import org.sertain.command.Command
 import kotlin.math.pow

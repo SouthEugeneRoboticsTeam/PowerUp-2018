@@ -26,10 +26,8 @@ import java.util.concurrent.atomic.AtomicBoolean
 
 object Elevator : Subsystem() {
     const val DEFAULT_SPEED = 0.125
-    const val BOTTOM_TARGET = 0
     const val SWITCH_TARGET = 1000
     const val SCALE_TARGET = 3400
-    const val SAFE_MAX_TARGET = 4000
 
     private val pdp = PowerDistributionPanel()
     private val elevator = Talon(RIGHT_ELEVATOR_MOTOR).autoBreak() +
@@ -40,6 +38,7 @@ object Elevator : Subsystem() {
 
     val atBottom get() = bottomTrigger.get()
     val atSwitch get() = switchTrigger.get()
+    val inBetween get() = !bottomTrigger.get() && !topTrigger.get()
     val atTop get() = middleTrigger.get() && topTrigger.get()
 
     private val bottomTrigger = DigitalInput(BOTTOM_TRIGGER_PORT).invert()
