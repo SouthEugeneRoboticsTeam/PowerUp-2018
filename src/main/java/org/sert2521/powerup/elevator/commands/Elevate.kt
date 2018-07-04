@@ -27,7 +27,7 @@ class Elevate : Command() {
             else 0.0
         } else if (y > Elevator.DEFAULT_SPEED && secondaryJoystick.trigger) Elevator.set(y) else
             if (y < 0 && secondaryJoystick.trigger) Elevator.set(y * DOWN_SPEED_SCALAR)
-            else Elevator.DEFAULT_SPEED
+            else Elevator.set(Elevator.DEFAULT_SPEED)
     }
 
     private fun updateAutoElevatorPower() {
