@@ -212,6 +212,21 @@ object RightSwitchToStartPath : PathBase() {
     )
 }
 
+object MiddleToPilePath : PathBase() {
+    override var points = arrayOf(
+            0.0 with 0.2 angle 0.0,
+            2.0 with 0.2 angle 0.0
+    )
+}
+
+object PileToStartPath : PathBase() {
+    override var points = arrayOf(
+            2.0 with 0.2 angle 0.0,
+            0.0 with 0.2 angle 0.0
+    )
+}
+
+
 object LeftToLeftScalePath : PathBase() {
     override var points = arrayOf(
             0.0 with 3.0 angle 0.0,

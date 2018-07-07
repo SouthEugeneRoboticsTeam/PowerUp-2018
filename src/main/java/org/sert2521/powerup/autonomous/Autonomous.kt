@@ -51,6 +51,7 @@ object Auto : RobotLifecycle {
         LeftSwitchToStartPath
         MiddleToRightSwitchPath
         RightSwitchToStartPath
+        MiddleToPilePath
         LeftToLeftScalePath
         RightToRightScalePath
         LeftToRightScalePath
@@ -81,12 +82,14 @@ object Auto : RobotLifecycle {
                     IntakeBlock() then SendToSwitch() then EjectBlock()
 
             AutoMode.MIDDLE_TO_LEFT_SWITCH -> MiddleToLeftSwitch() and SendToSwitch() then
-                    EjectBlock() then LeftSwitchToStart() and SendToBottom() then
-                    MiddleToLeftSwitch() and SendToSwitch() then EjectBlock()
+                    EjectBlock() then LeftSwitchToStart() and SendToBottom() then MiddleToPile() and
+                    IntakeBlock() then PileToStart() then MiddleToLeftSwitch() and
+                    SendToSwitch() then EjectBlock()
 
             AutoMode.MIDDLE_TO_RIGHT_SWITCH -> MiddleToRightSwitch() and SendToSwitch() then
-                    EjectBlock() then RightSwitchToStart() and SendToBottom() then
-                    MiddleToRightSwitch() and SendToSwitch() then EjectBlock()
+                    EjectBlock() then RightSwitchToStart() and SendToBottom() then MiddleToPile() and
+                    IntakeBlock() then PileToStart() then MiddleToRightSwitch()and
+                    SendToSwitch() then EjectBlock()
 
             AutoMode.LEFT_TO_LEFT_SCALE_PICKUP -> LeftToLeftScale() and SendToScale() and
                     EjectBlock().waitUntil(shouldEjectBlock) then
@@ -210,7 +213,11 @@ private class LeftSwitchToStart : PathFollowerBase(LeftSwitchToStartPath)
 
 private class MiddleToRightSwitch : PathFollowerBase(MiddleToRightSwitchPath)
 
-private class RightSwitchToStart : PathFollowerBase(RightSwitchToStartPath)
+private class RightSwitchToStart : ReversePathFollowerBase(MiddleToLeftSwitchPath)
+
+private class MiddleToPile : PathFollowerBase(MiddleToPilePath)
+
+private class PileToStart : PathFollowerBase(PileToStartPath)
 
 private class LeftToLeftScale : PathFollowerBase(LeftToLeftScalePath)
 
