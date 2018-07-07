@@ -38,7 +38,7 @@ object Elevator : Subsystem() {
 
     val atBottom get() = bottomTrigger.get()
     val atSwitch get() = switchTrigger.get()
-    val inBetween get() = !bottomTrigger.get() && !topTrigger.get()
+    val inBetween get() = !atTop && !atBottom
     val atTop get() = middleTrigger.get() && topTrigger.get()
 
     private val bottomTrigger = DigitalInput(BOTTOM_TRIGGER_PORT).invert()

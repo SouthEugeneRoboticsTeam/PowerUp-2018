@@ -48,7 +48,9 @@ object Auto : RobotLifecycle {
         LeftToLeftSwitchPath
         RightToRightSwitchPath
         MiddleToLeftSwitchPath
+        LeftSwitchToStartPath
         MiddleToRightSwitchPath
+        RightSwitchToStartPath
         LeftToLeftScalePath
         RightToRightScalePath
         LeftToRightScalePath
@@ -79,10 +81,12 @@ object Auto : RobotLifecycle {
                     IntakeBlock() then SendToSwitch() then EjectBlock()
 
             AutoMode.MIDDLE_TO_LEFT_SWITCH -> MiddleToLeftSwitch() and SendToSwitch() then
-                    EjectBlock()
+                    EjectBlock() then LeftSwitchToStart() and SendToBottom() then
+                    MiddleToLeftSwitch() and SendToSwitch() then EjectBlock()
 
             AutoMode.MIDDLE_TO_RIGHT_SWITCH -> MiddleToRightSwitch() and SendToSwitch() then
-                    EjectBlock()
+                    EjectBlock() then RightSwitchToStart() and SendToBottom() then
+                    MiddleToRightSwitch() and SendToSwitch() then EjectBlock()
 
             AutoMode.LEFT_TO_LEFT_SCALE_PICKUP -> LeftToLeftScale() and SendToScale() and
                     EjectBlock().waitUntil(shouldEjectBlock) then
@@ -202,7 +206,11 @@ private class RightToRightSwitch : PathFollowerBase(RightToRightSwitchPath)
 
 private class MiddleToLeftSwitch : PathFollowerBase(MiddleToLeftSwitchPath)
 
+private class LeftSwitchToStart : PathFollowerBase(LeftSwitchToStartPath)
+
 private class MiddleToRightSwitch : PathFollowerBase(MiddleToRightSwitchPath)
+
+private class RightSwitchToStart : PathFollowerBase(RightSwitchToStartPath)
 
 private class LeftToLeftScale : PathFollowerBase(LeftToLeftScalePath)
 

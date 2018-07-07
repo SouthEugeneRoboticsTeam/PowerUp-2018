@@ -20,6 +20,7 @@ import org.sertain.util.generate
 import org.sertain.util.split
 import org.sertain.util.with
 import java.io.File
+import java.nio.file.Path
 import java.security.MessageDigest
 import java.util.concurrent.Executor
 import java.util.concurrent.Executors
@@ -190,10 +191,24 @@ object MiddleToLeftSwitchPath : PathBase() {
     )
 }
 
+object LeftSwitchToStartPath : PathBase() {
+    override var points = arrayOf(
+            2.9 with 1.3 angle 10.0,
+            0.0 with 0.2 angle 0.0
+    )
+}
+
 object MiddleToRightSwitchPath : PathBase() {
     override var points = arrayOf(
             0.0 with 0.2 angle 0.0,
             2.9 with -0.5 angle 10.0
+    )
+}
+
+object RightSwitchToStartPath : PathBase() {
+    override var points = arrayOf(
+            2.9 with -0.5 angle 10.0,
+            0.0 with 0.2 angle 0.0
     )
 }
 
