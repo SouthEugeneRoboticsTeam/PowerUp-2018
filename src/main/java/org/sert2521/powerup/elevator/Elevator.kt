@@ -30,9 +30,16 @@ object Elevator : Subsystem() {
     const val SCALE_TARGET = 3400
 
     private val pdp = PowerDistributionPanel()
-    private val elevator = Talon(RIGHT_ELEVATOR_MOTOR).autoBreak() +
-            Talon(LEFT_ELEVATOR_MOTOR).autoBreak().invert()
-
+    private val elevator = Talon(RIGHT_ELEVATOR_MOTOR).apply {
+        autoBreak()
+        configContinuousCurrentLimit(40, 0)
+        enableCurrentLimit(true)
+    } + Talon(LEFT_ELEVATOR_MOTOR).apply {
+        autoBreak()
+        invert()
+        configContinuousCurrentLimit(40, 0)
+        enableCurrentLimit(true)
+    }
     val position get() = if (isTripped.get()) SCALE_TARGET else -elevator.getEncoderPosition()
     private val current get() = pdp.getCurrent(2)
 

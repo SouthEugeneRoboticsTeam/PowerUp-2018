@@ -6,6 +6,7 @@ import org.sert2521.powerup.climber.Climber
 import org.sert2521.powerup.drivetrain.Drivetrain
 import org.sert2521.powerup.elevator.Elevator
 import org.sert2521.powerup.intake.Intake
+//import org.sert2521.powerup.util.Lights
 import org.sert2521.powerup.util.Modes
 import org.sert2521.powerup.util.UDPServer
 import org.sertain.Robot
@@ -18,7 +19,7 @@ class Poe : Robot() {
         Climber
         Auto
         Modes
-
+      //  Lights
         UDPServer.start()
         CameraServer.getInstance().startAutomaticCapture()
     }

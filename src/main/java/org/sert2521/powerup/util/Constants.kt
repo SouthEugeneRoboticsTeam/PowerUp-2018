@@ -30,6 +30,10 @@ const val TOP_TRIGGER_PORT = 0
 const val SWITCH_TRIGGER_PORT = 5
 const val INTAKE_TRIGGER_PORT = 2
 
+// LEDs
+const val RED_LED_PORT = 6
+const val BLUE_LED_PORT = 7
+
 // Auto
 const val ENCODER_TICKS_PER_REVOLUTION = 8192
 const val WHEEL_DIAMETER = 0.15

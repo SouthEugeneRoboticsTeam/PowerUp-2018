@@ -1,11 +1,11 @@
 package org.sert2521.powerup.elevator.commands
 
 import org.sert2521.powerup.elevator.Elevator
-import org.sert2521.powerup.elevator.Elevator.atBottom
 import org.sert2521.powerup.util.secondaryJoystick
 import org.sertain.command.Command
 import org.sertain.hardware.PovButton
 import org.sertain.hardware.povButton
+import kotlin.math.sign
 
 class Elevate : Command() {
     init {
@@ -20,16 +20,13 @@ class Elevate : Command() {
 
     private fun updateManualElevatorPower() {
         val y = secondaryJoystick.y
-        when {
-            Elevator.atTop -> if (secondaryJoystick.trigger) Elevator.set(y)
-            else Elevator.set(Elevator.DEFAULT_SPEED)
-            Elevator.atBottom -> if (y > 0 && secondaryJoystick.trigger) Elevator.set(y)
-            Elevator.inBetween -> when {
-                y < Elevator.DEFAULT_SPEED && secondaryJoystick.trigger -> Elevator.set(y * DOWN_SPEED_SCALAR)
-                y > 0 && secondaryJoystick.trigger -> Elevator.set(y)
-                else -> Elevator.set(Elevator.DEFAULT_SPEED)
-            }
-        }
+        val inBetween =
+                (!Elevator.atTop || y < 0.0) && (!Elevator.atBottom || y > 0.0)
+        Elevator.set(if (secondaryJoystick.trigger && inBetween) {
+            if (y.sign < 0) DOWN_SPEED_SCALAR * y else y
+           } else {
+            if (!Elevator.atBottom) Elevator.DEFAULT_SPEED else 0.0
+         })
     }
 
     private fun updateAutoElevatorPower() {
