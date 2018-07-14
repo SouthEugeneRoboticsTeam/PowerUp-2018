@@ -3,7 +3,6 @@ package org.sert2521.powerup.elevator
 import com.ctre.phoenix.motorcontrol.FeedbackDevice
 import edu.wpi.first.wpilibj.PowerDistributionPanel
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
-import org.omg.CORBA.Current
 import org.sert2521.powerup.climber.Climber
 import org.sert2521.powerup.elevator.commands.Elevate
 import org.sert2521.powerup.elevator.commands.EncoderResetter
@@ -18,7 +17,6 @@ import org.sertain.command.Subsystem
 import org.sertain.hardware.DigitalInput
 import org.sertain.hardware.Talon
 import org.sertain.hardware.autoBreak
-import org.sertain.hardware.getEncoderPosition
 import org.sertain.hardware.invert
 import org.sertain.hardware.plus
 import org.sertain.hardware.setEncoderPosition
@@ -51,7 +49,6 @@ object Elevator : Subsystem() {
 
     val atBottom get() = bottomTrigger.get()
     val atSwitch get() = switchTrigger.get()
-    val inBetween get() = !atTop && !atBottom
     val atTop get() = middleTrigger.get() && topTrigger.get()
 
     private val bottomTrigger = DigitalInput(BOTTOM_TRIGGER_PORT).invert()

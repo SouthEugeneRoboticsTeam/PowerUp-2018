@@ -2,7 +2,7 @@ package org.sert2521.powerup.drivetrain.commands
 
 import edu.wpi.first.wpilibj.GenericHID
 import org.sert2521.powerup.drivetrain.Drivetrain
-import org.sert2521.powerup.elevator.Elevator
+import org.sert2521.powerup.elevator.Elevator.position
 import org.sert2521.powerup.util.Control
 import org.sert2521.powerup.util.controlMode
 import org.sert2521.powerup.util.controller
@@ -24,12 +24,12 @@ class TeleopDrive : Command() {
 
     override fun execute(): Boolean {
         val safe: Double.() -> Double = {
-            val speed = this * (-(5.5 * 10.0.pow(-8) * (Elevator.position + 2200)).pow(2) + 1)
-            if (Elevator.position >= 4289) MIN_SPEED else speed
+            val speed = this * (-(5.5 * 10.0.pow(-8) * (position + 2200)).pow(2) + 1)
+            if (position >= 4289) MIN_SPEED else speed
         }
 
         val acceleration: Double.() -> Double = {
-            .5 * rightJoystick.y.pow(3) + .5 * rightJoystick.y
+            .3 * rightJoystick.y.pow(3) + .7 * rightJoystick.y
         }
 
         when (controlMode) {
