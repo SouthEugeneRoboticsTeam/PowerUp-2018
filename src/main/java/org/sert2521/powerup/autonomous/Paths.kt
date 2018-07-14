@@ -184,19 +184,19 @@ object RightToRightSwitchPath : PathBase() {
     )
 }
 
-/*object MiddleToLeftSwitchPath : PathBase() {
+object MiddleToLeftSwitchPath : PathBase() {
     override var points = arrayOf(
             0.0 with 0.2 angle 0.0,
             2.9 with 1.3 angle -10.0
     )
 }
 
-object LeftSwitchToMiddleForwardPath : PathBase() {
+/*object LeftSwitchToMiddleForwardPath : PathBase() {
     override var points = arrayOf(
             2.9 with 1.3 angle -10.0,
             1.2 with 0.0 angle 0.0
     )
-}
+}*/
 
 object MiddleToRightSwitchPath : PathBase() {
     override var points = arrayOf(
@@ -205,7 +205,7 @@ object MiddleToRightSwitchPath : PathBase() {
     )
 }
 
-object RightSwitchToMiddleForwardPath : PathBase() {
+/*object RightSwitchToMiddleForwardPath : PathBase() {
     override var points = arrayOf(
             2.9 with -0.5 angle 10.0,
             1.2 with 0.0 angle 0.0
