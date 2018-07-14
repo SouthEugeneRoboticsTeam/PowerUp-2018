@@ -3,6 +3,8 @@ package org.sert2521.powerup.elevator
 import com.ctre.phoenix.motorcontrol.FeedbackDevice
 import edu.wpi.first.wpilibj.PowerDistributionPanel
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
+import org.omg.CORBA.Current
+import org.sert2521.powerup.climber.Climber
 import org.sert2521.powerup.elevator.commands.Elevate
 import org.sert2521.powerup.elevator.commands.EncoderResetter
 import org.sert2521.powerup.util.BOTTOM_TRIGGER_PORT
@@ -33,14 +35,18 @@ object Elevator : Subsystem() {
     private val elevator = Talon(RIGHT_ELEVATOR_MOTOR).apply {
         autoBreak()
         configContinuousCurrentLimit(40, 0)
-        enableCurrentLimit(true)
+        configPeakCurrentLimit(65, 0)
+        configPeakCurrentDuration(250, 0)
+        enableCurrentLimit(false)
     } + Talon(LEFT_ELEVATOR_MOTOR).apply {
         autoBreak()
         invert()
         configContinuousCurrentLimit(40, 0)
-        enableCurrentLimit(true)
+        configPeakCurrentLimit(65, 0)
+        configPeakCurrentDuration(250, 0)
+        enableCurrentLimit(false)
     }
-    val position get() = if (isTripped.get()) SCALE_TARGET else -elevator.getEncoderPosition()
+    val position get() = if (isTripped.get()) SCALE_TARGET else -Climber.getPosition()
     private val current get() = pdp.getCurrent(2)
 
     val atBottom get() = bottomTrigger.get()

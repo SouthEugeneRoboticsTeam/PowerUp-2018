@@ -7,6 +7,7 @@ import org.sert2521.powerup.util.REAR_CLIMBER_MOTOR
 import org.sertain.command.Subsystem
 import org.sertain.hardware.Talon
 import org.sertain.hardware.autoBreak
+import org.sertain.hardware.getEncoderPosition
 import org.sertain.hardware.invert
 import org.sertain.hardware.plus
 
@@ -20,6 +21,8 @@ object Climber : Subsystem() {
         SmartDashboard.putNumber("Climber Speed", speed)
         climber.set(speed)
     }
+
+    fun getPosition() = climber.getEncoderPosition()
 
     fun stop() = climber.stopMotor()
 }

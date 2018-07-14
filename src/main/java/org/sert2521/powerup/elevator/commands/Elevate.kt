@@ -20,13 +20,13 @@ class Elevate : Command() {
 
     private fun updateManualElevatorPower() {
         val y = secondaryJoystick.y
-        val inBetween =
+        val isNotLeavingExtremities =
                 (!Elevator.atTop || y < 0.0) && (!Elevator.atBottom || y > 0.0)
-        Elevator.set(if (secondaryJoystick.trigger && inBetween) {
+        Elevator.set(if (secondaryJoystick.trigger && isNotLeavingExtremities) {
             if (y.sign < 0) DOWN_SPEED_SCALAR * y else y
-           } else {
+        } else {
             if (!Elevator.atBottom) Elevator.DEFAULT_SPEED else 0.0
-         })
+        })
     }
 
     private fun updateAutoElevatorPower() {
@@ -44,6 +44,6 @@ class Elevate : Command() {
     override fun onDestroy() = Elevator.stop()
 
     private companion object {
-        const val DOWN_SPEED_SCALAR = 0.7
+        const val DOWN_SPEED_SCALAR = 0.6
     }
 }
