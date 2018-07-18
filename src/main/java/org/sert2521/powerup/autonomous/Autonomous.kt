@@ -48,10 +48,10 @@ object Auto : RobotLifecycle {
         LeftToLeftSwitchPath
         RightToRightSwitchPath
         MiddleToLeftSwitchPath
-//        LeftSwitchToMiddleForwardPath
+        LeftSwitchToMiddleForwardPath
         MiddleToRightSwitchPath
-//        RightSwitchToMiddleForwardPath
-//        MiddleForwardToPilePath
+        RightSwitchToMiddleForwardPath
+        MiddleForwardToPilePath
         LeftToLeftScalePath
         RightToRightScalePath
         LeftToRightScalePath
@@ -82,14 +82,14 @@ object Auto : RobotLifecycle {
                     IntakeBlock() then SendToSwitch() then EjectBlock()
 
             AutoMode.MIDDLE_TO_LEFT_SWITCH -> MiddleToLeftSwitch() and SendToSwitch() then
-                    EjectBlock() /*then LeftSwitchToMiddleForward() and SendToBottom() then MiddleForwardToPile() and
+                    EjectBlock() then LeftSwitchToMiddleForward() and SendToBottom() then MiddleForwardToPile() and
                     IntakeBlock() then PileToMiddleForward() then MiddleForwardToLeftSwitch() and
-                    SendToSwitch() then EjectBlock()*/
+                    SendToSwitch() then EjectBlock()
 
             AutoMode.MIDDLE_TO_RIGHT_SWITCH -> MiddleToRightSwitch() and SendToSwitch() then
-                    EjectBlock() /*then RightSwitchToMiddleForward() and SendToBottom() then MiddleForwardToPile() and
+                    EjectBlock() then RightSwitchToMiddleForward() and SendToBottom() then MiddleForwardToPile() and
                     IntakeBlock() then PileToMiddleForward() then MiddleForwardToRightSwitch()and
-                    SendToSwitch() then EjectBlock()*/
+                    SendToSwitch() then EjectBlock()
 
             AutoMode.LEFT_TO_LEFT_SCALE_PICKUP -> LeftToLeftScale() and SendToScale() and
                     EjectBlock().waitUntil(shouldEjectBlock) then
@@ -209,11 +209,11 @@ private class RightToRightSwitch : PathFollowerBase(RightToRightSwitchPath)
 
 private class MiddleToLeftSwitch : PathFollowerBase(MiddleToLeftSwitchPath)
 
-//private class LeftSwitchToMiddleForward : ReversePathFollowerBase(LeftSwitchToMiddleForwardPath)
+private class LeftSwitchToMiddleForward : ReversePathFollowerBase(LeftSwitchToMiddleForwardPath)
 
 private class MiddleToRightSwitch : PathFollowerBase(MiddleToRightSwitchPath)
 
-/*private class RightSwitchToMiddleForward : ReversePathFollowerBase(RightSwitchToMiddleForwardPath)
+private class RightSwitchToMiddleForward : ReversePathFollowerBase(RightSwitchToMiddleForwardPath)
 
 private class MiddleForwardToPile : PathFollowerBase(MiddleForwardToPilePath)
 
@@ -221,7 +221,7 @@ private class PileToMiddleForward : ReversePathFollowerBase(PileToMiddleForwardP
 
 private class MiddleForwardToLeftSwitch : PathFollowerBase(MiddleForwardToLeftSwitchPath)
 
-private class MiddleForwardToRightSwitch : PathFollowerBase(MiddleForwardToRightSwitchPath)*/
+private class MiddleForwardToRightSwitch : PathFollowerBase(MiddleForwardToRightSwitchPath)
 
 private class LeftToLeftScale : PathFollowerBase(LeftToLeftScalePath)
 

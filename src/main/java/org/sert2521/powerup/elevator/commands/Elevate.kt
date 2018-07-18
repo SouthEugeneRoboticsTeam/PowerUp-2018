@@ -44,6 +44,6 @@ class Elevate : Command() {
     override fun onDestroy() = Elevator.stop()
 
     private companion object {
-        const val DOWN_SPEED_SCALAR = 0.6
+        const val DOWN_SPEED_SCALAR = 0.7
     }
 }

@@ -28,6 +28,7 @@ class TeleopDrive : Command() {
             if (position >= 4289) MIN_SPEED else speed
         }
 
+
         val acceleration: Double.() -> Double = {
             .3 * rightJoystick.y.pow(3) + .7 * rightJoystick.y
         }
@@ -43,7 +44,7 @@ class TeleopDrive : Command() {
             is Control.Tank -> Drivetrain.tank(
                     speedScalar * leftJoystick.y.safe(),
                     speedScalar * rightJoystick.y.safe()
-            )
+            ) 
             is Control.Controller -> Drivetrain.arcade(
                     speedScalar * -controller.getY(GenericHID.Hand.kLeft).safe(),
                     controller.getX(GenericHID.Hand.kRight)

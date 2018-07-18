@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
 import openrio.powerup.MatchData
 import openrio.powerup.MatchData.GameFeature
 import openrio.powerup.MatchData.OwnedSide
+import org.sert2521.powerup.autonomous.MiddleToLeftSwitchPath
 import org.sert2521.powerup.util.AutoMode.CROSS_BASELINE
 import org.sert2521.powerup.util.AutoMode.Constraints
 import org.sert2521.powerup.util.AutoMode.End
@@ -84,7 +85,9 @@ private fun calculateAutoMode(switchSide: OwnedSide, scaleSide: OwnedSide): Auto
                 }
                 else -> error("Impossible condition: $scaleSide")
             }
-            Start.MIDDLE -> CROSS_BASELINE
+            Start.MIDDLE -> {
+                AutoMode.MIDDLE_TO_LEFT_SWITCH
+            }
             Start.RIGHT -> when (scaleSide) {
                 OwnedSide.LEFT -> if (constraintsChoice == Constraints.NONE) {
                     RIGHT_TO_LEFT_SCALE_SWITCH
@@ -113,7 +116,7 @@ private fun calculateAutoMode(switchSide: OwnedSide, scaleSide: OwnedSide): Auto
                 }
                 else -> error("Impossible condition: $scaleSide")
             }
-            Start.MIDDLE -> CROSS_BASELINE
+            Start.MIDDLE -> AutoMode.MIDDLE_TO_RIGHT_SWITCH
             Start.RIGHT -> when (scaleSide) {
                 OwnedSide.LEFT -> when (priorityChoice) {
                     End.SWITCH -> if (constraintsChoice == Constraints.NO_FAR_LANE) {
@@ -196,8 +199,8 @@ object Modes : RobotLifecycle {
             "Cross Baseline" to CROSS_BASELINE,
             "Left to Left Switch" to LEFT_TO_LEFT_SWITCH,
             "Right to Right Switch" to RIGHT_TO_RIGHT_SWITCH,
-            /*"Middle to Left Switch" to MIDDLE_TO_LEFT_SWITCH,
-            "Middle to Right Switch" to MIDDLE_TO_RIGHT_SWITCH,*/
+            "Middle to Left Switch" to AutoMode.MIDDLE_TO_LEFT_SWITCH,
+            "Middle to Right Switch" to AutoMode.MIDDLE_TO_RIGHT_SWITCH,
             "Left to Left Switch Two Cube" to LEFT_TO_LEFT_SWITCH_TWO_CUBE,
             "Right to Right Switch Two Cube" to RIGHT_TO_RIGHT_SWITCH_TWO_CUBE,
             "Left to Left Scale with Pickup" to LEFT_TO_LEFT_SCALE_PICKUP,
