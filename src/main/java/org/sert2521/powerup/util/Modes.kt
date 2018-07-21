@@ -16,8 +16,8 @@ import org.sert2521.powerup.util.AutoMode.LEFT_TO_LEFT_SWITCH
 import org.sert2521.powerup.util.AutoMode.LEFT_TO_LEFT_SWITCH_TWO_CUBE
 import org.sert2521.powerup.util.AutoMode.LEFT_TO_RIGHT_SCALE_PICKUP
 import org.sert2521.powerup.util.AutoMode.LEFT_TO_RIGHT_SCALE_SWITCH
-/*import org.sert2521.powerup.util.AutoMode.MIDDLE_TO_LEFT_SWITCH
-import org.sert2521.powerup.util.AutoMode.MIDDLE_TO_RIGHT_SWITCH*/
+import org.sert2521.powerup.util.AutoMode.MIDDLE_TO_LEFT_SWITCH
+import org.sert2521.powerup.util.AutoMode.MIDDLE_TO_RIGHT_SWITCH
 import org.sert2521.powerup.util.AutoMode.RIGHT_TO_LEFT_SCALE_PICKUP
 import org.sert2521.powerup.util.AutoMode.RIGHT_TO_LEFT_SCALE_SWITCH
 import org.sert2521.powerup.util.AutoMode.RIGHT_TO_RIGHT_SCALE_PICKUP
@@ -196,8 +196,8 @@ object Modes : RobotLifecycle {
             "Cross Baseline" to CROSS_BASELINE,
             "Left to Left Switch" to LEFT_TO_LEFT_SWITCH,
             "Right to Right Switch" to RIGHT_TO_RIGHT_SWITCH,
-            /*"Middle to Left Switch" to MIDDLE_TO_LEFT_SWITCH,
-            "Middle to Right Switch" to MIDDLE_TO_RIGHT_SWITCH,*/
+            "Middle to Left Switch" to MIDDLE_TO_LEFT_SWITCH,
+            "Middle to Right Switch" to MIDDLE_TO_RIGHT_SWITCH,
             "Left to Left Switch Two Cube" to LEFT_TO_LEFT_SWITCH_TWO_CUBE,
             "Right to Right Switch Two Cube" to RIGHT_TO_RIGHT_SWITCH_TWO_CUBE,
             "Left to Left Scale with Pickup" to LEFT_TO_LEFT_SCALE_PICKUP,
