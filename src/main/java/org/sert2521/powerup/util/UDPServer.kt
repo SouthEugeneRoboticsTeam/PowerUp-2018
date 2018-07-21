@@ -1,6 +1,7 @@
 package org.sert2521.powerup.util
 
 import com.google.gson.Gson
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
 import java.net.DatagramPacket
 import java.net.DatagramSocket
 
@@ -24,6 +25,9 @@ object UDPServer : Thread() {
                         found = it.found
                         xOffset = it.xOffset
                         yOffset = it.yOffset
+
+                        SmartDashboard.putBoolean("vision_found", found ?: false)
+                        SmartDashboard.putNumber("vision_offset", xOffset?.toDouble() ?: 0.0)
                     } else {
                         alive = it.alive
                     }

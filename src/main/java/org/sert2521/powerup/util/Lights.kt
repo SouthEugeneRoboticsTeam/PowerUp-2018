@@ -18,7 +18,7 @@ object Lights : Subsystem() {
                 redLEDChannel.set(false)
                 blueLEDChannel.set(false)
             }
-            else -> if (VisionData.foundCube) {
+            else -> if (Vision.found == true) {
                 if (Intake.hasCube) {
                     redLEDChannel.set(false)
                     blueLEDChannel.set(true)
