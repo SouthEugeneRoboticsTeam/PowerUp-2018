@@ -5,31 +5,32 @@ import java.net.DatagramPacket
 import java.net.DatagramSocket
 
 object UDPServer : Thread() {
-    private val PACKET_SIZE = 256
+    private const val PACKET_SIZE = 128
 
     private val socket = DatagramSocket(UDP_PORT)
     private val gson = Gson()
 
     override fun run() {
-        val buf = ByteArray(PACKET_SIZE)
-        val packet = DatagramPacket(buf, buf.size)
+        while (true) {
+            val buf = ByteArray(PACKET_SIZE)
+            val packet = DatagramPacket(buf, buf.size)
 
-        socket.receive(packet)
-        val msg = String(packet.data).trim { it <= ' ' }
+            socket.receive(packet)
+            val msg = String(packet.data).trim { it <= ' ' }
 
-        if (!msg.contains("alive")) {
-            gson.fromJson(msg, VisionData.javaClass).also {
-                VisionData.apply {
-                    foundCube = it.foundCube
+            gson.fromJson(msg, VisionData::class.java).also {
+                Vision.apply {
+                    if (it.alive == null) {
+                        found = it.found
+                        xOffset = it.xOffset
+                        yOffset = it.yOffset
+                    } else {
+                        alive = it.alive
+                    }
+
                     time = it.time
-                    xOffset = it.xOffset
-                    yOffset = it.yOffset
                 }
             }
-
-            println("Message from ${packet.address.hostAddress}: $msg")
-        } else {
-            println("Heartbeat from ${packet.address.hostAddress}")
         }
     }
 }
