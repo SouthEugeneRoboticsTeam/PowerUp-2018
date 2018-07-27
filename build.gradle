@@ -1,7 +1,7 @@
 import java.text.SimpleDateFormat
 
 buildscript {
-    ext.kotlinVersion = '1.2.31'
+    ext.kotlinVersion = '1.2.50'
     ext.gradleRioVersion = '2018.03.06'
     ext.sertainVersion = '1.2.0'
     ext.ktlintVersion = '0.19.0'
@@ -25,7 +25,7 @@ tasks.whenTaskAdded { task ->
     if (task.name == 'deploy' || task.name == 'deployMain') task.dependsOn 'assemble'
 }
 check.dependsOn 'ktlint'
-build.dependsOn 'versionTxt'
+compileKotlin.dependsOn 'versionTxt'
 
 repositories {
     google()
