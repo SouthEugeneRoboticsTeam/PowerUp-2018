@@ -128,7 +128,6 @@ abstract class PathBase : PathInitializer(), RobotLifecycle {
             println("Generating path for $pathName...")
             println("Using points: $humanReadablePoints")
             initializer()
-            logGeneratedPoints()
             println("Path generation complete for $pathName.")
         }
     }
