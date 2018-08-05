@@ -114,7 +114,7 @@ def getGitFilesChanged = { ->
         commandLine "git", "diff", "--name-only", "HEAD"
         standardOutput = stdout
     }
-    return stdout.toString().trim().replace("\n", "", "")
+    return stdout.toString().trim().replace("\n", ", ")
 }
 
 task versionTxt()  {
