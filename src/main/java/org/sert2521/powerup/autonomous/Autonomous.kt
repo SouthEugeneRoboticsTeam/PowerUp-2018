@@ -1,5 +1,6 @@
 package org.sert2521.powerup.autonomous
 
+import edu.wpi.first.wpilibj.Notifier
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
 import jaci.pathfinder.Pathfinder
 import jaci.pathfinder.followers.EncoderFollower
@@ -136,6 +137,7 @@ object Auto : RobotLifecycle {
 
 private abstract class PathFollowerBase(protected val path: PathBase) : Command() {
     private val pathIndex get() = pathIndexField.get(path.left) as Int
+    private val notifier = Notifier { followPath() }
 
     init {
         requires(Drivetrain)
@@ -153,9 +155,18 @@ private abstract class PathFollowerBase(protected val path: PathBase) : Command(
             right.configureEncoder(0, ENCODER_TICKS_PER_REVOLUTION, WHEEL_DIAMETER)
             right.configurePIDVA(1.0, 0.0, 0.05, 1 / MAX_VELOCITY, 0.0)
         }
+
+        notifier.startPeriodic(PERIOD)
     }
 
-    override fun execute(): Boolean {
+    override fun execute() = path.isFinished
+
+    override fun onDestroy() {
+        pathProgress = null
+        notifier.stop()
+    }
+
+    private fun followPath() {
         val leftPosition = Drivetrain.leftPosition
         val rightPosition = Drivetrain.rightPosition
 
@@ -166,12 +177,6 @@ private abstract class PathFollowerBase(protected val path: PathBase) : Command(
         calculate(leftPosition, rightPosition, turn).apply { drive(first, second) }
 
         pathProgress = pathIndex.toDouble() / path.trajectory.segments.size.toDouble()
-
-        return path.isFinished
-    }
-
-    override fun onDestroy() {
-        pathProgress = null
     }
 
     protected open fun calculate(leftPosition: Int, rightPosition: Int, turn: Double) =
@@ -183,6 +188,7 @@ private abstract class PathFollowerBase(protected val path: PathBase) : Command(
 
     private companion object {
         const val TURN_IMPORTANCE = 0.0005
+        const val PERIOD = 0.01 // 100Hz
 
         val pathIndexField: Field = EncoderFollower::class.java.getDeclaredField("segment").apply {
             isAccessible = true
