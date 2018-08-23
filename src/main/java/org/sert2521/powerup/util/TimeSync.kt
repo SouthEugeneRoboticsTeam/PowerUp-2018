@@ -14,7 +14,7 @@ object TimeSync : Thread() {
 
     override fun run() {
         // Init socket
-        socket.connect(InetAddress.getByName(JETSON_IP), JETSON_PORT)
+        socket.connect(InetAddress.getByName(BROADCAST_IP), JETSON_PORT)
         while (true) {
             val epoch = Date().toInstant().toEpochMilli()
             val msg = "${epochSecs(epoch)}-${epochMillis(epoch)}".toByteArray()
