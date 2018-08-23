@@ -13,13 +13,13 @@ object TimeSync : Thread() {
     private val socket = DatagramSocket().apply { broadcast = true } // Broadcast is true by default, but it helps to specify
 
     override fun run() {
-        // Init socket
         socket.connect(InetAddress.getByName(BROADCAST_IP), JETSON_PORT)
+
         while (true) {
             val epoch = Date().toInstant().toEpochMilli()
             val msg = "${epochSecs(epoch)}-${epochMillis(epoch)}".toByteArray()
-            val packet = DatagramPacket(msg, msg.size)
-            socket.send(packet)
+
+            socket.send(DatagramPacket(msg, msg.size))
             sleep(WAIT_PERIOD)
         }
     }
