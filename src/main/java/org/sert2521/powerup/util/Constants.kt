@@ -43,7 +43,7 @@ const val MAX_ACCELERATION = 0.1
 const val MAX_JERK = 60.0
 
 // TimeSync
-const val JETSON_PORT = 2521 // UDP Port for Jetson
+const val JETSON_PORT = 5801 // UDP Port for Jetson
 const val JETSON_IP = "10.25.21.255" // Broadcast address for robot network
 
 // Other
