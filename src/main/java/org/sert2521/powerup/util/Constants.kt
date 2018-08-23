@@ -42,6 +42,10 @@ const val MAX_VELOCITY = 0.6
 const val MAX_ACCELERATION = 0.1
 const val MAX_JERK = 60.0
 
+// TimeSync
+const val JETSON_PORT = 2521 // UDP Port for Jetson
+const val JETSON_IP = "127.0.0.1" // Set to actual IP (or broadcast address) before deploying
+
 // Other
 const val DEGREES_PER_PIXEL = 53.4 / 680 // Logitech Webcam C270 FOV in degrees / pixel width
 const val UDP_PORT = 5800

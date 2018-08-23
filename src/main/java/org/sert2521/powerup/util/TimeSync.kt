@@ -7,36 +7,34 @@ import java.util.Date
 
 object TimeSync : Thread() {
     // Time (in secs) to wait between syncs
-    private const val WAIT_PERIOD: Long = 5
-    // UDP port
-    private const val PORT: Int = 2521
-    // Change this to the Jetson's IP before deploying
-    private const val JETSON_IP = "127.0.0.1"
+    private const val WAIT_PERIOD: Long = 5000
 
     // UDP socket
-    private val socket = DatagramSocket()
+    private val socket = DatagramSocket().apply { broadcast = true } // Broadcast is true by default, but it helps to specify
 
     override fun run() {
         // Init socket
-        socket.connect(InetAddress.getByName(JETSON_IP), PORT)
+        socket.connect(InetAddress.getByName(JETSON_IP), JETSON_PORT)
         while (true) {
             val epoch = Date().toInstant().toEpochMilli()
-            val msg = "${epoch_secs(epoch)}-${epoch_millis(epoch)}".toByteArray()
+            val msg = "${epochSecs(epoch)}-${epochMillis(epoch)}".toByteArray()
             val packet = DatagramPacket(msg, msg.size)
             socket.send(packet)
-            sleep(WAIT_PERIOD * 1000)
+            sleep(WAIT_PERIOD)
         }
     }
 
     // Extract seconds from an epoch number
-    private fun epoch_secs(epoch: Long): Long {
-        val str = epoch.toString()
-        return str.substring(0, str.length - 3).toLong()
+    private fun epochSecs(epoch: Long): Long {
+        return epoch.toString().let {
+            it.substring(0, it.length - 3).toLong()
+        }
     }
 
     // Extract milliseconds from the epoch number
-    private fun epoch_millis(epoch: Long): Long {
-        val str = epoch.toString()
-        return str.substring(str.length - 3).toLong()
+    private fun epochMillis(epoch: Long): Long {
+        return epoch.toString().let {
+            it.substring(it.length - 3).toLong()
+        }
     }
 }
