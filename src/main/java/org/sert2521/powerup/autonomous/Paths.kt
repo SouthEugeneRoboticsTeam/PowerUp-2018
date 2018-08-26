@@ -169,8 +169,8 @@ abstract class PathBase : PathInitializer(), RobotLifecycle {
 object LeftToLeftSwitchPath : PathBase() {
     override var points = arrayOf(
             0.0 with 3.0 angle 0.0,
-            1.3 with 3.1 angle 0.0,
-            2.0 with 1.65 angle 90.0
+            2.2 with 3.1 angle 0.0,
+            3.4 with 1.8 angle 90.0
     )
 }
 
@@ -178,7 +178,7 @@ object RightToRightSwitchPath : PathBase() {
     override var points = arrayOf(
             0.0 with -3.0 angle 0.0,
             1.3 with -3.2 angle 0.0,
-            2.9 with -1.9 angle -90.0
+            3.7 with -1.7 angle -90.0
     )
 }
 
@@ -242,7 +242,7 @@ object LeftToLeftScalePath : PathBase() {
     override var points = arrayOf(
             0.0 with 3.0 angle 0.0,
             4.2 with 3.0 angle 0.0,
-            6.5 with 2.0 angle -30.0
+            6.75 with 2.0 angle -30.0
     )
 }
 
@@ -279,8 +279,8 @@ object RightToLeftScalePath : PathBase() {
 object LeftSwitchToRearPath : PathBase() {
     override var points = arrayOf(
             4.0 with -2.0 angle -90.0,
-            3.0 with -2.7 angle 0.0,
-            2.3 with -1.7 angle 180.0
+            3.3 with -2.3 angle 0.0,
+            2.7 with -1.3 angle 180.0
     )
 }
 
