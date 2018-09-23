@@ -7,29 +7,32 @@ import org.sertain.command.Command
 import org.sertain.command.Subsystem
 
 object Lights : Subsystem() {
-    private val redLEDChannel = DigitalOutput(RED_LED_PORT)
-    private val blueLEDChannel = DigitalOutput(BLUE_LED_PORT)
+    private val redChannel = DigitalOutput(RED_LED_PORT)
+    private val blueChannel = DigitalOutput(BLUE_LED_PORT)
 
     override val defaultCommand = Light()
 
-    fun setLEDs() {
-        when {
-            getMatchTime() > 120 && getMatchTime() < 123 -> {
-                redLEDChannel.set(false)
-                blueLEDChannel.set(false)
-            }
-            else -> if (Vision.found == true) {
-                if (Intake.hasCube) {
-                    redLEDChannel.set(false)
-                    blueLEDChannel.set(true)
-                } else {
-                    redLEDChannel.set(true)
-                    blueLEDChannel.set(false)
-                }
-            } else {
-                redLEDChannel.set(true)
-                blueLEDChannel.set(true)
-            }
+    /**
+     * Change light settings depending on current robot status:
+     *
+     * 27 > time > 30  ->  (true, true)
+     * has cube        ->  (false, true)
+     * sees cube       ->  (true, false)
+     * idle            ->  (false, false)
+     */
+    fun setLights() {
+        if (getMatchTime() < 30 && getMatchTime() > 27) {
+            redChannel.set(true)
+            blueChannel.set(true)
+        } else if (Intake.hasCube) {
+            redChannel.set(false)
+            blueChannel.set(true)
+        } else if (Vision.found == true) {
+            redChannel.set(true)
+            blueChannel.set(false)
+        } else {
+            redChannel.set(false)
+            blueChannel.set(false)
         }
     }
 }
@@ -40,7 +43,7 @@ class Light : Command() {
     }
 
     override fun execute(): Boolean {
-        Lights.setLEDs()
+        Lights.setLights()
         return false
     }
 }
