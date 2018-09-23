@@ -7,8 +7,9 @@ import org.sert2521.powerup.util.DEGREES_PER_PIXEL
 import org.sert2521.powerup.util.Vision
 import java.util.Date
 
-class DriveToCube : AngleDriver(0.008, 0.0, 0.022) {
+class DriveToCube : AngleDriver(0.008, 0.0, 0.002) {
     private lateinit var visionLastSeen: Date
+    private var hasBeenAtBottom = false
 
     init {
         requires(Drivetrain)
@@ -29,11 +30,15 @@ class DriveToCube : AngleDriver(0.008, 0.0, 0.022) {
             visionLastSeen = Date()
 
             Drivetrain.drive(BASE_SPEED + output, BASE_SPEED - output)
-            updateSetpoint(Vision.xOffset?.toDouble() ?: 0.0 * DEGREES_PER_PIXEL)
+            updateSetpoint((Vision.xOffset?.toDouble() ?: 0.0) * DEGREES_PER_PIXEL)
             return Intake.hasCube && Elevator.atBottom
         }
 
-        return visionLastSeen.time - Date().time > MAX_TIME_WITHOUT_CUBE
+        if (Elevator.atBottom) {
+            hasBeenAtBottom = true
+        }
+
+        return (visionLastSeen.time - Date().time > MAX_TIME_WITHOUT_CUBE) || Intake.hasCube && hasBeenAtBottom
     }
 
     private fun updateSetpoint(offset: Double) {

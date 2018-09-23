@@ -38,8 +38,8 @@ const val BLUE_LED_PORT = 7
 const val ENCODER_TICKS_PER_REVOLUTION = 8192
 const val WHEEL_DIAMETER = 0.15
 const val WHEELBASE_WIDTH = 0.7
-const val MAX_VELOCITY = 1.0
-const val MAX_ACCELERATION = 0.1
+const val MAX_VELOCITY = 2.5
+const val MAX_ACCELERATION = 0.175
 const val MAX_JERK = 60.0
 
 // Other
