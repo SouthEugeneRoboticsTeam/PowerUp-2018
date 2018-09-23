@@ -1,5 +1,5 @@
 {
-  "dividerPosition": 0.26789473684210524,
+  "dividerPosition": 0.0,
   "tabPane": [
     {
       "title": "Driver",
@@ -24,7 +24,7 @@
           },
           "3,0": {
             "size": [
-              2,
+              3,
               2
             ],
             "content": {
@@ -52,7 +52,7 @@
           "0,0": {
             "size": [
               3,
-              3
+              5
             ],
             "content": {
               "_type": "Boolean Box",
@@ -62,7 +62,7 @@
               "colorWhenFalse": "#333333FF"
             }
           },
-          "5,0": {
+          "3,5": {
             "size": [
               3,
               1
@@ -73,7 +73,7 @@
               "_title": "Match Information"
             }
           },
-          "5,1": {
+          "3,2": {
             "size": [
               3,
               3
@@ -84,16 +84,22 @@
               "_title": "Field State"
             }
           },
-          "0,3": {
+          "6,0": {
             "size": [
-              3,
-              2
+              5,
+              6
             ],
             "content": {
-              "_type": "B Vision Widget",
-              "_source0": "network_table:///Vision/cube_offset_x",
-              "_title": "Vision Targetter",
-              "maxOffset": 640
+              "_type": "Camera Stream",
+              "_source0": "camera_server://USB Camera 0",
+              "_title": "Camera Feed",
+              "showControls": false,
+              "showCrosshair": false,
+              "crosshairColor": "#FFFFFFFF",
+              "compression": 0.0,
+              "fps": -1,
+              "imageWidth": -1,
+              "imageHeight": -1
             }
           }
         }
@@ -109,7 +115,7 @@
         "hgap": 16.0,
         "vgap": 16.0,
         "tiles": {
-          "0,0": {
+          "8,0": {
             "size": [
               2,
               1
@@ -120,7 +126,7 @@
               "_title": "Control Mode"
             }
           },
-          "7,0": {
+          "10,0": {
             "size": [
               1,
               1
@@ -133,7 +139,7 @@
           },
           "0,1": {
             "size": [
-              4,
+              6,
               3
             ],
             "content": {
@@ -143,9 +149,9 @@
               "searchBoxVisible": true
             }
           },
-          "6,5": {
+          "8,1": {
             "size": [
-              2,
+              3,
               1
             ],
             "content": {
@@ -154,7 +160,7 @@
               "_title": "Auto Mode"
             }
           },
-          "4,0": {
+          "2,0": {
             "size": [
               2,
               1
@@ -165,7 +171,7 @@
               "_title": "Auto Objective"
             }
           },
-          "2,0": {
+          "0,0": {
             "size": [
               2,
               1
@@ -176,9 +182,9 @@
               "_title": "Auto Start Position"
             }
           },
-          "6,0": {
+          "4,0": {
             "size": [
-              1,
+              2,
               1
             ],
             "content": {
@@ -292,8 +298,8 @@
           },
           "6,0": {
             "size": [
-              1,
-              2
+              2,
+              1
             ],
             "content": {
               "_type": "Text View",
@@ -301,10 +307,10 @@
               "_title": "Drivetrain Pitch"
             }
           },
-          "7,0": {
+          "6,1": {
             "size": [
-              1,
-              2
+              2,
+              1
             ],
             "content": {
               "_type": "Text View",
@@ -312,34 +318,10 @@
               "_title": "Drivetrain Roll"
             }
           },
-          "2,5": {
+          "3,3": {
             "size": [
-              1,
+              3,
               1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///Vision/cube_offset_x",
-              "_title": "Vision Offset"
-            }
-          },
-          "0,5": {
-            "size": [
-              2,
-              1
-            ],
-            "content": {
-              "_type": "Boolean Box",
-              "_source0": "network_table:///Vision/cube_found",
-              "_title": "Vision Found Cube",
-              "colorWhenTrue": "#7CFC00FF",
-              "colorWhenFalse": "#8B0000FF"
-            }
-          },
-          "6,2": {
-            "size": [
-              2,
-              2
             ],
             "content": {
               "_type": "Text View",
@@ -349,24 +331,48 @@
           },
           "0,3": {
             "size": [
-              1,
+              3,
               1
             ],
             "content": {
               "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/Elevator Speed",
-              "_title": "SmartDashboard/Elevator Speed"
+              "_title": "Elevator Speed"
             }
           },
-          "1,3": {
+          "0,4": {
+            "size": [
+              3,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Drivetrain Speed",
+              "_title": "Drivetrain Speed"
+            }
+          },
+          "0,5": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/vision_found",
+              "_title": "/SmartDashboard/vision_found",
+              "colorWhenTrue": "#7CFC00FF",
+              "colorWhenFalse": "#8B0000FF"
+            }
+          },
+          "2,5": {
             "size": [
               1,
               1
             ],
             "content": {
               "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Drivetrain Speed",
-              "_title": "SmartDashboard/Drivetrain Speed"
+              "_source0": "network_table:///SmartDashboard/vision_offset",
+              "_title": "/SmartDashboard/vision_offset"
             }
           }
         }
