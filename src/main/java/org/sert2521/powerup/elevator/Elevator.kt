@@ -3,6 +3,7 @@ package org.sert2521.powerup.elevator
 import com.ctre.phoenix.motorcontrol.FeedbackDevice
 import edu.wpi.first.wpilibj.PowerDistributionPanel
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
+import org.sert2521.powerup.climber.Climber
 import org.sert2521.powerup.elevator.commands.Elevate
 import org.sert2521.powerup.elevator.commands.EncoderResetter
 import org.sert2521.powerup.util.BOTTOM_TRIGGER_PORT
@@ -16,7 +17,6 @@ import org.sertain.command.Subsystem
 import org.sertain.hardware.DigitalInput
 import org.sertain.hardware.Talon
 import org.sertain.hardware.autoBreak
-import org.sertain.hardware.getEncoderPosition
 import org.sertain.hardware.invert
 import org.sertain.hardware.plus
 import org.sertain.hardware.setEncoderPosition
@@ -26,16 +26,25 @@ import java.util.concurrent.atomic.AtomicBoolean
 
 object Elevator : Subsystem() {
     const val DEFAULT_SPEED = 0.125
-    const val BOTTOM_TARGET = 0
     const val SWITCH_TARGET = 1000
     const val SCALE_TARGET = 3400
-    const val SAFE_MAX_TARGET = 4000
 
     private val pdp = PowerDistributionPanel()
-    private val elevator = Talon(RIGHT_ELEVATOR_MOTOR).autoBreak() +
-            Talon(LEFT_ELEVATOR_MOTOR).autoBreak().invert()
-
-    val position get() = if (isTripped.get()) SCALE_TARGET else -elevator.getEncoderPosition()
+    private val elevator = Talon(RIGHT_ELEVATOR_MOTOR).apply {
+        autoBreak()
+        configContinuousCurrentLimit(40, 0)
+        configPeakCurrentLimit(65, 0)
+        configPeakCurrentDuration(250, 0)
+        enableCurrentLimit(false)
+    } + Talon(LEFT_ELEVATOR_MOTOR).apply {
+        autoBreak()
+        invert()
+        configContinuousCurrentLimit(40, 0)
+        configPeakCurrentLimit(65, 0)
+        configPeakCurrentDuration(250, 0)
+        enableCurrentLimit(false)
+    }
+    val position get() = if (isTripped.get()) SCALE_TARGET else -Climber.getPosition()
     private val current get() = pdp.getCurrent(2)
 
     val atBottom get() = bottomTrigger.get()

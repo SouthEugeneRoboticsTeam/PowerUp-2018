@@ -1,6 +1,7 @@
 package org.sert2521.powerup.elevator.commands
 
 import org.sert2521.powerup.elevator.Elevator
+import org.sert2521.powerup.elevator.Elevator.position
 import org.sertain.command.Command
 import kotlin.math.pow
 import kotlin.properties.Delegates
@@ -8,7 +9,7 @@ import kotlin.properties.Delegates
 abstract class SendToTarget(requireSubsystem: Boolean) : Command(5000) {
     protected abstract val isAtTarget: Boolean
     protected val downSpeed = {
-        (DOWN_GRADIENT.pow(1000 / Elevator.position.coerceAtLeast(1)) - MAX_DOWN_POWER)
+        (DOWN_GRADIENT.pow(1000 / position.coerceAtLeast(1)) - MAX_DOWN_POWER)
                 .coerceAtMost(MIN_DOWN_POWER)
     }
 
@@ -32,7 +33,7 @@ class SendToBottom(requireSubsystem: Boolean = true) : SendToTarget(requireSubsy
 
     override fun execute(): Boolean {
         Elevator.set(downSpeed())
-        return super.execute()
+        return Elevator.atBottom
     }
 }
 
@@ -41,7 +42,7 @@ class SendToSwitch(requireSubsystem: Boolean = true) : SendToTarget(requireSubsy
     private var wasBelowTarget: Boolean by Delegates.notNull()
 
     override fun onCreate() {
-        wasBelowTarget = Elevator.position <= Elevator.SWITCH_TARGET
+        wasBelowTarget = position <= Elevator.SWITCH_TARGET
     }
 
     override fun execute(): Boolean {

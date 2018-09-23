@@ -128,7 +128,6 @@ abstract class PathBase : PathInitializer(), RobotLifecycle {
             println("Generating path for $pathName...")
             println("Using points: $humanReadablePoints")
             initializer()
-            logGeneratedPoints()
             println("Path generation complete for $pathName.")
         }
     }
@@ -170,16 +169,16 @@ abstract class PathBase : PathInitializer(), RobotLifecycle {
 object LeftToLeftSwitchPath : PathBase() {
     override var points = arrayOf(
             0.0 with 3.0 angle 0.0,
-            2.3 with 3.3 angle 0.0,
-            3.5 with 1.65 angle 90.0
+            2.2 with 3.1 angle 0.0,
+            3.4 with 1.7 angle 90.0
     )
 }
 
 object RightToRightSwitchPath : PathBase() {
     override var points = arrayOf(
             0.0 with -3.0 angle 0.0,
-            2.0 with -3.2 angle 0.0,
-            3.3 with -1.9 angle -90.0
+            1.3 with -3.2 angle 0.0,
+            3.7 with -1.8 angle -90.0
     )
 }
 
@@ -190,6 +189,13 @@ object MiddleToLeftSwitchPath : PathBase() {
     )
 }
 
+/*object LeftSwitchToMiddleForwardPath : PathBase() {
+    override var points = arrayOf(
+            2.9 with 1.3 angle -10.0,
+            1.2 with 0.0 angle 0.0
+    )
+}*/
+
 object MiddleToRightSwitchPath : PathBase() {
     override var points = arrayOf(
             0.0 with 0.2 angle 0.0,
@@ -197,11 +203,46 @@ object MiddleToRightSwitchPath : PathBase() {
     )
 }
 
+/*object RightSwitchToMiddleForwardPath : PathBase() {
+    override var points = arrayOf(
+            2.9 with -0.5 angle 10.0,
+            1.2 with 0.0 angle 0.0
+    )
+}
+
+object MiddleForwardToPilePath : PathBase() {
+    override var points = arrayOf(
+            1.2 with 0.0 angle 0.0,
+            2.2 with 0.0 angle 0.0
+    )
+}
+
+object PileToMiddleForwardPath : PathBase() {
+    override var points = arrayOf(
+            2.2 with 0.0 angle 0.0,
+            1.2 with 0.2 angle 0.0
+    )
+}
+
+object MiddleForwardToLeftSwitchPath : PathBase() {
+    override var points = arrayOf(
+            1.2 with 0.2 angle 0.0,
+            2.9 with 1.3 angle -10.0
+    )
+}
+
+object MiddleForwardToRightSwitchPath : PathBase() {
+    override var points = arrayOf(
+            1.2 with 0.2 angle 0.0,
+            2.9 with -0.5 angle 10.0
+    )
+}*/
+
 object LeftToLeftScalePath : PathBase() {
     override var points = arrayOf(
             0.0 with 3.0 angle 0.0,
             4.2 with 3.0 angle 0.0,
-            6.5 with 2.1 angle -30.0
+            6.6 with 2.2 angle -30.0
     )
 }
 
@@ -209,7 +250,7 @@ object RightToRightScalePath : PathBase() {
     override var points = arrayOf(
             0.0 with -3.0 angle 0.0,
             4.2 with -3.0 angle 0.0,
-            6.6 with -2.5 angle 30.0
+            6.7 with -2.5 angle 30.0
     )
 }
 
@@ -238,8 +279,8 @@ object RightToLeftScalePath : PathBase() {
 object LeftSwitchToRearPath : PathBase() {
     override var points = arrayOf(
             4.0 with -2.0 angle -90.0,
-            3.0 with -2.7 angle 0.0,
-            2.3 with -1.7 angle 180.0
+            3.3 with -2.3 angle 0.0,
+            2.7 with -0.95 angle 180.0
     )
 }
 
@@ -247,7 +288,7 @@ object RightSwitchToRearPath : PathBase() {
     override var points = arrayOf(
             4.0 with 2.0 angle 90.0,
             3.0 with 2.6 angle 0.0,
-            2.3 with 1.6 angle -185.0
+            2.3 with 1.6 angle -188.0
     )
 }
 

@@ -84,7 +84,7 @@ private fun calculateAutoMode(switchSide: OwnedSide, scaleSide: OwnedSide): Auto
                 }
                 else -> error("Impossible condition: $scaleSide")
             }
-            Start.MIDDLE -> MIDDLE_TO_LEFT_SWITCH
+            Start.MIDDLE -> CROSS_BASELINE
             Start.RIGHT -> when (scaleSide) {
                 OwnedSide.LEFT -> if (constraintsChoice == Constraints.NONE) {
                     RIGHT_TO_LEFT_SCALE_SWITCH
@@ -113,7 +113,7 @@ private fun calculateAutoMode(switchSide: OwnedSide, scaleSide: OwnedSide): Auto
                 }
                 else -> error("Impossible condition: $scaleSide")
             }
-            Start.MIDDLE -> MIDDLE_TO_RIGHT_SWITCH
+            Start.MIDDLE -> CROSS_BASELINE
             Start.RIGHT -> when (scaleSide) {
                 OwnedSide.LEFT -> when (priorityChoice) {
                     End.SWITCH -> if (constraintsChoice == Constraints.NO_FAR_LANE) {
