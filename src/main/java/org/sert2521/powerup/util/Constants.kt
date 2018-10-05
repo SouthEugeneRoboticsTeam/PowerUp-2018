@@ -42,6 +42,10 @@ const val MAX_VELOCITY = 2.5
 const val MAX_ACCELERATION = 0.175
 const val MAX_JERK = 60.0
 
+// Time synchronization
+const val JETSON_PORT = 5801 // UDP port that the Jetson is listening on
+const val BROADCAST_IP = "10.25.21.255" // Broadcast address for robot network
+
 // Other
 const val DEGREES_PER_PIXEL = 53.4 / 680 // Logitech Webcam C270 FOV in degrees / pixel width
 const val UDP_PORT = 5800

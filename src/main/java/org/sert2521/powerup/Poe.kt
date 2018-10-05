@@ -8,6 +8,7 @@ import org.sert2521.powerup.elevator.Elevator
 import org.sert2521.powerup.intake.Intake
 import org.sert2521.powerup.util.Lights
 import org.sert2521.powerup.util.Modes
+import org.sert2521.powerup.util.TimeSync
 import org.sert2521.powerup.util.UDPServer
 import org.sert2521.powerup.util.initPreferences
 import org.sert2521.powerup.util.logTelemetry
@@ -24,6 +25,7 @@ class Poe : Robot() {
         Lights
 
         UDPServer.start()
+        TimeSync.start()
         CameraServer.getInstance().startAutomaticCapture()
 
         initPreferences()
